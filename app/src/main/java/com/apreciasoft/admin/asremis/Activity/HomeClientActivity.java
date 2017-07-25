@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -90,6 +93,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -319,12 +323,7 @@ public class HomeClientActivity extends AppCompatActivity
         _setEditPlaceHolder();
 
 
-
-
-
-
-       // activeGif(true,"");
-
+        getPick(gloval.getGv_user_id());
 
 
 
@@ -420,11 +419,14 @@ public class HomeClientActivity extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void setInfoTravel() {
 
-        Log.d("fatal", "setInfoTravel");
+        Log.d("fatal", String.valueOf(currentTravel));
 
 
         if (currentTravel != null) {
+
             HomeClientFragment.setInfoTravel(currentTravel);
+
+
         } else {
             HomeClientFragment.clearInfo();
         }
@@ -977,9 +979,7 @@ public class HomeClientActivity extends AppCompatActivity
         {
             activeGif(false,"");
 
-                    materialDesignFAM.setVisibility(View.INVISIBLE);
-
-            Log.d("NOT", "NOT");
+            materialDesignFAM.setVisibility(View.INVISIBLE);
 
 
             if(currentTravel.getIdSatatusTravel() == 4
@@ -1280,4 +1280,69 @@ public class HomeClientActivity extends AppCompatActivity
     }
 
 
+    // METODO OBTENER FOTO DE CHOFER //
+    public void getPick(int idUserDriver)
+    {
+        DowloadImg dwImg = new DowloadImg();
+        dwImg.execute(HttpConexion.BASE_URL+HttpConexion.base+"/Frond/img_users/"+idUserDriver);
+
+    }
+
+    public class DowloadImg extends AsyncTask<String, Void, Bitmap> {
+
+
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            Log.i("doInBackground" , "Entra en doInBackground");
+            String url = params[0]+".JPEG";
+            Bitmap imagen = descargarImagen(url);
+            return imagen;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+
+            try {
+                CircleImageView your_imageView = (CircleImageView) findViewById(R.id.imageViewUser);
+
+                if (result != null) {
+                    your_imageView.setImageBitmap(result);
+
+                }
+            }catch (Exception e)
+            {
+
+            }
+
+
+
+        }
+
+        private Bitmap descargarImagen (String imageHttpAddress){
+            URL imageUrl = null;
+            Bitmap imagen = null;
+            try{
+                imageUrl = new URL(imageHttpAddress);
+                HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+                conn.connect();
+                imagen = BitmapFactory.decodeStream(conn.getInputStream());
+            }catch(IOException ex){
+                ex.printStackTrace();
+            }
+
+            return imagen;
+        }
+
+    }
 }

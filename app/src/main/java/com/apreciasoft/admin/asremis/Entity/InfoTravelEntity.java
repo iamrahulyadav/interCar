@@ -26,6 +26,12 @@ public  class InfoTravelEntity implements Serializable {
     @SerializedName("phoneNumber")
     public String phoneNumber;
 
+    @Expose
+    @SerializedName("isProcesCurrentAcount")
+    public int isProcesCurrentAcount;
+
+
+
 
     @Expose
     @SerializedName("nameStatusTravel")
@@ -217,6 +223,28 @@ public  class InfoTravelEntity implements Serializable {
     @Expose
     @SerializedName("date")
     public String mdate;
+
+
+    @Expose
+    @SerializedName("domain")
+    public String domain;
+
+
+    public int getIsProcesCurrentAcount() {
+        return isProcesCurrentAcount;
+    }
+
+    public void setIsProcesCurrentAcount(int isProcesCurrentAcount) {
+        this.isProcesCurrentAcount = isProcesCurrentAcount;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
     public String getMdate() {
         return mdate;

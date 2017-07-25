@@ -89,7 +89,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
     public static TextView txt_origin_info = null;
     public static TextView txt_km_info = null;
     public static TextView txt_calling_info = null;
-    public static TextView txt_observationFromDriver = null;
+    public static TextView txt_domain = null;
     public static TextView txt_amount_info = null;
 
     public static void setmLastLocation(Location mLastLocation) {
@@ -152,7 +152,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
         HomeClientFragment.txt_km_info = (TextView) getActivity().findViewById(R.id.txt_km_info);
         HomeClientFragment.txt_amount_info = (TextView) getActivity().findViewById(R.id.txt_amount_info);
         HomeClientFragment.txt_calling_info = (TextView) getActivity().findViewById(R.id.txt_calling_info);
-        HomeClientFragment.txt_observationFromDriver = (TextView) getActivity().findViewById(R.id.txt_observationFromDriver);
+        HomeClientFragment.txt_domain = (TextView) getActivity().findViewById(R.id.txt_domain);
 
 
 
@@ -171,12 +171,13 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
     public static void clearInfo() {
 //        HomeClientFragment.txt_client_info.setText("N/A");
         HomeClientFragment.txt_calling_info.setText("N/A");
-        HomeClientFragment.txt_observationFromDriver.setText("N/A");
+        HomeClientFragment.txt_domain.setText("N/A");
         HomeClientFragment.txt_destination_info.setText("N/A");
         HomeClientFragment.txt_origin_info.setText("N/A");
         HomeClientFragment.txt_km_info.setText("0Km");
         HomeClientFragment.txt_amount_info.setText("0$");
         HomeClientFragment.txtStatus.setText("SERVICIO ACTIVO");
+        getPick(-1);
 
     }
 
@@ -195,7 +196,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
                 }
 
                 HomeClientFragment.txt_calling_info.setText(currentTravel.getPhoneNumber());
-                HomeClientFragment.txt_observationFromDriver.setText(currentTravel.getObservationFromDriver());
+                HomeClientFragment.txt_domain.setText(currentTravel.getDomain());
 
 
                 HomeClientFragment.txt_destination_info.setText(currentTravel.getNameDestination());
@@ -297,7 +298,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
     public void onPause() {
         super.onPause();
 
-        try {
+       /* try {
             //stop location updates when Activity is no longer active
             if (mGoogleApiClient != null) {
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -306,7 +307,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
         }catch (Exception e)
         {
             Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        }*/
 
 
     }
@@ -557,28 +558,30 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
 
         Log.d("onLocationChanged","onLocationChanged");
 
-        Geocoder gCoder = new Geocoder(getActivity());
-        List<android.location.Address> addresses = null;
+        if(getActivity() != null) {
+
+            Geocoder gCoder = new Geocoder(getActivity());
+            List<android.location.Address> addresses = null;
 
 
-        try {
-            addresses = gCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            try {
+                addresses = gCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-
+/*
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();
+*/
+                android.location.Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
 
-            android.location.Address returnedAddress = addresses.get(0);
-            StringBuilder strReturnedAddress = new StringBuilder("");
-
-            for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-            }
-            String  strAdd = strReturnedAddress.toString();
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                String strAdd = strReturnedAddress.toString();
 
 
 
@@ -605,25 +608,22 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
 
 */
 
-            mLastLocation = location;
+                mLastLocation = location;
 
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-            this.nameLocation =   strAdd;
+                this.nameLocation = strAdd;
 
-           if(isFistLocation) {
-                //move map camera
-                isFistLocation = false;
+                if (isFistLocation) {
+                    //move map camera
+                    isFistLocation = false;
 
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-           }
-
-
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                }
 
 
-
-            // SI POSEE UN VIAJE DIBUAMOS LA RUTA //
+                // SI POSEE UN VIAJE DIBUAMOS LA RUTA //
             /*if(HomeActivity.currentTravel != null) {
 
                 listPosition.add(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
@@ -655,13 +655,14 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
 */
 
 
-            //optionally, stop location updates if only current location is needed
-            ///if (mGoogleApiClient != null) {
-            // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            //}
+                //optionally, stop location updates if only current location is needed
+                ///if (mGoogleApiClient != null) {
+                // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+                //}
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                Log.d("ERROR", e.getMessage());
+            }
         }
     }
 

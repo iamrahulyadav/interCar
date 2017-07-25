@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +52,7 @@ import com.apreciasoft.admin.asremis.Entity.token;
 import com.apreciasoft.admin.asremis.Entity.tokenFull;
 import com.apreciasoft.admin.asremis.Fracments.AcountDriver;
 import com.apreciasoft.admin.asremis.Fracments.HistoryTravelDriver;
+import com.apreciasoft.admin.asremis.Fracments.HomeClientFragment;
 import com.apreciasoft.admin.asremis.Fracments.HomeFragment;
 import com.apreciasoft.admin.asremis.Fracments.NotificationsFrangment;
 import com.apreciasoft.admin.asremis.Fracments.PaymentCreditCar;
@@ -76,11 +79,15 @@ import com.google.gson.GsonBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -387,6 +394,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         //LLAMAMOS A EL METODO PARA HABILITAR PERMISOS//
         checkPermision();
+
+
+        getPick(gloval.getGv_user_id());
     }
 
 
@@ -1952,4 +1962,74 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+
+    // METODO OBTENER FOTO DE CHOFER //
+    public void getPick(int idUserDriver)
+    {
+        DowloadImg dwImg = new DowloadImg();
+        dwImg.execute(HttpConexion.BASE_URL+HttpConexion.base+"/Frond/img_users/"+idUserDriver);
+
+    }
+
+    public class DowloadImg extends AsyncTask<String, Void, Bitmap> {
+
+
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            Log.i("doInBackground" , "Entra en doInBackground");
+            String url = params[0]+".JPEG";
+            Bitmap imagen = descargarImagen(url);
+            return imagen;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+
+
+            try {
+                CircleImageView your_imageView = (CircleImageView) findViewById(R.id.imageViewUser);
+
+                if (result != null) {
+                    your_imageView.setImageBitmap(result);
+
+                }
+            }catch (Exception e)
+            {
+
+            }
+
+
+
+        }
+
+        private Bitmap descargarImagen (String imageHttpAddress){
+            URL imageUrl = null;
+            Bitmap imagen = null;
+            try{
+                imageUrl = new URL(imageHttpAddress);
+                HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+                conn.connect();
+                imagen = BitmapFactory.decodeStream(conn.getInputStream());
+            }catch(IOException ex){
+                ex.printStackTrace();
+            }
+
+            return imagen;
+        }
+
+    }
+
+
+
 }

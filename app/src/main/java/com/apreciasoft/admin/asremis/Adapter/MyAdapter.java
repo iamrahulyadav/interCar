@@ -26,7 +26,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public CardView mCardView;
         public TextView mTextView;
         public TextView mtv_blah;
-        public  TextView mtv_amount;
+        public TextView mtv_amount;
+        public TextView mtv_isProcesCurrentAcount;
 
 
         public MyViewHolder(View v) {
@@ -36,6 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             mTextView = (TextView) v.findViewById(R.id.tv_text);
             mtv_amount = (TextView) v.findViewById(R.id.tv_amount);
             mtv_blah = (TextView) v.findViewById(R.id.tv_blah);
+            mtv_isProcesCurrentAcount = (TextView) v.findViewById(R.id.tv_isProcesCurrentAcount);
         }
     }
 
@@ -61,6 +63,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.mTextView.setText(mDataset.get(position).getCodTravel());
         holder.mtv_blah.setText(mDataset.get(position).getNameOrigin());
         holder.mtv_amount.setText(mDataset.get(position).getTotalAmount());
+
+        if(mDataset.get(position).getIsProcesCurrentAcount() == 1)
+        {
+            holder.mtv_isProcesCurrentAcount.setText("Liquidado!");
+        }else
+        {
+            holder.mtv_isProcesCurrentAcount.setText("");
+        }
     }
 
     @Override
