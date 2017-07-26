@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "NOTICIAS";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     protected PowerManager.WakeLock wakelock;
-    public static String version = "1.8.31";
+    public static String version = "1.8.32";
     public ProgressDialog loading;
     ServicesLoguin apiService = null;
     public  GlovalVar gloval = null;
@@ -417,7 +417,8 @@ public class MainActivity extends AppCompatActivity {
 
                         loading.dismiss();
 
-                        if(userLogued.response.getUser().getIdProfileUser() == 2)
+                        if(userLogued.response.getUser().getIdProfileUser() == 2
+                                || userLogued.response.getUser().getIdProfileUser() == 5 )
                         {
                             // LAMAMOS A EL SEGUNDO ACTIVITY DE HOME CIENT//
                             Intent homeClient = new Intent(MainActivity.this, HomeClientActivity.class);

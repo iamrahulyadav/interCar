@@ -12,6 +12,10 @@ public class TravelBodyEntity {
 
 
     @Expose
+    @SerializedName("idUserCompanyKf")
+    public int midUserCompanyKf;
+
+    @Expose
     @SerializedName("idClientKf")
     public int mIdClientKf;
 
@@ -50,6 +54,15 @@ public class TravelBodyEntity {
     @Expose
     @SerializedName("isTravelSendMovil")
     public boolean misTravelSendMovil;
+
+
+    public int getMidUserCompanyKf() {
+        return midUserCompanyKf;
+    }
+
+    public void setMidUserCompanyKf(int midUserCompanyKf) {
+        this.midUserCompanyKf = midUserCompanyKf;
+    }
 
     public boolean isMisTravelSendMovil() {
         return misTravelSendMovil;
@@ -97,7 +110,8 @@ public class TravelBodyEntity {
     }
 
     public TravelBodyEntity(int idClientKf, boolean isTravelComany, OriginEntity origin,
-                            DestinationEntity dstination, String dateTravel,int idTypeVehicle, boolean isTravelSendMovil) {
+                            DestinationEntity dstination, String dateTravel,int idTypeVehicle, boolean isTravelSendMovil,
+                            int idUserCompanyKf) {
         mIdClientKf = idClientKf;
         mIsTravelComany = isTravelComany;
         mOrigin = origin;
@@ -105,5 +119,6 @@ public class TravelBodyEntity {
         mDateTravel = dateTravel;
         mIdTypeVehicle = idTypeVehicle;
         misTravelSendMovil = isTravelSendMovil;
+        midUserCompanyKf = idUserCompanyKf;
     }
 }
