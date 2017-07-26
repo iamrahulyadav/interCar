@@ -62,6 +62,19 @@ public class user {
     @SerializedName("idDriver")
     int mIdDriver;
 
+    @Expose
+    @SerializedName("idTypeAuth")
+    int idTypeAuth;
+
+
+    public int getIdTypeAuth() {
+        return idTypeAuth;
+    }
+
+    public void setIdTypeAuth(int idTypeAuth) {
+        this.idTypeAuth = idTypeAuth;
+    }
+
     public int getIdClient() {
         return mIdClient;
     }
@@ -78,9 +91,10 @@ public class user {
         mIdDriver = idDriver;
     }
 
-    public user(String userName, String userPass ) {
+    public user(String userName, String userPass ,int idTypeAuth ) {
         this.mUserName = userName;
         this.mUserPass = userPass;
+        this.idTypeAuth = idTypeAuth;
     }
 
 

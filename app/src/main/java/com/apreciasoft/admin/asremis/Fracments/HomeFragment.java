@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
@@ -79,7 +80,7 @@ public class HomeFragment extends Fragment implements
         public List<LatLng> listPosition = new ArrayList<>();
         static GoogleMap mGoogleMap;
         LocationRequest mLocationRequest;
-        GoogleApiClient mGoogleApiClient;
+        static GoogleApiClient mGoogleApiClient;
         public static  Location mLastLocation;
         public static  String nameLocation;
         public static   PolylineOptions options;
@@ -202,6 +203,8 @@ public class HomeFragment extends Fragment implements
             Log.d("ERROR", e.getMessage());
         }*/
     }
+
+
 
     @Override
     public void onResume() {

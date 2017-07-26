@@ -71,7 +71,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
     public List<LatLng> listPosition = new ArrayList<>();
     static GoogleMap mGoogleMap;
     LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
+    static GoogleApiClient mGoogleApiClient;
     public static Location mLastLocation;
     public  static  String nameLocation;
     public static PolylineOptions options;
@@ -585,29 +585,6 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
 
 
 
-
-
-/* antes socket
-            mLastLocation = location;
-            if (mCurrLocationMarker != null) {
-                mCurrLocationMarker.remove();
-            }
-
-            //Place current location marker
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(latLng);
-            markerOptions.title("Usted esta Aqui "+strAdd);
-
-
-            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.persona);
-            markerOptions.icon(icon);
-
-            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-
-
-*/
-
                 mLastLocation = location;
 
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -750,6 +727,10 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
             mCurrLocationMarker.remove();
         }
 
+        if (mGoogleMap != null) {
+            mGoogleMap.clear();
+        }
+
          if (gloval.getLocationDriverFromClient() != null) {
              Log.d("onLocationChanged","auto");
 
@@ -765,7 +746,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
                      Double.parseDouble(info.getLongLocation()));
              MarkerOptions markerOptions = new MarkerOptions();
              markerOptions.position(latLng);
-             markerOptions.title("Chofer esta aqui" + info.getLocation());
+             markerOptions.title( info.getLocation());
 
 
              int height = 45;
@@ -991,6 +972,8 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
             }
         }
     }
+
+
 
 
 }

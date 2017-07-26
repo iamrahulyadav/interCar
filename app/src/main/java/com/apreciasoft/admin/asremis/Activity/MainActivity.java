@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
         EditText mUser = (EditText) findViewById(R.id.user_txt);
         EditText mPass = (EditText) findViewById(R.id.pass_text);
 
-        login auth = new login(new user(mUser.getText().toString(), mPass.getText().toString()));
+        login auth = new login(new user(mUser.getText().toString(), mPass.getText().toString(),2));
 
 
         try {

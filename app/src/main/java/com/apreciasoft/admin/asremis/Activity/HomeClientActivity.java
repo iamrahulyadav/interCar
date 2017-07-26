@@ -2,6 +2,7 @@ package com.apreciasoft.admin.asremis.Activity;
 
 import android.app.DatePickerDialog;
 import android.app.FragmentManager;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
@@ -54,6 +55,7 @@ import com.apreciasoft.admin.asremis.Entity.resp;
 import com.apreciasoft.admin.asremis.Entity.token;
 import com.apreciasoft.admin.asremis.Entity.tokenFull;
 import com.apreciasoft.admin.asremis.Fracments.HomeClientFragment;
+import com.apreciasoft.admin.asremis.Fracments.HomeFragment;
 import com.apreciasoft.admin.asremis.Fracments.ListTypeCarLayout;
 import com.apreciasoft.admin.asremis.Fracments.PaymentFormClient;
 import com.apreciasoft.admin.asremis.Fracments.ProfileClientFr;
@@ -67,6 +69,7 @@ import com.apreciasoft.admin.asremis.Util.WsTravel;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -974,6 +977,7 @@ public class HomeClientActivity extends AppCompatActivity
     private void controlViewTravel()
     {
 
+        cliaerNotificationAndoid();
 
         if(currentTravel != null)
         {
@@ -1010,6 +1014,10 @@ public class HomeClientActivity extends AppCompatActivity
                 else if(currentTravel.getIdSatatusTravel() == 7) {
                     Toast.makeText(getApplicationContext(), "Viaje Reachazado por el Chofer!", Toast.LENGTH_SHORT).show();
                     HomeClientFragment.txtStatus.setText("Viaje Reachazado por el Chofer!");
+                    currentTravel = null;
+                    materialDesignFAM.setVisibility(View.VISIBLE);
+                    gloval.setGv_travel_current(null);
+                    HomeClientFragment.clearInfo();
                    // HomeClientFragment.panelTopIsVisible(false);
                 }
 
@@ -1254,6 +1262,8 @@ public class HomeClientActivity extends AppCompatActivity
        // enviarTokenAlServidor("",gloval.getGv_user_id());
         ws.coseWebSocket();
 
+        finish();
+
 
     }
 
@@ -1344,5 +1354,14 @@ public class HomeClientActivity extends AppCompatActivity
             return imagen;
         }
 
+    }
+
+
+
+
+    public void cliaerNotificationAndoid()
+    {
+        NotificationManager notifManager= (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        notifManager.cancelAll();
     }
 }

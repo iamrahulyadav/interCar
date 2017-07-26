@@ -565,6 +565,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         timer.cancel();
 
 
+        finish();
+
+
         Intent main = new Intent(HomeActivity.this, MainActivity.class);
         startActivity(main);
 
@@ -578,7 +581,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         try {
 
 
-                Log.d("-PAOSO-","P1");
+
             cliaerNotificationAndoid();
 
             if (gloval.getGv_id_profile() == 3) {
@@ -1021,7 +1024,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         txtTimeslep.setText(tiempoTxt+" Seg - "+Double.toString(round(extraTime,2))+"$");
-        distance_txt.setText(df.format(kilometros_total) + " m - "+Double.toString(round(amounCalculateGps,2))+"$");
+        distance_txt.setText(df.format(kilometros_total) + " Km - "+Double.toString(round(amounCalculateGps,2))+"$");
 
         double totalFinal = 0;
 
