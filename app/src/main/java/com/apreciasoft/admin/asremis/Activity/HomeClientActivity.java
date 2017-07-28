@@ -54,8 +54,8 @@ import com.apreciasoft.admin.asremis.Entity.TravelEntity;
 import com.apreciasoft.admin.asremis.Entity.resp;
 import com.apreciasoft.admin.asremis.Entity.token;
 import com.apreciasoft.admin.asremis.Entity.tokenFull;
+import com.apreciasoft.admin.asremis.Fracments.HistoryTravelDriver;
 import com.apreciasoft.admin.asremis.Fracments.HomeClientFragment;
-import com.apreciasoft.admin.asremis.Fracments.HomeFragment;
 import com.apreciasoft.admin.asremis.Fracments.ListTypeCarLayout;
 import com.apreciasoft.admin.asremis.Fracments.PaymentFormClient;
 import com.apreciasoft.admin.asremis.Fracments.ProfileClientFr;
@@ -69,7 +69,6 @@ import com.apreciasoft.admin.asremis.Util.WsTravel;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -228,11 +227,13 @@ public class HomeClientActivity extends AppCompatActivity
         floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
 
+        //Boton Reservar viaje - Leandro Pérez
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu first item clicked
 
-
+                activeGifMotivos(true,"");
+/*
                 if(isReervation)
                 {
                     LinearLayout contentInfoReervation = (LinearLayout) findViewById(R.id.contentInfoReervation);
@@ -247,12 +248,14 @@ public class HomeClientActivity extends AppCompatActivity
                     isReervation = true;
 
                 }
-
+*/
                 materialDesignFAM.close(true);
 
 
             }
         });
+
+        //Boton Solicitar viaje - Leandro Pérez
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu second item clicked
@@ -308,7 +311,7 @@ public class HomeClientActivity extends AppCompatActivity
 
         /*SETEAR CATEGORIAS */
         // Spinner element
-         spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
         spinner2 = (Spinner) findViewById(R.id.spinner2);
         _setCategory();
         _setCategory2();
@@ -412,8 +415,8 @@ public class HomeClientActivity extends AppCompatActivity
         if(view == fromDateEtxt) {
             fromDatePickerDialog.show();
         }else
-            if(view == fromTimeEtxt) {
-                fromTimePickerDialog.show();
+        if(view == fromTimeEtxt) {
+            fromTimePickerDialog.show();
 
         }
     }
@@ -492,34 +495,34 @@ public class HomeClientActivity extends AppCompatActivity
 
 
     public void _setCategory()
-     {
+    {
 
-         List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<String>();
 
-         VEHYCLETYPE = new String[gloval.getGv_listvehicleType().size()];
+        VEHYCLETYPE = new String[gloval.getGv_listvehicleType().size()];
 
-         for (int i =0 ;i< gloval.getGv_listvehicleType().size();i++)
-         {
-             list.add("Tipo De Vehiculo: "+gloval.getGv_listvehicleType().get(i).getVehiclenType());
-             listCatgoryId.add(gloval.getGv_listvehicleType().get(i).getIdVehicleType());
-         }
-
-
-         list.toArray(VEHYCLETYPE);
+        for (int i =0 ;i< gloval.getGv_listvehicleType().size();i++)
+        {
+            list.add("Tipo De Vehiculo: "+gloval.getGv_listvehicleType().get(i).getVehiclenType());
+            listCatgoryId.add(gloval.getGv_listvehicleType().get(i).getIdVehicleType());
+        }
 
 
+        list.toArray(VEHYCLETYPE);
 
-         // Spinner click listener
-         spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-         // Creating adapter for spinner
-         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 
-         // Drop down layout style - list view with radio button
-         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Spinner click listener
+        spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-         // attaching data adapter to spinner
-         spinner.setAdapter(dataAdapter);
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
 
           /*MULTI AUTO COMPLETE*/
         /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -529,7 +532,7 @@ public class HomeClientActivity extends AppCompatActivity
          textView.setOnItemClickListener(this);*/
 
 
-         }
+    }
 
 
     @Override
@@ -538,9 +541,9 @@ public class HomeClientActivity extends AppCompatActivity
         String item = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
-       // Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        // Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
-       this.idTypeVehicle =  listCatgoryId.get(position);
+        this.idTypeVehicle =  listCatgoryId.get(position);
 
     }
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -569,14 +572,14 @@ public class HomeClientActivity extends AppCompatActivity
         thread.start();
 
 
-       if(adapterView.getAdapter().getClass().getName()
+        if(adapterView.getAdapter().getClass().getName()
                 == "com.apreciasoft.admin.asremis.Util.GooglePlacesAutocompleteAdapter")// GOOGLE PLACE
         {
             this.location = String.valueOf(adapterView.getAdapter().getClass().getName());
 
-          //  Log.d("lopo",GooglePlacesAutocompleteAdapter.getItemByIndex(position).toString());
-           // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
-           // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
+            //  Log.d("lopo",GooglePlacesAutocompleteAdapter.getItemByIndex(position).toString());
+            // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
+            // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
         }
 
 
@@ -657,7 +660,7 @@ public class HomeClientActivity extends AppCompatActivity
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
-           // sb.append("&components=country:gr");
+            // sb.append("&components=country:gr");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
@@ -706,14 +709,8 @@ public class HomeClientActivity extends AppCompatActivity
 
     public void activeGif(boolean active,String sms)
     {
-       // GifImageView GIF =   (GifImageView) findViewById(R.id.gif_auto);
-     //  ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-
-
-
-
-
+        // GifImageView GIF =   (GifImageView) findViewById(R.id.gif_auto);
+        //  ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         if(active)
         {
@@ -737,6 +734,68 @@ public class HomeClientActivity extends AppCompatActivity
             car.getBackground().setAlpha(200);
 
             Button btnCnacel = (Button) loading.findViewById(R.id.car_notifications_cancel_client);
+            btnCnacel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    try {
+
+                        activeGifMotivos(true,"");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+
+            });
+
+        }
+        else
+        {
+
+            if(loading != null)
+            {
+                loading.dismiss();
+            }
+
+
+
+            //progressBar.setIndeterminate(false);
+            //  GIF.setVisibility(View.INVISIBLE);
+            //btnTravelNew.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void activeGifMotivos(boolean active,String sms)
+    {
+        // GifImageView GIF =   (GifImageView) findViewById(R.id.gif_auto);
+        //  ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        if(active)
+        {
+
+
+            loading = new ProgressDialog(this);
+            loading.setMessage(sms);
+            loading.show();
+
+
+            loading.setContentView(R.layout.custom_modal);
+
+
+            TextView text = (TextView) loading.findViewById(R.id.smsDialog);
+            text.setText("Presiona para Cancelar!");
+
+
+            loading.setCancelable(false);
+
+            CardView car = (CardView) loading.findViewById(R.id.car_notifications_from_client_cancelar);
+            car.getBackground().setAlpha(200);
+
+            Button btnCnacel = (Button) loading.findViewById(R.id.btn_motivo);
             btnCnacel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -767,23 +826,21 @@ public class HomeClientActivity extends AppCompatActivity
 
 
             //progressBar.setIndeterminate(false);
-          //  GIF.setVisibility(View.INVISIBLE);
+            //  GIF.setVisibility(View.INVISIBLE);
             //btnTravelNew.setVisibility(View.VISIBLE);
         }
     }
 
     public void cancelTravelByCliet()
     {
+
         if (this.daoTravel == null) { this.daoTravel = HttpConexion.getUri().create(ServicesTravel.class); }
-
-
 
 
         try {
 
 
-
-            Call<Boolean> call = this.daoTravel.cancelByClient(gloval.getGv_id_cliet());
+            Call<Boolean> call = this.daoTravel.cancelByClient(gloval.getGv_id_cliet(), 3);
 
             Log.d("fatal", call.request().toString());
             Log.d("fatal", call.request().headers().toString());
@@ -796,15 +853,21 @@ public class HomeClientActivity extends AppCompatActivity
                     Toast.makeText(getApplicationContext(), "VIAJE CANCELADO!", Toast.LENGTH_LONG).show();
 
                     // cerramo el dialog //
+                    activeGifMotivos(false,"");
+                    activeGif(false,"");
+
                     materialDesignFAM.close(true);
 
                     LinearLayout contentInfoReervation = (LinearLayout) findViewById(R.id.contentInfoReervation);
                     contentInfoReervation.setVisibility(LinearLayout.INVISIBLE);
+
                     isReervation =  false;
                     contetRequestTravelVisible(false);
-                    activeGif(false,"");
 
 
+
+                    //Ventana modal de motivos - Leandro Pérez
+                    //activeGifMotivos(true,"");
 
                 }
 
@@ -830,6 +893,7 @@ public class HomeClientActivity extends AppCompatActivity
         } finally {
             this.daoTravel = null;
         }
+
     }
 
     // Mostramos listado de detalles de el CATEGORIAS //
@@ -934,6 +998,9 @@ public class HomeClientActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_gallery) {
 
+            HistoryTravelDriver verifi = new HistoryTravelDriver();
+            verifi.ver = 1;
+            fm.beginTransaction().replace(R.id.content_frame_client,new HistoryTravelDriver()).commit();
 
 
         } else if (id == R.id.nav_slideshow) {
@@ -994,7 +1061,7 @@ public class HomeClientActivity extends AppCompatActivity
 
                 if(currentTravel.getIdSatatusTravel() == 4) {
                     Toast.makeText(getApplicationContext(), "Viaje Aceptado, Chofer en camino!", Toast.LENGTH_SHORT).show();
-                  //  HomeClientFragment.panelTopIsVisible(true);
+                    //  HomeClientFragment.panelTopIsVisible(true);
 
                 }
                 else if(currentTravel.getIdSatatusTravel() == 5) {
@@ -1009,7 +1076,7 @@ public class HomeClientActivity extends AppCompatActivity
                     materialDesignFAM.setVisibility(View.VISIBLE);
                     gloval.setGv_travel_current(null);
                     HomeClientFragment.clearInfo();
-                   // HomeClientFragment.panelTopIsVisible(false);
+                    // HomeClientFragment.panelTopIsVisible(false);
                 }
                 else if(currentTravel.getIdSatatusTravel() == 7) {
                     Toast.makeText(getApplicationContext(), "Viaje Reachazado por el Chofer!", Toast.LENGTH_SHORT).show();
@@ -1018,7 +1085,7 @@ public class HomeClientActivity extends AppCompatActivity
                     materialDesignFAM.setVisibility(View.VISIBLE);
                     gloval.setGv_travel_current(null);
                     HomeClientFragment.clearInfo();
-                   // HomeClientFragment.panelTopIsVisible(false);
+                    // HomeClientFragment.panelTopIsVisible(false);
                 }
 
                 setInfoTravel();
@@ -1029,7 +1096,7 @@ public class HomeClientActivity extends AppCompatActivity
         {
 
             materialDesignFAM.setVisibility(View.VISIBLE);
-           // setInfoTravel();
+            // setInfoTravel();
         }
     }
 
@@ -1040,8 +1107,6 @@ public class HomeClientActivity extends AppCompatActivity
 
         try {
 
-
-
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             Date date = new Date();
 
@@ -1051,8 +1116,8 @@ public class HomeClientActivity extends AppCompatActivity
 
 
             if(this.location != "" &&
-            this.lat != "" &&
-            this.lon != "")
+                    this.lat != "" &&
+                    this.lon != "")
             {}else {
                 this.location = HomeClientFragment.nameLocation;
                 this.lat =   String.valueOf( HomeClientFragment.getmLastLocation().getLatitude());
@@ -1085,9 +1150,8 @@ public class HomeClientActivity extends AppCompatActivity
                                     this.latDestination,
                                     this.lonDestination,
                                     this.destination
-                                   )
-                            ,this.dateTravel,idTypeVehicle,true,
-                            gloval.getGv_user_id()
+                            )
+                            ,this.dateTravel,idTypeVehicle,true
                     )
             );
 
@@ -1191,7 +1255,7 @@ public class HomeClientActivity extends AppCompatActivity
 
     }
 
-
+    //Contenerdor para solicitar viaje - Leandro Pérez
     public  void  contetRequestTravelVisible(boolean visible)
     {
         if(visible)
@@ -1240,8 +1304,8 @@ public class HomeClientActivity extends AppCompatActivity
             FragmentManager fm = getFragmentManager();
 
             FloatingActionMenu btnTravelNew = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-                btnTravelNew.setVisibility(View.INVISIBLE);
-                fm.beginTransaction().replace(R.id.content_frame_client,new ProfileClientFr()).commit();
+            btnTravelNew.setVisibility(View.INVISIBLE);
+            fm.beginTransaction().replace(R.id.content_frame_client,new ProfileClientFr()).commit();
 
 
         }catch (Exception e)
@@ -1260,7 +1324,7 @@ public class HomeClientActivity extends AppCompatActivity
         gloval.setGv_logeed(false);
         new GlovalVar();
 
-       // enviarTokenAlServidor("",gloval.getGv_user_id());
+        // enviarTokenAlServidor("",gloval.getGv_user_id());
         ws.coseWebSocket();
 
         finish();

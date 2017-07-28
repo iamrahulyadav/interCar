@@ -67,6 +67,6 @@ public interface ServicesTravel {
     Call<List<InfoTravelEntity>> cacelReservation(@Path("id") int id,@Path("idDriver") int idDriver);
 
     @Headers("Content-Type: application/json")
-    @GET("travel/cancelByClient/{id}")
-    Call<Boolean> cancelByClient(@Path("id") int id);
+    @GET("travel/cancelByClient/{id}/{idReasonCancelKf }")
+    Call<Boolean> cancelByClient(@Path("id") int id, @Path("idReasonCancelKf") int idReasonCancelKf );
 }

@@ -28,8 +28,8 @@ android {
     }
     dexOptions
             {
-                incremental false
-                javaMaxHeapSize "2048M"
+                //incremental false
+                //javaMaxHeapSize "2048M"
                 preDexLibraries = false
             }
     productFlavors {

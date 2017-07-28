@@ -37,6 +37,7 @@ public class HistoryTravelDriver extends Fragment {
     MyAdapter adapter = null;
     RecyclerView rv = null;
 
+    public int ver;
 
     @Nullable
     @Override
@@ -46,7 +47,11 @@ public class HistoryTravelDriver extends Fragment {
         this.apiService = HttpConexion.getUri().create(ServicesDriver.class);
 
 
-        serviceAllTravel();
+        if (ver == 1){
+            serviceAllTravelClient();
+        }else{
+            serviceAllTravel();
+        }
 
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.history_travel_driver, container, false);
@@ -91,6 +96,73 @@ public class HistoryTravelDriver extends Fragment {
 
                     //the response-body is already parseable to your ResponseBody object
                    list = (List<InfoTravelEntity>) response.body();
+
+                    refreshContent();
+
+                    //
+                } else if (response.code() == 404) {
+
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("ERROR" + "(" + response.code() + ")");
+                    alertDialog.setMessage(response.errorBody().source().toString());
+                    Log.w("***", response.errorBody().source().toString());
+
+
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<InfoTravelEntity>> call, Throwable t) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("ERROR");
+                alertDialog.setMessage(t.getMessage());
+
+                Log.d("**", t.getMessage());
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+
+    }
+
+    public void serviceAllTravelClient() {
+
+        GlovalVar gloval = ((GlovalVar)getActivity().getApplicationContext());
+        Call<List<InfoTravelEntity>> call = this.apiService.getAllTravel(gloval.getGv_id_cliet());
+
+        // Log.d("***",call.request().body().toString());
+
+        call.enqueue(new Callback<List<InfoTravelEntity>>() {
+            @Override
+            public void onResponse(Call<List<InfoTravelEntity>> call, Response<List<InfoTravelEntity>> response) {
+
+                Log.d("Call request", call.request().toString());
+                Log.d("Call request header", call.request().headers().toString());
+                Log.d("Response raw header", response.headers().toString());
+                Log.d("Response raw", String.valueOf(response.raw().body()));
+                Log.d("Response code", String.valueOf(response.code()));
+
+                if (response.code() == 200) {
+
+                    //the response-body is already parseable to your ResponseBody object
+                    list = (List<InfoTravelEntity>) response.body();
 
                     refreshContent();
 
