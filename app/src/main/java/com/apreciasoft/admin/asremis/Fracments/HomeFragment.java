@@ -435,10 +435,17 @@ public class HomeFragment extends Fragment implements
 
 
                         if (HomeActivity.currentTravel.getLatDestination() != null) {
-                            LatLng desination = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatDestination()), Double.parseDouble(HomeActivity.currentTravel.getLonDestination()));
-                            setDirection(desination);
-                            Log.d(TAG, "T-6");
-                            isReadyDrawingRouting = true;
+                            if (HomeActivity.currentTravel.getLonDestination() != null) {
+
+                                if (HomeActivity.currentTravel.getLatDestination() != "") {
+                                    if (HomeActivity.currentTravel.getLonDestination() != "") {
+                                        LatLng desination = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatDestination()), Double.parseDouble(HomeActivity.currentTravel.getLonDestination()));
+                                        setDirection(desination);
+                                        Log.d(TAG, "T-6");
+                                        isReadyDrawingRouting = true;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -642,15 +649,15 @@ public class HomeFragment extends Fragment implements
                 totalDistance += lastLocation.distanceTo(currLocation);
 
                 // VERIFICAMOS SI ACTIVO EL RETORNO PARA LA IDA Y VUELTA //
-                if(HomeActivity.isRoundTrip)
-                {
-                    if(optionReturnActive.getPoints().get(0).latitude  == options.getPoints().get(i).latitude)
+                if(HomeActivity.isRoundTrip) {
+                    if (optionReturnActive.getPoints().get(0) != null)
                     {
-                        if(optionReturnActive.getPoints().get(0).longitude  == options.getPoints().get(i).longitude)
-                        {
-                            totalDistanceVuelta+= lastLocation.distanceTo(currLocation);
+                        if (optionReturnActive.getPoints().get(0).latitude == options.getPoints().get(i).latitude) {
+                            if (optionReturnActive.getPoints().get(0).longitude == options.getPoints().get(i).longitude) {
+                                totalDistanceVuelta += lastLocation.distanceTo(currLocation);
+                            }
                         }
-                    }
+                     }
                 }
 
                 }
