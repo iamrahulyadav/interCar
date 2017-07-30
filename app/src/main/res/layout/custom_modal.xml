@@ -30,47 +30,57 @@
             android:layout_marginTop="25dp"
             >
 
-            <RadioButton
-                android:id="@+id/radioButton4"
+            <RadioGroup
+                android:id="@+id/radio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/radioButton"
-                android:layout_alignStart="@+id/radioButton"
-                android:layout_below="@+id/radioButton"
-                android:layout_marginTop="115dp"
-                android:text="Me buscara un conocido" />
+                android:layout_alignEnd="@+id/button2"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp">
 
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/radioButton"
-                android:layout_alignStart="@+id/radioButton"
-                android:layout_below="@+id/radioButton"
-                android:layout_marginTop="70dp"
-                android:text="Se cancelo la reunion" />
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="61dp"
+                    android:checked="false"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Emergencia familiar" />
 
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="55dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginTop="75dp"
-                android:text="Emergencia familiar" />
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Me vienen a buscar" />
 
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/radioButton"
-                android:layout_alignStart="@+id/radioButton"
-                android:layout_below="@+id/radioButton"
-                android:layout_marginTop="20dp"
-                android:text="Olvide algo en casa" />
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton2"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Se cancelo la reunion" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton3"
+                    android:layout_centerHorizontal="true"
+                    android:checked="false"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Cancelaron el vuelo" />
+
+            </RadioGroup>
 
 
         </RelativeLayout>
@@ -103,6 +113,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="19dp"
             android:text="Indique el motivo por el cual cancela el viaje"
             android:textAlignment="center"

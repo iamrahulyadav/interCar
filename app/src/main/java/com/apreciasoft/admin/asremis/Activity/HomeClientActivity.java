@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -155,6 +156,8 @@ public class HomeClientActivity extends AppCompatActivity
     public FloatingActionMenu materialDesignFAM;
     public FloatingActionButton floatingActionButton1, floatingActionButton2;
 
+    Integer mot = 0;
+
     public ProgressDialog loading;
     private Integer idTypeVehicle;
 
@@ -168,6 +171,8 @@ public class HomeClientActivity extends AppCompatActivity
         final PowerManager pm=(PowerManager)getSystemService(Context.POWER_SERVICE);
         this.wakelock=pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "etiqueta");
         wakelock.acquire();
+
+
 
         setContentView(R.layout.activity_client_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -335,6 +340,39 @@ public class HomeClientActivity extends AppCompatActivity
 
     }
 
+
+    public void onRadioButtonClicked(View view) {
+
+        // Is the button now checked?
+
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // hacemos un case con lo que ocurre cada vez que pulsemos un botón
+
+        switch(view.getId()) {
+            case R.id.radioButton:
+                if (checked)
+                    //
+                mot = 1;
+                    break;
+            case R.id.radioButton2:
+                if (checked)
+                    //
+                mot = 2;
+                    break;
+            case R.id.radioButton3:
+                if (checked)
+                    //
+                mot = 3;
+                    break;
+            case R.id.radioButton4:
+                if (checked)
+                    //
+                mot = 4;
+                    break;
+
+        }
+    }
 
     public void  _setEditPlaceHolder()
     {
@@ -740,6 +778,7 @@ public class HomeClientActivity extends AppCompatActivity
 
                     try {
 
+                        activeGif(false,"");
                         activeGifMotivos(true,"");
 
                     } catch (Exception e) {
@@ -771,24 +810,15 @@ public class HomeClientActivity extends AppCompatActivity
 
     public void activeGifMotivos(boolean active,String sms)
     {
-        // GifImageView GIF =   (GifImageView) findViewById(R.id.gif_auto);
-        //  ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         if(active)
         {
-
 
             loading = new ProgressDialog(this);
             loading.setMessage(sms);
             loading.show();
 
-
             loading.setContentView(R.layout.custom_modal);
-
-
-            TextView text = (TextView) loading.findViewById(R.id.smsDialog);
-            text.setText("Presiona para Cancelar!");
-
 
             loading.setCancelable(false);
 
@@ -802,12 +832,13 @@ public class HomeClientActivity extends AppCompatActivity
 
                     try {
 
+                        //activeGifMotivos(false,"");
                         cancelTravelByCliet();
+                        //Toast.makeText(getApplicationContext(), mot.toString(), Toast.LENGTH_LONG).show();
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
 
                 }
 
@@ -823,11 +854,6 @@ public class HomeClientActivity extends AppCompatActivity
                 loading.dismiss();
             }
 
-
-
-            //progressBar.setIndeterminate(false);
-            //  GIF.setVisibility(View.INVISIBLE);
-            //btnTravelNew.setVisibility(View.VISIBLE);
         }
     }
 
@@ -836,11 +862,9 @@ public class HomeClientActivity extends AppCompatActivity
 
         if (this.daoTravel == null) { this.daoTravel = HttpConexion.getUri().create(ServicesTravel.class); }
 
-
         try {
 
-
-            Call<Boolean> call = this.daoTravel.cancelByClient(gloval.getGv_id_cliet(), 3);
+            Call<Boolean> call = this.daoTravel.cancelByClient(gloval.getGv_id_cliet(), mot);
 
             Log.d("fatal", call.request().toString());
             Log.d("fatal", call.request().headers().toString());
@@ -854,7 +878,6 @@ public class HomeClientActivity extends AppCompatActivity
 
                     // cerramo el dialog //
                     activeGifMotivos(false,"");
-                    activeGif(false,"");
 
                     materialDesignFAM.close(true);
 
@@ -863,11 +886,6 @@ public class HomeClientActivity extends AppCompatActivity
 
                     isReervation =  false;
                     contetRequestTravelVisible(false);
-
-
-
-                    //Ventana modal de motivos - Leandro Pérez
-                    //activeGifMotivos(true,"");
 
                 }
 
