@@ -1,8 +1,10 @@
 package com.apreciasoft.admin.asremis.Services;
+
 import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
 import com.apreciasoft.admin.asremis.Entity.RemisSocketInfo;
 import com.apreciasoft.admin.asremis.Entity.TraveInfoSendEntity;
 import com.apreciasoft.admin.asremis.Entity.TravelEntity;
+import com.apreciasoft.admin.asremis.Entity.reason;
 import com.apreciasoft.admin.asremis.Entity.resp;
 
 import java.util.List;
@@ -69,4 +71,8 @@ public interface ServicesTravel {
     @Headers("Content-Type: application/json")
     @GET("travel/cancelByClient/{id}/{idReasonCancelKf}")
     Call<Boolean> cancelByClient(@Path("id") int id, @Path("idReasonCancelKf") int idReasonCancelKf );
+
+    @Headers("Content-Type: application/json")
+    @GET("travel/reason")
+    Call<List<reason>> obtIdMotivo( );
 }

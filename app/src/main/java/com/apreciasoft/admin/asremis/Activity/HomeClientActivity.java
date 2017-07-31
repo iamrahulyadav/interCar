@@ -52,6 +52,7 @@ import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
 import com.apreciasoft.admin.asremis.Entity.OriginEntity;
 import com.apreciasoft.admin.asremis.Entity.TravelBodyEntity;
 import com.apreciasoft.admin.asremis.Entity.TravelEntity;
+import com.apreciasoft.admin.asremis.Entity.reason;
 import com.apreciasoft.admin.asremis.Entity.resp;
 import com.apreciasoft.admin.asremis.Entity.token;
 import com.apreciasoft.admin.asremis.Entity.tokenFull;
@@ -108,6 +109,13 @@ import retrofit2.Response;
 public class HomeClientActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         AdapterView.OnItemClickListener,View.OnClickListener ,AdapterView.OnItemSelectedListener {
+
+    ServicesTravel apiService = null;
+    List<reason> list = null;
+    String r_motivo_1;
+    String r_motivo_2;
+    String r_motivo_3;
+
 
     protected PowerManager.WakeLock wakelock;
     public static GlovalVar gloval;
@@ -171,8 +179,16 @@ public class HomeClientActivity extends AppCompatActivity
         final PowerManager pm=(PowerManager)getSystemService(Context.POWER_SERVICE);
         this.wakelock=pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "etiqueta");
         wakelock.acquire();
+//prueba por fa
+
+        //this.apiService = HttpConexion.getUri().create(ServicesTravel.class);
+
+        //Prueba de funcion para traer data de motivos
+        serviceAllTravel();
 
 
+
+        Log.d("TAG","Leandro esta es la prueba despues de la funcion");
 
         setContentView(R.layout.activity_client_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -353,23 +369,19 @@ public class HomeClientActivity extends AppCompatActivity
             case R.id.radioButton:
                 if (checked)
                     //
-                mot = 1;
+                mot = 0;
                     break;
             case R.id.radioButton2:
                 if (checked)
                     //
-                mot = 2;
+                mot = 1;
                     break;
             case R.id.radioButton3:
                 if (checked)
                     //
-                mot = 3;
+                mot = 2;
                     break;
-            case R.id.radioButton4:
-                if (checked)
-                    //
-                mot = 4;
-                    break;
+
 
         }
     }
@@ -824,6 +836,15 @@ public class HomeClientActivity extends AppCompatActivity
 
             CardView car = (CardView) loading.findViewById(R.id.car_notifications_from_client_cancelar);
             car.getBackground().setAlpha(200);
+
+            RadioButton radioButton = (RadioButton) loading.findViewById(R.id.radioButton);
+            radioButton.setText(r_motivo_1);
+
+            RadioButton radioButton1 = (RadioButton) loading.findViewById(R.id.radioButton2);
+            radioButton1.setText(r_motivo_2);
+
+            RadioButton radioButton2 = (RadioButton) loading.findViewById(R.id.radioButton3);
+            radioButton2.setText(r_motivo_3);
 
             Button btnCnacel = (Button) loading.findViewById(R.id.btn_motivo);
             btnCnacel.setOnClickListener(new View.OnClickListener() {
@@ -1448,4 +1469,89 @@ public class HomeClientActivity extends AppCompatActivity
         NotificationManager notifManager= (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         notifManager.cancelAll();
     }
+
+    //Leandro funcion para traer data de motivos
+
+    public void serviceAllTravel() {
+
+        this.apiService = HttpConexion.getUri().create(ServicesTravel.class);
+        Call<List<reason>> call = this.apiService.obtIdMotivo();
+
+        call.enqueue(new Callback<List<reason>>() {
+            @Override
+            public void onResponse(Call<List<reason>> call, Response<List<reason>> response) {
+
+                Log.d("Call request", call.request().toString());
+                Log.d("Call request header", call.request().headers().toString());
+                Log.d("Response raw header", response.headers().toString());
+                Log.d("Response raw", String.valueOf(response.raw().body()));
+                Log.d("Response code", String.valueOf(response.code()));
+
+                if (response.code() == 200) {
+
+                    list = (List<reason>) response.body();
+
+                    //Toast.makeText(getApplicationContext(), list.get(0).getReason().toString(), Toast.LENGTH_SHORT).show();
+
+                    r_motivo_1 = list.get(0).getReason().toString();
+                    r_motivo_2 = list.get(1).getReason().toString();
+                    r_motivo_3 = list.get(2).getReason().toString();
+
+
+                } else if (response.code() == 404) {
+
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(HomeClientActivity.this).create();
+                    alertDialog.setTitle("ERROR" + "(" + response.code() + ")");
+                    alertDialog.setMessage(response.errorBody().source().toString());
+
+
+                    Log.w("***", response.errorBody().source().toString());
+
+
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<reason>> call, Throwable t) {
+                AlertDialog alertDialog = new AlertDialog.Builder(HomeClientActivity.this).create();
+                alertDialog.setTitle("ERROR");
+                alertDialog.setMessage(t.getMessage());
+
+                Log.d("**", t.getMessage());
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+
+    }
+
+    private void refreshContent(){
+/*
+        rv = (RecyclerView) myView.findViewById(R.id.rv_recycler_view);
+        rv.setHasFixedSize(true);
+        adapter = new MyAdapter(list.);
+        rv.setAdapter(adapter);
+
+        LinearLayoutManager llm = new LinearLayoutManager(new HomeClientActivity());
+        rv.setLayoutManager(llm);
+*/
+    }
+
+
 }
