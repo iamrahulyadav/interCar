@@ -3,6 +3,9 @@ package com.apreciasoft.admin.asremis.Services;
 import com.apreciasoft.admin.asremis.Entity.DriverCurrentAcountEntity;
 import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
 import com.apreciasoft.admin.asremis.Entity.driver;
+import com.apreciasoft.admin.asremis.Entity.fleetType;
+import com.apreciasoft.admin.asremis.Entity.modelEntity;
+import com.apreciasoft.admin.asremis.Entity.responseFilterVehicle;
 
 import java.util.List;
 
@@ -39,5 +42,21 @@ public interface ServicesDriver {
     @Headers("Content-Type: application/json")
     @POST("driver/updateLiteMobil")
     Call<driver> updateLiteMobil(@Body driver dr);
+
+
+    @Headers("Content-Type: application/json")
+    @GET("Brand")
+    Call<List<modelEntity>> filterForm();
+
+    @Headers("Content-Type: application/json")
+    @GET("fleetType")
+    Call<List<fleetType>> filterFormfleetType();
+
+
+    @Headers("Content-Type: application/json")
+    @GET("model/byidBrand//{id}")
+    Call<responseFilterVehicle> getModelDetail(@Path("id") int id);
+
+
 
 }

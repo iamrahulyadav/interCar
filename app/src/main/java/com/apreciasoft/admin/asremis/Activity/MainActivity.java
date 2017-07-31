@@ -1,42 +1,46 @@
 package com.apreciasoft.admin.asremis.Activity;
 
         import android.Manifest;
-        import android.app.ProgressDialog;
-        import android.content.Context;
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.content.pm.PackageManager;
-        import android.net.Uri;
-        import android.os.PowerManager;
-        import android.support.v4.app.ActivityCompat;
-        import android.support.v4.content.ContextCompat;
-        import android.support.v7.app.AlertDialog;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.TextView;
-        import android.widget.Toast;
-        import com.apreciasoft.admin.asremis.Entity.login;
-        import com.apreciasoft.admin.asremis.Entity.user;
-        import com.apreciasoft.admin.asremis.Entity.userFull;
-        import com.apreciasoft.admin.asremis.Fracments.RegisterCliente;
-        import com.apreciasoft.admin.asremis.Http.HttpConexion;
-        import com.apreciasoft.admin.asremis.R;
-        import com.apreciasoft.admin.asremis.Services.ServicesLoguin;
-        import com.apreciasoft.admin.asremis.Util.GlovalVar;
-        import com.google.gson.Gson;
-        import com.google.gson.GsonBuilder;
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.List;
-        import java.util.Map;
-        import retrofit2.Call;
-        import retrofit2.Callback;
-        import retrofit2.Response;
-        import static com.apreciasoft.admin.asremis.Util.Utils.verificaConexion;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.PowerManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.apreciasoft.admin.asremis.Entity.login;
+import com.apreciasoft.admin.asremis.Entity.user;
+import com.apreciasoft.admin.asremis.Entity.userFull;
+import com.apreciasoft.admin.asremis.Fracments.RegisterForm;
+import com.apreciasoft.admin.asremis.Http.HttpConexion;
+import com.apreciasoft.admin.asremis.R;
+import com.apreciasoft.admin.asremis.Services.ServicesLoguin;
+import com.apreciasoft.admin.asremis.Util.GlovalVar;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.apreciasoft.admin.asremis.Util.Utils.verificaConexion;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(),
                     "Comprueba tu conexión a Internet ... ", Toast.LENGTH_SHORT)
                     .show();
-            this.finish();
+            //this.finish();
         }
 
 
@@ -517,7 +521,10 @@ public class MainActivity extends AppCompatActivity {
 
     public  void  openFromRegister()
     {
-        Intent intent = new Intent(getApplicationContext(), RegisterCliente.class);
+        /*Intent intent = new Intent(getApplicationContext(), RegisterCliente.class);
+        startActivityForResult(intent, REGISTER_ACTIVITY);*/
+
+        Intent intent = new Intent(getApplicationContext(), RegisterForm.class);
         startActivityForResult(intent, REGISTER_ACTIVITY);
     }
 }

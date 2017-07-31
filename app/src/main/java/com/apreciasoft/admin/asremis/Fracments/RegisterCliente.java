@@ -15,7 +15,7 @@ public class RegisterCliente extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.formre_gister_user);
+        setContentView(R.layout.form_steps_driver);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Registro de Usuario!");
     }
