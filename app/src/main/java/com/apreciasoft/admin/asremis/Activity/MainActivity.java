@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "NOTICIAS";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     protected PowerManager.WakeLock wakelock;
-    public static String version = "1.8.33";
+    public static String version = "1.8.34";
     public ProgressDialog loading;
     ServicesLoguin apiService = null;
     public  GlovalVar gloval = null;
@@ -364,13 +364,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (this.apiService == null) { this.apiService = HttpConexion.getUri().create(ServicesLoguin.class); }
 
-
-
         EditText mUser = (EditText) findViewById(R.id.user_txt);
         EditText mPass = (EditText) findViewById(R.id.pass_text);
 
         login auth = new login(new user(mUser.getText().toString(), mPass.getText().toString(),2));
-
 
         try {
 

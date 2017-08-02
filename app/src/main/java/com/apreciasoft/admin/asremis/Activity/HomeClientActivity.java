@@ -187,6 +187,8 @@ public class HomeClientActivity extends AppCompatActivity
         serviceAllTravel();
 
 
+        //Toast.makeText(getApplicationContext(), gloval.getGv_id_cliet() , Toast.LENGTH_SHORT).show();
+
 
         Log.d("TAG","Leandro esta es la prueba despues de la funcion");
 

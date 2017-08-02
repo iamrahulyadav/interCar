@@ -24,6 +24,10 @@ public interface ServicesDriver {
     Call<List<InfoTravelEntity>> getAllTravel(@Path("id") int id);
 
     @Headers("Content-Type: application/json")
+    @GET("travel/travelsByIdUser/{id}")
+    Call<List<InfoTravelEntity>> getAllTravelClient(@Path("id") int id);
+
+    @Headers("Content-Type: application/json")
     @GET("driver/inactive/{id}")
     Call<Boolean> inactive(@Path("id") int id);
 
@@ -34,7 +38,6 @@ public interface ServicesDriver {
     @Headers("Content-Type: application/json")
     @GET("invoice/listLiquidationDriver/{id}")
     Call<DriverCurrentAcountEntity> listLiquidationDriver(@Path("id") int id);
-
 
     @Headers("Content-Type: application/json")
     @POST("driver/updateLiteMobil")
