@@ -31,45 +31,16 @@
             >
 
             <RadioGroup
-                android:id="@+id/radio"
+                android:id="@+id/radio_group"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/button2"
-                android:layout_gravity="center_horizontal"
+                android:layout_height="match_parent"
+
+
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
-                android:checkedButton="@+id/radioButton">
+                android:layout_marginTop="50dp"
+                android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/radioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="61dp"
-                    android:checked="false"
-                    android:onClick="onRadioButtonClicked"
-                    android:text="Emergencia familiar" />
-
-                <RadioButton
-                    android:id="@+id/radioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/radioButton"
-                    android:layout_centerHorizontal="true"
-                    android:checked="false"
-                    android:onClick="onRadioButtonClicked"
-                    android:text="Me vienen a buscar" />
-
-                <RadioButton
-                    android:id="@+id/radioButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/radioButton2"
-                    android:layout_centerHorizontal="true"
-                    android:checked="false"
-                    android:onClick="onRadioButtonClicked"
-                    android:text="Se cancelo la reunion" />
 
             </RadioGroup>
 

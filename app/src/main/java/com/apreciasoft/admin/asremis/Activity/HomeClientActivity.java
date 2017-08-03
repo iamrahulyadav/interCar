@@ -41,6 +41,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -114,9 +115,8 @@ public class HomeClientActivity extends AppCompatActivity
 
     ServicesTravel apiService = null;
     List<reason> list = null;
-    String r_motivo_1;
-    String r_motivo_2;
-    String r_motivo_3;
+
+    Integer motivo = 0;
 
 
     protected PowerManager.WakeLock wakelock;
@@ -137,8 +137,6 @@ public class HomeClientActivity extends AppCompatActivity
     public static String destination = "";
     public static String latDestination = "";
     public static String lonDestination = "";
-
-    public boolean selectedDestination = false;
 
 
     public Spinner spinner;
@@ -183,7 +181,7 @@ public class HomeClientActivity extends AppCompatActivity
         final PowerManager pm=(PowerManager)getSystemService(Context.POWER_SERVICE);
         this.wakelock=pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "etiqueta");
         wakelock.acquire();
-
+//prueba por fa
 
         //this.apiService = HttpConexion.getUri().create(ServicesTravel.class);
 
@@ -254,11 +252,12 @@ public class HomeClientActivity extends AppCompatActivity
         floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
 
-
+        //Boton Reservar viaje - Leandro Pérez
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu first item clicked
 
+                //activeGifMotivos(true,"");
 
                 if(isReervation)
                 {
@@ -281,7 +280,7 @@ public class HomeClientActivity extends AppCompatActivity
             }
         });
 
-
+        //Boton Solicitar viaje - Leandro Pérez
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu second item clicked
@@ -324,28 +323,7 @@ public class HomeClientActivity extends AppCompatActivity
         /*GOOGLE PACE*/
         AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
-        autoCompView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View v, int position,
-                                    long id) {
-                // TODO Auto-generated method stub
-               selectGooglePlace(1,adapterView,v,position,id);
-            }
-        });
-
-        AutoCompleteTextView autoCompView2 = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
-        autoCompView2.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
-        autoCompView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View v, int position,
-                                    long id) {
-                // TODO Auto-generated method stub
-                selectGooglePlace(2,adapterView,v,position,id);
-            }
-
-        });
+        autoCompView.setOnItemClickListener(this);
 
 
         contetRequestTravelVisible(false);
@@ -383,7 +361,7 @@ public class HomeClientActivity extends AppCompatActivity
     }
 
 
-
+/*
     public void onRadioButtonClicked(View view) {
 
         // Is the button now checked?
@@ -412,7 +390,7 @@ public class HomeClientActivity extends AppCompatActivity
 
         }
     }
-
+*/
     public void  _setEditPlaceHolder()
     {
 
@@ -560,7 +538,12 @@ public class HomeClientActivity extends AppCompatActivity
         // attaching data adapter to spinner
         spinner2.setAdapter(dataAdapter);
 
-
+          /*MULTI AUTO COMPLETE*/
+        /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                 android.R.layout.simple_dropdown_item_1line, VEHYCLETYPE);
+         AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.txtCatVehicleReervation);
+         textView.setAdapter(adapter);
+         textView.setOnItemClickListener(this);*/
 
 
     }
@@ -626,79 +609,33 @@ public class HomeClientActivity extends AppCompatActivity
 
 
 
-    public void selectGooglePlace(int id2,AdapterView adapterView, View view, final int position, long id) {
+    public void onItemClick(AdapterView adapterView, View view, final int position, long id) {
 
-        Log.d("lopo", String.valueOf(view.getId()));
-
-
-        switch (id2) {
+        String str = (String) adapterView.getItemAtPosition(position);
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
 
 
+        Log.d("lopo",String.valueOf(adapterView.getAdapter().getClass().getName()));
+        Log.d("lopo",String.valueOf(resultListPlaceID.get(position).toString()));
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                placeDetail(resultListPlaceID.get(position).toString());
+            }
+        });
+
+        thread.start();
 
 
-            case 1:
-                String str = (String) adapterView.getItemAtPosition(position);
-                Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        if(adapterView.getAdapter().getClass().getName()
+                == "com.apreciasoft.admin.asremis.Util.GooglePlacesAutocompleteAdapter")// GOOGLE PLACE
+        {
+            this.location = String.valueOf(adapterView.getAdapter().getClass().getName());
 
-
-                Log.d("lopo",String.valueOf(adapterView.getAdapter().getClass().getName()));
-                Log.d("lopo",String.valueOf(resultListPlaceID.get(position).toString()));
-                Thread thread = new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        placeDetail(resultListPlaceID.get(position).toString());
-                    }
-                });
-
-                thread.start();
-
-
-                if(adapterView.getAdapter().getClass().getName()
-                        == "com.apreciasoft.admin.asremis.Util.GooglePlacesAutocompleteAdapter")// GOOGLE PLACE
-                {
-                    this.location = String.valueOf(adapterView.getAdapter().getClass().getName());
-
-                    //  Log.d("lopo",GooglePlacesAutocompleteAdapter.getItemByIndex(position).toString());
-                    // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
-                    // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
-                }
-                break;
-            case 2:
-
-
-                String str2 = (String) adapterView.getItemAtPosition(position);
-                Toast.makeText(this, str2, Toast.LENGTH_SHORT).show();
-
-
-                Log.d("lopo",String.valueOf(adapterView.getAdapter().getClass().getName()));
-                Log.d("lopo",String.valueOf(resultListPlaceID.get(position).toString()));
-                Thread thread2 = new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        placeDetail(resultListPlaceID.get(position).toString());
-                    }
-                });
-
-                thread2.start();
-
-
-                if(adapterView.getAdapter().getClass().getName()
-                        == "com.apreciasoft.admin.asremis.Util.GooglePlacesAutocompleteAdapter")// GOOGLE PLACE
-                {
-                    this.destination = String.valueOf(adapterView.getAdapter().getClass().getName());
-
-                    //  Log.d("lopo",GooglePlacesAutocompleteAdapter.getItemByIndex(position).toString());
-                    // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
-                    // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
-                }
-
-                selectedDestination = true;
-                break;
-
+            //  Log.d("lopo",GooglePlacesAutocompleteAdapter.getItemByIndex(position).toString());
+            // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
+            // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
         }
-
-
-
 
 
     }
@@ -756,14 +693,6 @@ public class HomeClientActivity extends AppCompatActivity
             this.lat = String.valueOf(latitude1);
             this.lon = String.valueOf(longitude1);
             this.location = jsonObj1.getJSONObject("result").getString("name");
-
-
-            if(selectedDestination)
-            {
-                this.latDestination = String.valueOf(latitude1);
-                this.lonDestination = String.valueOf(longitude1);
-                this.destination = jsonObj1.getJSONObject("result").getString("name");
-            }
 
             System.out.println("longitude et latitude "+ longitude1+latitude1);
             resultList1 = new ArrayList<Double>(result1.length());
@@ -912,7 +841,7 @@ public class HomeClientActivity extends AppCompatActivity
 
             CardView car = (CardView) loading.findViewById(R.id.car_notifications_from_client_cancelar);
             car.getBackground().setAlpha(200);
-
+/*
             RadioButton radioButton = (RadioButton) loading.findViewById(R.id.radioButton);
             radioButton.setText(r_motivo_1);
 
@@ -921,6 +850,33 @@ public class HomeClientActivity extends AppCompatActivity
 
             RadioButton radioButton2 = (RadioButton) loading.findViewById(R.id.radioButton3);
             radioButton2.setText(r_motivo_3);
+*/
+
+            RadioGroup rg = (RadioGroup) loading.findViewById(R.id.radio_group);
+
+            for(int i=0;i<list.size();i++){
+                RadioButton rb=new RadioButton(this); // dynamically creating RadioButton and adding to RadioGroup.
+                rb.setText(list.get(i).getReason().toString());
+                rg.addView(rb);
+            }
+
+            rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    int childCount = group.getChildCount();
+                    for (int x = 0; x < childCount; x++) {
+                        RadioButton btn = (RadioButton) group.getChildAt(x);
+                        if (btn.getId() == checkedId) {
+                            //Log.e("selected RadioButton->",btn.getText().toString());
+
+                            motivo = Integer.valueOf((checkedId));
+                            //Toast.makeText(getApplicationContext(), String.valueOf(checkedId) , Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                }
+            });
 
             Button btnCnacel = (Button) loading.findViewById(R.id.btn_motivo);
             btnCnacel.setOnClickListener(new View.OnClickListener() {
@@ -930,7 +886,13 @@ public class HomeClientActivity extends AppCompatActivity
                     try {
 
                         //activeGifMotivos(false,"");
-                        cancelTravelByCliet();
+                        if (motivo == 0){
+                            Toast.makeText(getApplicationContext(), "Debe seleccionar algun motivo" , Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            cancelTravelByCliet();
+                        }
+
                         //Toast.makeText(getApplicationContext(), mot.toString(), Toast.LENGTH_LONG).show();
 
                     } catch (Exception e) {
@@ -961,7 +923,8 @@ public class HomeClientActivity extends AppCompatActivity
 
         try {
 
-            Call<Boolean> call = this.daoTravel.cancelByClient(gloval.getGv_id_cliet(), mot);
+            motivo = motivo - 1;
+            Call<Boolean> call = this.daoTravel.cancelByClient(gloval.getGv_id_cliet(), motivo);
 
             Log.d("fatal", call.request().toString());
             Log.d("fatal", call.request().headers().toString());
@@ -1273,9 +1236,9 @@ public class HomeClientActivity extends AppCompatActivity
             );
 
 
-            GsonBuilder builder = new GsonBuilder();
+          /*  GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
-            System.out.println(gson.toJson(travel));
+            System.out.println(gson.toJson(travel));*/
 
             Call<resp> call = this.daoTravel.addTravel(travel);
 
@@ -1490,11 +1453,6 @@ public class HomeClientActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-    }
-
     public class DowloadImg extends AsyncTask<String, Void, Bitmap> {
 
 
@@ -1585,9 +1543,7 @@ public class HomeClientActivity extends AppCompatActivity
 
                     //Toast.makeText(getApplicationContext(), list.get(0).getReason().toString(), Toast.LENGTH_SHORT).show();
 
-                    r_motivo_1 = list.get(0).getReason().toString();
-                    r_motivo_2 = list.get(1).getReason().toString();
-                    r_motivo_3 = list.get(2).getReason().toString();
+
 
 
                 } else if (response.code() == 404) {
@@ -1662,6 +1618,17 @@ public class HomeClientActivity extends AppCompatActivity
         //btnFlotingVisible(false);
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content_frame_client,new ReservationsFrangment()).commit();
+    }
+
+    // radio buton list
+
+    private void showRadioButtonDialog() {
+
+        // custom dialog
+
+
+
+
     }
 
 }
