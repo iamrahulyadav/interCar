@@ -59,8 +59,10 @@ import com.apreciasoft.admin.asremis.Entity.tokenFull;
 import com.apreciasoft.admin.asremis.Fracments.HistoryTravelDriver;
 import com.apreciasoft.admin.asremis.Fracments.HomeClientFragment;
 import com.apreciasoft.admin.asremis.Fracments.ListTypeCarLayout;
+import com.apreciasoft.admin.asremis.Fracments.NotificationsFrangment;
 import com.apreciasoft.admin.asremis.Fracments.PaymentFormClient;
 import com.apreciasoft.admin.asremis.Fracments.ProfileClientFr;
+import com.apreciasoft.admin.asremis.Fracments.ReservationsFrangment;
 import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.R;
 import com.apreciasoft.admin.asremis.Services.ServicesLoguin;
@@ -188,6 +190,8 @@ public class HomeClientActivity extends AppCompatActivity
         //Prueba de funcion para traer data de motivos
         serviceAllTravel();
 
+
+        //Toast.makeText(getApplicationContext(), gloval.getGv_id_cliet() , Toast.LENGTH_SHORT).show();
 
 
         Log.d("TAG","Leandro esta es la prueba despues de la funcion");
@@ -377,6 +381,7 @@ public class HomeClientActivity extends AppCompatActivity
 
 
     }
+
 
 
     public void onRadioButtonClicked(View view) {
@@ -1126,6 +1131,8 @@ public class HomeClientActivity extends AppCompatActivity
 
         }else if (id == R.id.nav_manage) {
 
+            fm.beginTransaction().replace(R.id.content_frame_client,new NotificationsFrangment()).commit();
+
         } else if (id == R.id.nav_reservations) {
 
         } else if (id == R.id.nav_send) {
@@ -1397,6 +1404,15 @@ public class HomeClientActivity extends AppCompatActivity
             }
 
             return true;
+        }else if (id == R.id.action_notifications) {
+
+            fn_gotonotification();
+            return true;
+        }
+        else if (id == R.id.action_reervations) {
+
+            fn_gotoreservation();
+            return true;
         }
         else if (id == R.id.action_profile) {
             fn_gotoprofile();
@@ -1629,5 +1645,23 @@ public class HomeClientActivity extends AppCompatActivity
 */
     }
 
+    //Notificacioens
+
+
+    public void fn_gotonotification()
+    {
+
+        //btnFlotingVisible(false);
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.content_frame_client,new NotificationsFrangment()).commit();
+    }
+
+    public void fn_gotoreservation()
+    {
+
+        //btnFlotingVisible(false);
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.content_frame_client,new ReservationsFrangment()).commit();
+    }
 
 }

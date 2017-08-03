@@ -12,12 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
-import com.apreciasoft.admin.asremis.Util.GlovalVar;
-import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.Adapter.MyAdapter;
+import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
+import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.R;
 import com.apreciasoft.admin.asremis.Services.ServicesDriver;
+import com.apreciasoft.admin.asremis.Util.GlovalVar;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -47,11 +48,11 @@ public class HistoryTravelDriver extends Fragment {
         this.apiService = HttpConexion.getUri().create(ServicesDriver.class);
 
 
-        if (ver == 1){
+        //aqui se prueba si el servicio esta trayendo data, despues de comprobar crear la validacion.
             serviceAllTravelClient();
-        }else{
+
             serviceAllTravel();
-        }
+
 
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.history_travel_driver, container, false);
@@ -145,7 +146,7 @@ public class HistoryTravelDriver extends Fragment {
     public void serviceAllTravelClient() {
 
         GlovalVar gloval = ((GlovalVar)getActivity().getApplicationContext());
-        Call<List<InfoTravelEntity>> call = this.apiService.getAllTravel(gloval.getGv_id_cliet());
+        Call<List<InfoTravelEntity>> call = this.apiService.getAllTravelClient(gloval.getGv_user_id());
 
         // Log.d("***",call.request().body().toString());
 
@@ -164,10 +165,13 @@ public class HistoryTravelDriver extends Fragment {
                     //the response-body is already parseable to your ResponseBody object
                     list = (List<InfoTravelEntity>) response.body();
 
+                    //Toast.makeText(getActivity(), "trae datos", Toast.LENGTH_SHORT).show();
                     refreshContent();
 
                     //
                 } else if (response.code() == 404) {
+
+                    //Toast.makeText(getActivity(), "No tiene registros", Toast.LENGTH_SHORT).show();
 
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();

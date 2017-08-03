@@ -368,13 +368,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (this.apiService == null) { this.apiService = HttpConexion.getUri().create(ServicesLoguin.class); }
 
-
-
         EditText mUser = (EditText) findViewById(R.id.user_txt);
         EditText mPass = (EditText) findViewById(R.id.pass_text);
 
         login auth = new login(new user(mUser.getText().toString(), mPass.getText().toString(),2));
-
 
         try {
 
