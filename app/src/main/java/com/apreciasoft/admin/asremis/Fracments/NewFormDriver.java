@@ -532,7 +532,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
         if(this.apiDriver == null){this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class);}
 
         try {
-            loading = ProgressDialog.show(NewFormDriver.this, "Registrando Chofer", "Espere unos Segundos...", true, false);
+            loading = ProgressDialog.show(this, "Registrando Chofer", "Espere unos Segundos...", true, false);
 
 
             dataAddPlusDriverEntity data =  new dataAddPlusDriverEntity(
@@ -578,6 +578,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
                         AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
                         alertDialog.setTitle("Correo ya Registrado");
+                        alertDialog.setMessage(response.errorBody().source().toString());
                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -592,6 +593,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
                     AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
                     alertDialog.setTitle("Numero De Chofer Ya Registardo");
+                    alertDialog.setMessage(response.errorBody().source().toString());
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
