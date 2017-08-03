@@ -447,7 +447,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 fab.setImageDrawable(getResources().getDrawable(R.drawable.cast_ic_expanded_controller_pause));
                             }
                         }else{
-                            str = "Servicio Inactivado! 'No rebira Viajes'";
+                            str = "Servicio Inactivado! 'No Recibira Viajes'";
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 fab.setImageDrawable(getResources().getDrawable(R.drawable.cast_ic_expanded_controller_play, HomeActivity.this.getApplication().getBaseContext().getTheme()));
@@ -539,9 +539,72 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         try
         {
-            FragmentManager fm = getFragmentManager();
-            dialogTravel = new TravelDialog();
-            dialogTravel.show(fm, "Sample Fragment");
+
+
+            Log.d("--->", String.valueOf(currentTravel.getIdSatatusTravel()));
+
+            if(currentTravel.getIdSatatusTravel() == 0)
+            {
+
+                Toast.makeText(getApplicationContext(), "VIAJE Cancelado!", Toast.LENGTH_LONG).show();
+                btPreFinishVisible(false);
+                btnFlotingVisible(true);
+
+                viewAlert = false;
+                currentTravel = null;
+                HomeFragment.MarkerPoints = null;
+                gloval.setGv_travel_current(null);
+                setInfoTravel();
+
+                tiempoTxt = 0;
+                textTiempo = (TextView) findViewById(R.id.textTiempo);
+                textTiempo.setVisibility(View.INVISIBLE);
+
+                _activeTimer();
+            }
+            else  if(currentTravel.getIdSatatusTravel() == 8)
+            {
+                Toast.makeText(getApplicationContext(), "VIAJE Cancelado por Cliente!", Toast.LENGTH_LONG).show();
+                btPreFinishVisible(false);
+                btnFlotingVisible(true);
+
+                viewAlert = false;
+                currentTravel = null;
+                HomeFragment.MarkerPoints = null;
+                gloval.setGv_travel_current(null);
+                setInfoTravel();
+
+                tiempoTxt = 0;
+                textTiempo = (TextView) findViewById(R.id.textTiempo);
+                textTiempo.setVisibility(View.INVISIBLE);
+
+                _activeTimer();
+            }else  if(currentTravel.getIdSatatusTravel() == 6)
+            {
+                Toast.makeText(getApplicationContext(), "VIAJE Finalizado desde la Web!", Toast.LENGTH_LONG).show();
+
+                btPreFinishVisible(false);
+                btnFlotingVisible(true);
+                viewAlert = false;
+
+                currentTravel = null;
+                HomeFragment.MarkerPoints = null;
+                gloval.setGv_travel_current(null);
+                setInfoTravel();
+
+                tiempoTxt = 0;
+                textTiempo = (TextView) findViewById(R.id.textTiempo);
+                textTiempo.setVisibility(View.INVISIBLE);
+
+                _activeTimer();
+            }else
+            {
+               // viewAlert = false;
+                FragmentManager fm = getFragmentManager();
+                dialogTravel = new TravelDialog();
+                dialogTravel.show(fm, "Sample Fragment");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -562,7 +625,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if(ws != null) {
             ws.coseWebSocket();
         }
-        timer.cancel();
+
+        if(timer != null)
+        {
+            timer.cancel();
+        }
+
 
 
         finish();
@@ -762,7 +830,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         public void onReceive(Context context, Intent intent) {
            //ojoooo tolti modalll Toast.makeText(getApplicationContext(),  intent.getExtras().getBundle("message"), Toast.LENGTH_SHORT).show();
 
+
+
             currentTravel = gloval.getGv_travel_current();
+            Log.d("BroadcastReceiver", String.valueOf(currentTravel));
             setNotification(currentTravel);
         }
     };
@@ -922,7 +993,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         pay();
         final LinearLayout lg = (LinearLayout) findViewById(R.id.payment);
         lg.setVisibility(View.VISIBLE);
-        timer.cancel();
+
+
+        if(timer != null) {
+            timer.cancel();
+        }
 
 
     }
@@ -1229,20 +1304,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void _activeTimer()
     {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setLocationVehicheDriver();
 
-                    }
-                });
+        if(timer != null) {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setLocationVehicheDriver();
 
-            }
-        }, 0, 60000);
+                        }
+                    });
+
+                }
+            }, 0, 60000);
+        }
     }
 
     public  void setLocationVehicheDriver()
@@ -1402,16 +1480,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void setNotification(final InfoTravelEntity travel)
     {
-
+            Log.d("viewAlert", String.valueOf(viewAlert));
 
         if(viewAlert == false)
         {
             viewAlert = true;
             currentTravel =  travel;
             gloval.setGv_travel_current(currentTravel);
-            showDialogTravel();// MOSTRAMO EL FRAGMENT DIALOG
 
-            Log.d("currentTravel", String.valueOf(currentTravel));
+            showDialogTravel();// MOSTRAMO EL FRAGMENT DIALOG
 
         }
 

@@ -1,11 +1,16 @@
 package com.apreciasoft.admin.asremis.Services;
 
+import com.apreciasoft.admin.asremis.Entity.ClientEntityAdd;
 import com.apreciasoft.admin.asremis.Entity.DriverCurrentAcountEntity;
 import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
+import com.apreciasoft.admin.asremis.Entity.RequetClient;
+import com.apreciasoft.admin.asremis.Entity.dataAddPlusDriverEntity;
 import com.apreciasoft.admin.asremis.Entity.driver;
 import com.apreciasoft.admin.asremis.Entity.fleetType;
 import com.apreciasoft.admin.asremis.Entity.modelEntity;
+import com.apreciasoft.admin.asremis.Entity.resp;
 import com.apreciasoft.admin.asremis.Entity.responseFilterVehicle;
+import com.apreciasoft.admin.asremis.Entity.token;
 
 import java.util.List;
 
@@ -57,6 +62,12 @@ public interface ServicesDriver {
     @GET("model/byidBrand//{id}")
     Call<responseFilterVehicle> getModelDetail(@Path("id") int id);
 
+    @Headers("Content-Type: application/json")
+    @POST("driver/plusLite")
+    Call<resp> addPluDriver(@Body dataAddPlusDriverEntity data);
 
+    @Headers("Content-Type: application/json")
+    @POST("client")
+    Call<resp> addClient(@Body RequetClient data);
 
 }

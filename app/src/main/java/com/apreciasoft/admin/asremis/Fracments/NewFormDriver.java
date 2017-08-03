@@ -1,11 +1,13 @@
 package com.apreciasoft.admin.asremis.Fracments;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,18 +18,22 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+import com.apreciasoft.admin.asremis.Entity.dataAddPlusDriverEntity;
+import com.apreciasoft.admin.asremis.Entity.driverAdd;
+import com.apreciasoft.admin.asremis.Entity.fleet;
 import com.apreciasoft.admin.asremis.Entity.fleetType;
 import com.apreciasoft.admin.asremis.Entity.modelDetailEntity;
 import com.apreciasoft.admin.asremis.Entity.modelEntity;
+import com.apreciasoft.admin.asremis.Entity.resp;
 import com.apreciasoft.admin.asremis.Entity.responseFilterVehicle;
 import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.R;
 import com.apreciasoft.admin.asremis.Services.ServicesDriver;
 import com.apreciasoft.admin.asremis.Util.GlovalVar;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
-
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 import retrofit2.Call;
@@ -74,6 +80,9 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
     private static String[] VEHYCLETYPE = new String[0];
 
 
+    public ProgressDialog loading;
+
+
 
 
     @Override
@@ -83,8 +92,6 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Nuevo Chofer!");
 
-        HttpConexion.setBase("developer");
-        this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class);
 
 
 
@@ -99,6 +106,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
         VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, this)
                 .primaryColor(colorPrimary)
                 .primaryDarkColor(colorPrimaryDark)
+                .hideKeyboard(false)
                 .displayBottomNavigation(true) // It is true by default, so in this case this line is not necessary
                 .init();
 
@@ -120,7 +128,9 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
     public void serviceCallFilter() {
 
 
-        GlovalVar gloval = ((GlovalVar) getApplicationContext());
+
+
+        if(this.apiDriver == null){this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class);}
         Call<List<modelEntity>> call = this.apiDriver.filterForm();
 
         // Log.d("***",call.request().body().toString());
@@ -292,7 +302,6 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
     public void serviceCallFilterVehicleType() {
 
 
-        GlovalVar gloval = ((GlovalVar) getApplicationContext());
         Call<List<fleetType>> call = this.apiDriver.filterFormfleetType();
 
         // Log.d("***",call.request().body().toString());
@@ -370,51 +379,51 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
         List<String> list = new ArrayList<String>();
 
-        VEHYCLEMARCK = new String[listModel.size()];
+        if(listModel != null) {
+
+            VEHYCLEMARCK = new String[listModel.size()];
 
 
-        for (int i =0 ;i< listModel.size();i++)
-        {
-            list.add("Tipo De Vehiculo: "+listModel.get(i).getNameVehicleBrand());
+            for (int i = 0; i < listModel.size(); i++) {
+                list.add("Tipo De Vehiculo: " + listModel.get(i).getNameVehicleBrand());
+            }
+            list.toArray(VEHYCLEMARCK);
+
+            // Spinner click listener
+            spinner1.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+            // Drp down layout style - list view with radio button
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // attaching data adapter to spinner
+            spinner1.setAdapter(dataAdapter);
+            //************************************//
+
+
+            //*************************************//
+            //***********    CATEGORIAS    ************//
+
+            List<String> list2 = new ArrayList<String>();
+
+            VEHYCLETYPE = new String[listFlet.size()];
+
+
+            for (int i = 0; i < listFlet.size(); i++) {
+                list2.add("Categoria De Vehiculo: " + listFlet.get(i).getVehiclenType());
+            }
+            list2.toArray(VEHYCLETYPE);
+
+            // Spinner click listener
+            spinner3.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
+            // Drp down layout style - list view with radio button
+            dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // attaching data adapter to spinner
+            spinner3.setAdapter(dataAdapter1);
+            //************************************//
+
         }
-        list.toArray(VEHYCLEMARCK);
-
-        // Spinner click listener
-        spinner1.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-        // Drp down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        spinner1.setAdapter(dataAdapter);
-        //************************************//
-
-
-        //*************************************//
-        //***********    CATEGORIAS    ************//
-
-        List<String> list2 = new ArrayList<String>();
-
-        VEHYCLETYPE = new String[listFlet.size()];
-
-
-        for (int i =0 ;i< listFlet.size();i++)
-        {
-            list2.add("Categoria De Vehiculo: "+listFlet.get(i).getVehiclenType());
-        }
-        list2.toArray(VEHYCLETYPE);
-
-        // Spinner click listener
-        spinner3.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
-        // Drp down layout style - list view with radio button
-        dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        spinner3.setAdapter(dataAdapter1);
-        //************************************//
-
-
 
     }
     public void _setSpinersModel() {
@@ -425,23 +434,26 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
         List<String> list2 = new ArrayList<String>();
 
-        VEHYCLEMODEL = new String[listModelDetail.size()];
+        if(listModelDetail!= null) {
+
+            VEHYCLEMODEL = new String[listModelDetail.size()];
 
 
-        for (int i = 0; i < listModelDetail.size(); i++) {
-            list2.add("Modelos: " + listModelDetail.get(i).getNameVehicleModel());
+            for (int i = 0; i < listModelDetail.size(); i++) {
+                list2.add("Modelos: " + listModelDetail.get(i).getNameVehicleModel());
+            }
+            list2.toArray(VEHYCLEMODEL);
+
+            // Spinner click listener
+            spinner2.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
+            // Drp down layout style - list view with radio button
+            dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // attaching data adapter to spinner
+            spinner2.setAdapter(dataAdapter1);
+            //************************************//
         }
-        list2.toArray(VEHYCLEMODEL);
-
-        // Spinner click listener
-        spinner2.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
-        // Drp down layout style - list view with radio button
-        dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        spinner2.setAdapter(dataAdapter1);
-        //************************************//
 
     }
 
@@ -499,7 +511,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
             case 6:
                 // As soon as the phone number step is open, we mark it as completed in order to show the "Continue"
                 // button (We do it because this field is optional, so the user can skip it without giving any info)
-                verticalStepperForm.setStepAsCompleted(2);
+                verticalStepperForm.setStepAsCompleted(1);
                 // In this case, the instruction above is equivalent to:
                 // verticalStepperForm.setActiveStepAsCompleted();
                 break;
@@ -508,6 +520,114 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
     @Override
     public void sendData() {
+
+        safeDriver();
+
+    }
+
+
+    public  void  safeDriver()
+    {
+
+        if(this.apiDriver == null){this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class);}
+
+        try {
+            loading = ProgressDialog.show(NewFormDriver.this, "Registrando Chofer", "Espere unos Segundos...", true, false);
+
+
+            dataAddPlusDriverEntity data =  new dataAddPlusDriverEntity(
+                    new driverAdd(
+                            name.getText().toString()
+                            ,nrDriver.getText().toString()
+                            ,mail.getText().toString()
+                            ,pass.getText().toString()
+                            ,phone.getText().toString(),1),
+                    new fleet(ID_MODEL,ID_MODEL_DETAIL,ID_CATEGORY,txtDomain.getText().toString())
+            );
+
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+            System.out.println(gson.toJson(data));
+
+            Call<resp> call = this.apiDriver.addPluDriver(data);
+            Log.d("Call request", call.request().toString());
+            Log.d("Call request header", call.request().headers().toString());
+
+            call.enqueue(new Callback<resp>() {
+                @Override
+                public void onResponse(Call<resp> call, Response<resp> response) {
+
+                    Log.d("Response request", call.request().toString());
+                    Log.d("Response request header", call.request().headers().toString());
+                    Log.d("Response raw header", response.headers().toString());
+                    Log.d("Response raw", String.valueOf(response.raw().body()));
+                    Log.d("Response code", String.valueOf(response.code()));
+
+
+                    if (response.code() == 200) {
+
+
+                        Toast.makeText(getBaseContext(),
+                                "Chofer Registrado!", Toast.LENGTH_SHORT)
+                                .show();
+
+                        finish();
+
+                    }  else if (response.code() == 201) {
+
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
+                        alertDialog.setTitle("Correo ya Registrado");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                        loading.dismiss();
+
+                   } else if(response.code()==203) {
+
+
+                    AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
+                    alertDialog.setTitle("Numero De Chofer Ya Registardo");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                        loading.dismiss();
+
+
+                    }
+
+            }
+
+
+
+                public void onFailure(Call<resp> call, Throwable t) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
+                    alertDialog.setTitle("ERROR");
+                    alertDialog.setMessage(t.getMessage());
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    loading.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                    loading.dismiss();
+                }
+            });
+
+        } finally {
+            this.apiDriver = null;
+
+        }
 
     }
 
@@ -554,6 +674,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
         // Here we generate programmatically the view that will be added by the system to the step content layout
         pass = new EditText(this);
         pass.setSingleLine(true);
+        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         return pass;
     }
 

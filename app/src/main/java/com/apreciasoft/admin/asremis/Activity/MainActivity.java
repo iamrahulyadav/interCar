@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "NOTICIAS";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     protected PowerManager.WakeLock wakelock;
-    public static String version = "1.8.33";
+    public static String version = "1.8.34";
     public ProgressDialog loading;
     ServicesLoguin apiService = null;
     public  GlovalVar gloval = null;
@@ -397,50 +397,63 @@ public class MainActivity extends AppCompatActivity {
 
                         userFull userLogued = response.body();
 
-
-                        gloval.setGv_user_id(userLogued.response.getUser().getIdUser());
-                        gloval.setGv_user_mail(userLogued.response.getUser().getEmailUser());
-
-                        gloval.setGv_user_name(userLogued.response.getUser().getFirstNameUser()+" "
-                                +userLogued.response.getUser().getLastNameUser());
-
-                        gloval.setGv_id_cliet(userLogued.response.getUser().getIdClient());
-                        gloval.setGv_id_driver(userLogued.response.getUser().getIdDriver());
-                        gloval.setGv_id_profile(userLogued.response.getUser().getIdProfileUser());
-                        gloval.setGv_id_vehichle(userLogued.response.getUser().getIdVeichleAsigned());
-                        gloval.setGv_travel_current(userLogued.response.getCurrentTravel());
-                        gloval.setGv_param(userLogued.response.getParam());
-                        gloval.setGv_logeed(true);
-                        gloval.setGv_driverinfo(userLogued.response.getDriver());
-                        gloval.setGv_clientinfo(userLogued.response.getClient());
-                        gloval.setGv_listvehicleType(userLogued.response.getListVehicleType());
+                        if(!userLogued.response.isDriverInactive()) {
 
 
-                        HttpConexion.setBase(userLogued.response.getInstance());
-                        // SETEAMOS LA INTANCIA PARA AUTENTICARNOS
+                            gloval.setGv_user_id(userLogued.response.getUser().getIdUser());
+                            gloval.setGv_user_mail(userLogued.response.getUser().getEmailUser());
 
-                        loading.dismiss();
+                            gloval.setGv_user_name(userLogued.response.getUser().getFirstNameUser() + " "
+                                    + userLogued.response.getUser().getLastNameUser());
 
-                        if(userLogued.response.getUser().getIdProfileUser() == 2
-                                || userLogued.response.getUser().getIdProfileUser() == 5 )
-                        {
-                            // LAMAMOS A EL SEGUNDO ACTIVITY DE HOME CIENT//
-                            Intent homeClient = new Intent(MainActivity.this, HomeClientActivity.class);
-                            startActivity(homeClient);
-                        }else
-                        {
+                            gloval.setGv_id_cliet(userLogued.response.getUser().getIdClient());
+                            gloval.setGv_id_driver(userLogued.response.getUser().getIdDriver());
+                            gloval.setGv_id_profile(userLogued.response.getUser().getIdProfileUser());
+                            gloval.setGv_id_vehichle(userLogued.response.getUser().getIdVeichleAsigned());
+                            gloval.setGv_travel_current(userLogued.response.getCurrentTravel());
+                            gloval.setGv_param(userLogued.response.getParam());
+                            gloval.setGv_logeed(true);
+                            gloval.setGv_driverinfo(userLogued.response.getDriver());
+                            gloval.setGv_clientinfo(userLogued.response.getClient());
+                            gloval.setGv_listvehicleType(userLogued.response.getListVehicleType());
 
-                            if(userLogued.response.getCurrentTravel() != null)
-                            {
-                                gloval.setGv_travel_current(userLogued.response.getCurrentTravel());
+
+                            HttpConexion.setBase(userLogued.response.getInstance());
+                            // SETEAMOS LA INTANCIA PARA AUTENTICARNOS
+
+                            loading.dismiss();
+
+                            if (userLogued.response.getUser().getIdProfileUser() == 2
+                                    || userLogued.response.getUser().getIdProfileUser() == 5) {
+                                // LAMAMOS A EL SEGUNDO ACTIVITY DE HOME CIENT//
+                                Intent homeClient = new Intent(MainActivity.this, HomeClientActivity.class);
+                                startActivity(homeClient);
+                            } else {
+
+                                if (userLogued.response.getCurrentTravel() != null) {
+                                    gloval.setGv_travel_current(userLogued.response.getCurrentTravel());
+                                }
+                                // LAMAMOS A EL SEGUNDO ACTIVITY//
+                                Intent home = new Intent(MainActivity.this, HomeActivity.class);
+                                startActivity(home);
                             }
-                            // LAMAMOS A EL SEGUNDO ACTIVITY//
-                            Intent home = new Intent(MainActivity.this, HomeActivity.class);
-                            startActivity(home);
+
+
                         }
+                        else{
+                            loading.dismiss();
+                            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                            alertDialog.setTitle("Informacion");
+                            alertDialog.setMessage("Usuario/Inactivo");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
 
-
-
+                        }
 
 
 
@@ -457,7 +470,21 @@ public class MainActivity extends AppCompatActivity {
                                 });
                         alertDialog.show();
 
-                    }
+
+                }  else if (response.code() == 212)  {
+                    loading.dismiss();
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                    alertDialog.setTitle("Informacion");
+                    alertDialog.setMessage("Usuario Inactivado");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+
+                }
                     else if (response.code() == 400)  {
 
                         loading.dismiss();

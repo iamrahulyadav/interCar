@@ -55,7 +55,7 @@ public class TravelDialog extends DialogFragment {
      //   final TextView txt_title6 = (TextView) rootView.findViewById(R.id.txt_title6);//is multi destination
 
        // final TextView txt_mutiOrignes = (TextView) rootView.findViewById(R.id.txt_mutiOrignes);//is multi origen
-      //  final TextView txt_multiDestinos = (TextView) rootView.findViewById(R.id.txt_multiDestinos);//is multi destination
+        final TextView txt_multiDestinos = (TextView) rootView.findViewById(R.id.txt_multiDestinos);//is multi destination
 
 
 
@@ -86,7 +86,7 @@ public class TravelDialog extends DialogFragment {
             txt_destinations.setText(this.getDestinations());
         }*/
 
-      //  txt_multiDestinos.setText(currentTravel.getMultiDestination());
+       txt_multiDestinos.setText(currentTravel.getObservationFromDriver());
       //  txt_multiDestinos.setMovementMethod(new ScrollingMovementMethod());
 
         final Button btnRefut = (Button) rootView.findViewById(R.id.btn_refut);

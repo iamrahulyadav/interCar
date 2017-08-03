@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.R;
 
 /**
@@ -27,6 +28,8 @@ public class RegisterForm extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Registro de Usuario!");
 
+        HttpConexion.setBase("as_remis_web");
+
 
         final ImageButton btn_new_driver = (ImageButton) findViewById(R.id.btn_new_driver);
         btn_new_driver.setOnClickListener(new View.OnClickListener() {
@@ -41,8 +44,8 @@ public class RegisterForm extends AppCompatActivity {
         btn_new_client.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-              /*  Intent intent = new Intent(getApplicationContext(), RegisterForm.class);
-                startActivityForResult(intent, REGISTER_CLIENT_ACTIVITY);*/
+               Intent intent = new Intent(getApplicationContext(), NewFormClient.class);
+                startActivityForResult(intent, REGISTER_CLIENT_ACTIVITY);
             }
         });
     }
@@ -51,7 +54,9 @@ public class RegisterForm extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                HttpConexion.setBase("as_nube");
                 this.finish();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -62,6 +67,8 @@ public class RegisterForm extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        HttpConexion.setBase("as_nube");
         finish();
+
     }
 }
