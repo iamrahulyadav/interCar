@@ -2,6 +2,7 @@ package com.apreciasoft.admin.asremis.Services;
 
 import com.apreciasoft.admin.asremis.Entity.client;
 import com.apreciasoft.admin.asremis.Entity.login;
+import com.apreciasoft.admin.asremis.Entity.reporte;
 import com.apreciasoft.admin.asremis.Entity.token;
 import com.apreciasoft.admin.asremis.Entity.userFull;
 
@@ -21,6 +22,10 @@ public interface ServicesLoguin {
     @Headers("Content-Type: application/json")
     @POST("auth")
     Call<userFull> getUser(@Body login user);
+
+    @Headers("Content-Type: application/json")
+    @POST("support/add")
+    Call<reporte> reporteFalla(@Body reporte falla);
 
     @Headers("Content-Type: application/json")
     @POST("auth/token")

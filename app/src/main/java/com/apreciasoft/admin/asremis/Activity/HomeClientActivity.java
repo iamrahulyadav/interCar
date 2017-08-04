@@ -54,6 +54,7 @@ import com.apreciasoft.admin.asremis.Entity.OriginEntity;
 import com.apreciasoft.admin.asremis.Entity.TravelBodyEntity;
 import com.apreciasoft.admin.asremis.Entity.TravelEntity;
 import com.apreciasoft.admin.asremis.Entity.reason;
+import com.apreciasoft.admin.asremis.Entity.reporte;
 import com.apreciasoft.admin.asremis.Entity.resp;
 import com.apreciasoft.admin.asremis.Entity.token;
 import com.apreciasoft.admin.asremis.Entity.tokenFull;
@@ -841,16 +842,6 @@ public class HomeClientActivity extends AppCompatActivity
 
             CardView car = (CardView) loading.findViewById(R.id.car_notifications_from_client_cancelar);
             car.getBackground().setAlpha(200);
-/*
-            RadioButton radioButton = (RadioButton) loading.findViewById(R.id.radioButton);
-            radioButton.setText(r_motivo_1);
-
-            RadioButton radioButton1 = (RadioButton) loading.findViewById(R.id.radioButton2);
-            radioButton1.setText(r_motivo_2);
-
-            RadioButton radioButton2 = (RadioButton) loading.findViewById(R.id.radioButton3);
-            radioButton2.setText(r_motivo_3);
-*/
 
             RadioGroup rg = (RadioGroup) loading.findViewById(R.id.radio_group);
 
@@ -914,6 +905,121 @@ public class HomeClientActivity extends AppCompatActivity
             }
 
         }
+    }
+
+    public void activeGifMotivosFalla(boolean active,String sms)
+    {
+
+        if(active)
+        {
+
+            loading = new ProgressDialog(this);
+            loading.setMessage(sms);
+            loading.show();
+            loading.setContentView(R.layout.custom_modal_reporte);
+            loading.setCancelable(false);
+
+            CardView car = (CardView) loading.findViewById(R.id.car_notifications_from_client_cancelar);
+            car.getBackground().setAlpha(200);
+
+            final EditText razon = (EditText) loading.findViewById(R.id.et_motivo);
+            final EditText descripcion = (EditText) loading.findViewById(R.id.et_descripcion);
+            final EditText email = (EditText) loading.findViewById(R.id.et_email);
+
+            Button btnCnacel = (Button) loading.findViewById(R.id.btn_motivo);
+            btnCnacel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    try {
+
+                            ReportarByCliet();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            });
+
+        }
+        else
+        {
+
+            if(loading != null)
+            {
+                loading.dismiss();
+            }
+
+        }
+    }
+
+    //Esta es la funcion para enviar el reporte de falla MUESTRAME EL ERRO
+    public void ReportarByCliet()
+    {
+
+        if (this.daoLoguin == null) { this.daoLoguin = HttpConexion.getUri().create(ServicesLoguin.class); }
+
+        try {
+
+            int id = 0;
+            String nombre = "Leandro";
+            String correo = "Leandro";
+            String correo2 = "Leandro";
+            String razon = "Leandro";
+            String company = "Leandro";
+            String mensaje = "Leandro";
+            int istravel = 1;
+
+            reporte datos = new reporte(id,nombre,correo,correo2,razon,company,mensaje,istravel);
+
+            /*esto imprime el json quue se va a amandar prueba*/
+             GsonBuilder builder = new GsonBuilder();
+             Gson gson = builder.create();
+             System.out.println(gson.toJson(datos));
+
+            Call<reporte> call = this.daoLoguin.reporteFalla(datos);
+
+            Log.d("fatal", call.request().toString());
+            Log.d("fatal", call.request().headers().toString());
+
+            call.enqueue(new Callback<reporte>() {
+                @Override
+                public void onResponse(Call<reporte> call, Response<reporte> response) {
+
+                        reporte rs = response.body();
+
+                        Toast.makeText(getApplicationContext(), "Datos Enviados", Toast.LENGTH_SHORT).show();
+
+                        loading.dismiss();
+
+                }
+
+                public void onFailure(Call<reporte> call, Throwable t) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(HomeClientActivity.this).create();
+                    alertDialog.setTitle("ERROR");
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    alertDialog.setMessage(t.getMessage());
+
+
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+
+
+            });
+
+        } finally {
+            this.daoTravel = null;
+        }
+
     }
 
     public void cancelTravelByCliet()
@@ -1099,6 +1205,8 @@ public class HomeClientActivity extends AppCompatActivity
         } else if (id == R.id.nav_reservations) {
 
         } else if (id == R.id.nav_send) {
+
+            activeGifMotivosFalla(true,"");
 
         }
 
