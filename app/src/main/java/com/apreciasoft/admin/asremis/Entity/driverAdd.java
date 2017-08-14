@@ -34,6 +34,18 @@ public class driverAdd {
     @SerializedName("isVehicleProvider")
     public int isVehicleProvider;
 
+    @Expose
+    @SerializedName("isRequestMobil")
+    public int isRequestMobil;
+
+
+    public int getIsRequestMobil() {
+        return isRequestMobil;
+    }
+
+    public void setIsRequestMobil(int isRequestMobil) {
+        this.isRequestMobil = isRequestMobil;
+    }
 
     public int getIsVehicleProvider() {
         return isVehicleProvider;
@@ -43,13 +55,14 @@ public class driverAdd {
         this.isVehicleProvider = isVehicleProvider;
     }
 
-    public driverAdd(String fisrtNameDriver, String nrDriver, String emailDriver, String passDriver, String phoneNumberDriver,int isVehicleProvider) {
+    public driverAdd(String fisrtNameDriver, String nrDriver, String emailDriver, String passDriver, String phoneNumberDriver,int isVehicleProvider,int isRequestMobil) {
         this.fisrtNameDriver = fisrtNameDriver;
         this.nrDriver = nrDriver;
         this.emailDriver = emailDriver;
         this.passDriver = passDriver;
         this.phoneNumberDriver = phoneNumberDriver;
         this.isVehicleProvider = isVehicleProvider;
+        this.isRequestMobil = isRequestMobil;
     }
 
     public String getFisrtNameDriver() {

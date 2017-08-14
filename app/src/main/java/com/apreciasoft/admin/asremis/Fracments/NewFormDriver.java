@@ -29,6 +29,7 @@ import com.apreciasoft.admin.asremis.Entity.responseFilterVehicle;
 import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.R;
 import com.apreciasoft.admin.asremis.Services.ServicesDriver;
+import com.apreciasoft.admin.asremis.Services.ServicesLoguin;
 import com.apreciasoft.admin.asremis.Util.GlovalVar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -201,6 +202,8 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
 
         GlovalVar gloval = ((GlovalVar) getApplicationContext());
+
+        if (this.apiDriver == null) { this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class); }
         Call<responseFilterVehicle> call = this.apiDriver.getModelDetail(ID_MODEL);
 
         // Log.d("***",call.request().body().toString());
@@ -541,7 +544,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
                             ,nrDriver.getText().toString()
                             ,mail.getText().toString()
                             ,pass.getText().toString()
-                            ,phone.getText().toString(),1),
+                            ,phone.getText().toString(),1,1),
                     new fleet(ID_MODEL,ID_MODEL_DETAIL,ID_CATEGORY,txtDomain.getText().toString())
             );
 
@@ -549,13 +552,13 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
             Gson gson = builder.create();
             System.out.println(gson.toJson(data));
 
-            Call<resp> call = this.apiDriver.addPluDriver(data);
+            Call<Integer> call = this.apiDriver.addPluDriver(data);
             Log.d("Call request", call.request().toString());
             Log.d("Call request header", call.request().headers().toString());
 
-            call.enqueue(new Callback<resp>() {
+            call.enqueue(new Callback<Integer>() {
                 @Override
-                public void onResponse(Call<resp> call, Response<resp> response) {
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
 
                     Log.d("Response request", call.request().toString());
                     Log.d("Response request header", call.request().headers().toString());
@@ -578,7 +581,6 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
                         AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
                         alertDialog.setTitle("Correo ya Registrado");
-                        alertDialog.setMessage(response.errorBody().source().toString());
                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -593,7 +595,6 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
                     AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
                     alertDialog.setTitle("Numero De Chofer Ya Registardo");
-                    alertDialog.setMessage(response.errorBody().source().toString());
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -610,7 +611,7 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
 
 
 
-                public void onFailure(Call<resp> call, Throwable t) {
+                public void onFailure(Call<Integer> call, Throwable t) {
                     AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
                     alertDialog.setTitle("ERROR");
                     alertDialog.setMessage(t.getMessage());

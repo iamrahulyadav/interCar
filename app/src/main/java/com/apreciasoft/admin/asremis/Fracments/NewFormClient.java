@@ -183,7 +183,7 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
         if(this.apiDriver == null){this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class);}
 
         try {
-            loading = ProgressDialog.show(NewFormClient.this, "Registrando Cliente", "Espere unos Segundos...", true, false);
+            loading = ProgressDialog.show(this, "Registrando Cliente", "Espere unos Segundos...", true, false);
 
 
 
@@ -231,7 +231,6 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
 
                         AlertDialog alertDialog = new AlertDialog.Builder(NewFormClient.this).create();
                         alertDialog.setTitle("Cliente ya Existe");
-                        alertDialog.setMessage(response.errorBody().source().toString());
                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -265,7 +264,6 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
 
         } finally {
             this.apiDriver = null;
-            loading.dismiss();
 
         }
 

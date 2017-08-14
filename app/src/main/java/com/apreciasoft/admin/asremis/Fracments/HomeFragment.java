@@ -400,158 +400,161 @@ public class HomeFragment extends Fragment implements
             try {
                 addresses = gCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
+                Log.d("onLocationChanged", String.valueOf(addresses));
 
-       /* String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-        String city = addresses.get(0).getLocality();
-        String state = addresses.get(0).getAdminArea();
-        String country = addresses.get(0).getCountryName();
-        String postalCode = addresses.get(0).getPostalCode();
-        String knownName = addresses.get(0).getFeatureName();*/
-
-                android.location.Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("");
-
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                String strAdd = strReturnedAddress.toString();
+               if(addresses.size() > 0) {
 
 
-                mLastLocation = location;
-                if (mCurrLocationMarker != null) {
-                    mCurrLocationMarker.remove();
-                }
+
+                   android.location.Address returnedAddress = addresses.get(0);
+                   StringBuilder strReturnedAddress = new StringBuilder("");
+
+                   for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                       strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                   }
+                   String strAdd = returnedAddress.getAddressLine(0);
+                 //  Log.d("onLocationChanged",strAdd);
+                   HomeFragment.nameLocation = strAdd.toString();
+
+                  // Log.d("setLocationVehicheDriver","CH"+HomeFragment.nameLocation);
+
+                   mLastLocation = location;
+                   if (mCurrLocationMarker != null) {
+                       mCurrLocationMarker.remove();
+                   }
 
 
-                if (HomeActivity.currentTravel != null) {
-                    if (!isReadyDrawingRouting) {
-                        Log.d(TAG, "T-5");
+                   if (HomeActivity.currentTravel != null) {
+                       if (!isReadyDrawingRouting) {
+                           Log.d(TAG, "T-5");
 
-                        // Initializing
-                        MarkerPoints = new ArrayList<>();
+                           // Initializing
+                           MarkerPoints = new ArrayList<>();
 
-                        LatLng origuin = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatOrigin()), Double.parseDouble(HomeActivity.currentTravel.getLonOrigin()));
-                        setDirection(origuin);
-
-
-                        if (HomeActivity.currentTravel.getLatDestination() != null) {
-                            if (HomeActivity.currentTravel.getLonDestination() != null) {
-
-                                if (HomeActivity.currentTravel.getLatDestination() != "") {
-                                    if (HomeActivity.currentTravel.getLonDestination() != "") {
-                                        LatLng desination = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatDestination()), Double.parseDouble(HomeActivity.currentTravel.getLonDestination()));
-                                        setDirection(desination);
-                                        Log.d(TAG, "T-6");
-                                        isReadyDrawingRouting = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                           LatLng origuin = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatOrigin()), Double.parseDouble(HomeActivity.currentTravel.getLonOrigin()));
+                           setDirection(origuin);
 
 
-                } else {
-                    Log.d(TAG, "T-7");
+                           if (HomeActivity.currentTravel.getLatDestination() != null) {
+                               if (HomeActivity.currentTravel.getLonDestination() != null) {
 
-                    if (MarkerPoints != null) {
-                        MarkerPoints.clear();
-                    }
-
-                    if (mGoogleMap != null) {
-                        mGoogleMap.clear();
-                    }
-
-                    isReadyDrawingRouting = false;
-                }
-
-                //Place current location marker
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                //markerOptions.title(strAdd);
+                                   if (HomeActivity.currentTravel.getLatDestination() != "") {
+                                       if (HomeActivity.currentTravel.getLonDestination() != "") {
+                                           LatLng desination = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatDestination()), Double.parseDouble(HomeActivity.currentTravel.getLonDestination()));
+                                           setDirection(desination);
+                                           Log.d(TAG, "T-6");
+                                           isReadyDrawingRouting = true;
+                                       }
+                                   }
+                               }
+                           }
+                       }
 
 
-                int height = 45;
-                int width = 40;
-                BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.auto);
-                Bitmap b = bitmapdraw.getBitmap();
-                Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+                   } else {
+                       Log.d(TAG, "T-7");
 
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+                       if (MarkerPoints != null) {
+                           MarkerPoints.clear();
+                       }
 
-                mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+                       if (mGoogleMap != null) {
+                           mGoogleMap.clear();
+                       }
+
+                       isReadyDrawingRouting = false;
+                   }
+
+                   //Place current location marker
+                   LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                   MarkerOptions markerOptions = new MarkerOptions();
+                   markerOptions.position(latLng);
+                   //markerOptions.title(strAdd);
 
 
-                this.nameLocation = strAdd;
+                   int height = 45;
+                   int width = 40;
+                   BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.auto);
+                   Bitmap b = bitmapdraw.getBitmap();
+                   Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
+                   markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+
+                   mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
 
-                Log.d(TAG, "T-8");
+
+
+
+                   Log.d(TAG, "T-8");
 
 
            /* if(isFistLocation)
             {*/
 
-                if (HomeActivity.currentTravel != null) {
+                   if (HomeActivity.currentTravel != null) {
 
                 /*Si el viajes esta encurso , busqueda de chofer  */
-                    if (HomeActivity.currentTravel.getIdSatatusTravel() == 4 ||
-                            HomeActivity.currentTravel.getIdSatatusTravel() == 5
-                            ) {
-                        //move map camera
-                        Log.d(TAG, "T-9");
-                        isFistLocation = false;
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-                    }
-                } else {
-                    Log.d(TAG, "T-10");
-                    isFistLocation = false;
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-                }
+                       if (HomeActivity.currentTravel.getIdSatatusTravel() == 4 ||
+                               HomeActivity.currentTravel.getIdSatatusTravel() == 5
+                               ) {
+                           //move map camera
+                           Log.d(TAG, "T-9");
+                           isFistLocation = false;
+                           mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                           mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                       }
+                   } else {
+                       Log.d(TAG, "T-10");
+                       isFistLocation = false;
+                       mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                       mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                   }
 
-                Log.d(TAG, "T-11");
+                   Log.d(TAG, "T-11");
            /* }*/
 
 
-                // SI POSEE UN VIAJE DIBUAMOS LA RUTA QUE ESTA RECORRINEDO EL CHOFER //
-                if (HomeActivity.currentTravel != null) {
+                   // SI POSEE UN VIAJE DIBUAMOS LA RUTA QUE ESTA RECORRINEDO EL CHOFER //
+                   if (HomeActivity.currentTravel != null) {
 
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                       mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-                    listPosition.add(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
-                    options = new
-                            PolylineOptions()
-                            .width(5)
-                            .color(Color.GRAY)
-                            .geodesic(true);
+                       listPosition.add(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                       options = new
+                               PolylineOptions()
+                               .width(5)
+                               .color(Color.GRAY)
+                               .geodesic(true);
 
-                    for (int z = 0; z < listPosition.size(); z++) {
-                        LatLng point = listPosition.get(z);
+                       for (int z = 0; z < listPosition.size(); z++) {
+                           LatLng point = listPosition.get(z);
 
-                        if (HomeActivity.isRoundTrip && optionReturnActive == null)//VERIFICAMOS SI ESTA ACTIVA LA VUETA PARA SABER DESDE QUE UBUCACION SE REALIZO
-                        {
-                            optionReturnActive = new
-                                    PolylineOptions()
-                                    .width(5)
-                                    .color(Color.GRAY)
-                                    .geodesic(true);
-                            optionReturnActive.add(point);
-                        }
-                        options.add(point);
-                    }
+                           if (HomeActivity.isRoundTrip && optionReturnActive == null)//VERIFICAMOS SI ESTA ACTIVA LA VUETA PARA SABER DESDE QUE UBUCACION SE REALIZO
+                           {
+                               optionReturnActive = new
+                                       PolylineOptions()
+                                       .width(5)
+                                       .color(Color.GRAY)
+                                       .geodesic(true);
+                               optionReturnActive.add(point);
+                           }
+                           options.add(point);
+                       }
 
-                    Log.d("CODUCE", "CINDUCEEEE");
+                       Log.d("CODUCE", "CINDUCEEEE");
 
-                    Polyline line = mGoogleMap.addPolyline(options);
-                    line.setColor(Color.parseColor("#579ea8"));
-                }
+                       Polyline line = mGoogleMap.addPolyline(options);
+                       line.setColor(Color.parseColor("#579ea8"));
+                   }
 
 
-                //optionally, stop location updates if only current location is needed
-                ///if (mGoogleApiClient != null) {
-                // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-                //}
+                   //optionally, stop location updates if only current location is needed
+                   ///if (mGoogleApiClient != null) {
+                   // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+                   //}
+               }
+
 
             } catch (IOException e) {
                 e.printStackTrace();

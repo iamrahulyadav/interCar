@@ -541,8 +541,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         {
 
 
-            Log.d("--->", String.valueOf(currentTravel.getIdSatatusTravel()));
-
             if(currentTravel.getIdSatatusTravel() == 0)
             {
 
@@ -560,7 +558,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 textTiempo = (TextView) findViewById(R.id.textTiempo);
                 textTiempo.setVisibility(View.INVISIBLE);
 
-                _activeTimer();
+               // _activeTimer();
             }
             else  if(currentTravel.getIdSatatusTravel() == 8)
             {
@@ -578,7 +576,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 textTiempo = (TextView) findViewById(R.id.textTiempo);
                 textTiempo.setVisibility(View.INVISIBLE);
 
-                _activeTimer();
+              //  _activeTimer();
             }else  if(currentTravel.getIdSatatusTravel() == 6)
             {
                 Toast.makeText(getApplicationContext(), "VIAJE Finalizado desde la Web!", Toast.LENGTH_LONG).show();
@@ -596,7 +594,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 textTiempo = (TextView) findViewById(R.id.textTiempo);
                 textTiempo.setVisibility(View.INVISIBLE);
 
-                _activeTimer();
+                //_activeTimer();
             }else
             {
                // viewAlert = false;
@@ -711,6 +709,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     btPreFinishVisible(false);
                     textTiempo = (TextView) findViewById(R.id.textTiempo);
                     textTiempo.setVisibility(View.INVISIBLE);
+                   // _activeTimer();
                 }
 
 
@@ -817,6 +816,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }else {
             searchTravelByIdDriver();
         }
+
+       // _activeTimer();
     }
 
     @Override
@@ -896,7 +897,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 add = HomeFragment.nameLocation;
             }
 
-            if(add != "") {
+
 
                 int idTrave = 0;
                 int  idClientKf = 0;
@@ -920,15 +921,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 GsonBuilder builder = new GsonBuilder();
                 final Gson gson = builder.create();
-                Log.d("Object Info", gson.toJson(travel));
+                Log.d("Object location ", gson.toJson(travel));
 
 
                 Call<List<InfoTravelEntity>> call = this.daoTravel.infoTravelByDriver(travel);
 
 
-                Log.d("Call request", call.request().body().toString());
-                Log.d("Call request", call.request().toString());
-                Log.d("Call request header", call.request().headers().toString());
+                Log.d("Call location", call.request().body().toString());
+                Log.d("Call location", call.request().toString());
+                Log.d("Call location", call.request().headers().toString());
 
                 call.enqueue(new Callback<List<InfoTravelEntity>>() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -959,27 +960,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     public void onFailure(Call<List<InfoTravelEntity>> call, Throwable t) {
-                        /*AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
-                        alertDialog.setTitle("ERROR ENVIADO UBICACION");
-                        alertDialog.setMessage(t.getMessage());
-                        alertDialog.setCanceledOnTouchOutside(false);
-                        //timerInit.cancel();
 
 
 
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        alertDialog.show();*/
+
+                        Log.d("********* ERROR ********","ERROR ENVIADO UBICACION");
+                        Log.d("t.getMessage()",t.getMessage());
 
 
                     }
                 });
 
-            }
+
 
         } finally {
             this.daoTravel = null;
@@ -1305,7 +1297,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void _activeTimer()
     {
 
-        if(timer != null) {
+        Log.d("location","TIMER");
+
+
             timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -1320,12 +1314,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 }
             }, 0, 60000);
-        }
+
     }
 
     public  void setLocationVehicheDriver()
     {
-
+       // Log.d("setLocationVehicheDriver","setLocationVehicheDriver");
 
         if (this.daoTravel == null) {
             this.daoTravel = HttpConexion.getUri().create(ServicesTravel.class);
@@ -1337,8 +1331,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             String lon = "";
             String add = "";
 
-            Log.d("location","location");
-
 
             if (HomeFragment.getmLastLocation() != null) {
                 lat = String.valueOf(HomeFragment.getmLastLocation().getLatitude());
@@ -1346,10 +1338,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 add = HomeFragment.nameLocation;
             }
 
+           // Log.d("setLocationVehicheDriver 00", String.valueOf(HomeFragment.nameLocation));
+          //  Log.d("setLocationVehicheDriver  01", "**"+add);
+
             if(add != "") {
 
+               // Log.d("setLocationVehicheDriver  ", "PASO 1");
                 int idTrave = 0;
-                int  idClientKf = 0;
+                int idClientKf = 0;
 
                 if (currentTravel != null) {
                     idTrave = currentTravel.getIdTravel();
@@ -1374,28 +1370,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
-                Log.d("Object Info", gson.toJson(travel));
+               // Log.d("setLocationVehicheDriver 1", gson.toJson(travel));
 
 
                 Call<RemisSocketInfo> call = this.daoTravel.sendPosition(travel);
 
 
-                Log.d("Call request", call.request().body().toString());
-                Log.d("Call request", call.request().toString());
-                Log.d("Call request header", call.request().headers().toString());
+                Log.d("setLocationVehicheDriver Call request", call.request().body().toString());
+                Log.d("setLocationVehicheDriver Call request", call.request().toString());
+                Log.d("setLocationVehicheDriver Call request header", call.request().headers().toString());
 
                 call.enqueue(new Callback<RemisSocketInfo>() {
                     @Override
                     public void onResponse(Call<RemisSocketInfo> call, Response<RemisSocketInfo> response) {
 
-                        Log.d("Response raw header", response.headers().toString());
-                        Log.d("Response raw", String.valueOf(response.raw().body()));
-                        Log.d("Response code", String.valueOf(response.code()));
+                        Log.d("setLocationVehicheDriver Response raw header", response.headers().toString());
+                        Log.d("setLocationVehicheDriver Response raw", String.valueOf(response.raw().body()));
+                        Log.d("setLocationVehicheDriver Response code", String.valueOf(response.code()));
 
                         if (response.code() == 200) {
 
-                           RemisSocketInfo list = (RemisSocketInfo) response.body();
-                            notificate(list.getListNotification(),list.getListReservations());
+                            RemisSocketInfo list = (RemisSocketInfo) response.body();
+                            notificate(list.getListNotification(), list.getListReservations());
 
 
                         }
@@ -1404,15 +1400,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     public void onFailure(Call<RemisSocketInfo> call, Throwable t) {
-                       // Log.d("---",t.getMessage());
-                       // Toast.makeText(getApplicationContext(), "ERROR ENVIADO UBICACION!", Toast.LENGTH_LONG).show();
+                        Log.d("**ERROR**", t.getMessage());
+                        // Toast.makeText(getApplicationContext(), "ERROR ENVIADO UBICACION!", Toast.LENGTH_LONG).show();
 
                     }
                 });
 
             }
 
-        } finally {
+            Log.d("setLocationVehicheDriver  ", "PASO FINAL");
+
+
+        }
+        catch (Exception e)
+        {
+            Log.d("setLocationVehicheDriver",e.getMessage());
+        }
+
+        finally {
             this.daoTravel = null;
         }
     }
@@ -1891,7 +1896,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             textTiempo = (TextView) findViewById(R.id.textTiempo);
                             textTiempo.setVisibility(View.INVISIBLE);
 
-                            _activeTimer();
+                           // _activeTimer();
                         }
 
                         public void onFailure(Call<InfoTravelEntity> call, Throwable t) {

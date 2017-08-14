@@ -67,7 +67,7 @@ public interface ServicesDriver {
 
     @Headers("Content-Type: application/json")
     @POST("driver/plusLite")
-    Call<resp> addPluDriver(@Body dataAddPlusDriverEntity data);
+    Call<Integer> addPluDriver(@Body dataAddPlusDriverEntity data);
 
     @Headers("Content-Type: application/json")
     @POST("client")
