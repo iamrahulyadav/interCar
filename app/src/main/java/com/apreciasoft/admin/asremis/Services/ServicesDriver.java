@@ -11,6 +11,7 @@ import com.apreciasoft.admin.asremis.Entity.modelEntity;
 import com.apreciasoft.admin.asremis.Entity.resp;
 import com.apreciasoft.admin.asremis.Entity.responseFilterVehicle;
 import com.apreciasoft.admin.asremis.Entity.token;
+import com.apreciasoft.admin.asremis.Entity.user;
 
 import java.util.List;
 
@@ -72,5 +73,9 @@ public interface ServicesDriver {
     @Headers("Content-Type: application/json")
     @POST("client")
     Call<resp> addClient(@Body RequetClient data);
+
+    @Headers("Content-Type: application/json")
+    @POST("userCompany")
+    Call<resp> userCompany(@Body user data);
 
 }

@@ -43,6 +43,10 @@ public interface ServicesTravel {
     Call<InfoTravelEntity> finishPost(@Body  TraveInfoSendEntity travel);
 
     @Headers("Content-Type: application/json")
+    @POST("travel/preFinishMobil")
+    Call<InfoTravelEntity> preFinishMobil(@Body  TraveInfoSendEntity travel);
+
+    @Headers("Content-Type: application/json")
     @GET("travel/accept/{id}")
     Call<InfoTravelEntity> accept(@Path("id") int id);
 

@@ -212,6 +212,19 @@ public  class InfoTravelEntity implements Serializable {
     public double priceTravelSms;
 
     @Expose
+    @SerializedName("benefitsFromKm")
+    public double benefitsFromKm;
+
+    @Expose
+    @SerializedName("benefitsToKm")
+    public double benefitsToKm;
+
+    @Expose
+    @SerializedName("benefitsPreceKm")
+    public double benefitsPreceKm;
+
+
+    @Expose
     @SerializedName("isTravelComany")
     public int isTravelComany;
 
@@ -219,6 +232,15 @@ public  class InfoTravelEntity implements Serializable {
     @Expose
     @SerializedName("isAceptReservationByDriver")
     public int isAceptReservationByDriver;
+
+    @Expose
+    @SerializedName("benefitsPerKm")
+    public int benefitsPerKm;
+
+    @Expose
+    @SerializedName("amountOriginPac")
+    public double amountOriginPac;
+
 
     @Expose
     @SerializedName("date")
@@ -229,6 +251,14 @@ public  class InfoTravelEntity implements Serializable {
     @SerializedName("domain")
     public String domain;
 
+
+    public double getAmountOriginPac() {
+        return amountOriginPac;
+    }
+
+    public void setAmountOriginPac(double amountOriginPac) {
+        this.amountOriginPac = amountOriginPac;
+    }
 
     public int getIsProcesCurrentAcount() {
         return isProcesCurrentAcount;
@@ -638,5 +668,37 @@ public  class InfoTravelEntity implements Serializable {
 
     public void setIdUserClient(int idUserClient) {
         this.idUserClient = idUserClient;
+    }
+
+    public double getBenefitsFromKm() {
+        return benefitsFromKm;
+    }
+
+    public void setBenefitsFromKm(double benefitsFromKm) {
+        this.benefitsFromKm = benefitsFromKm;
+    }
+
+    public double getBenefitsToKm() {
+        return benefitsToKm;
+    }
+
+    public void setBenefitsToKm(double benefitsToKm) {
+        this.benefitsToKm = benefitsToKm;
+    }
+
+    public double getBenefitsPreceKm() {
+        return benefitsPreceKm;
+    }
+
+    public void setBenefitsPreceKm(double benefitsPreceKm) {
+        this.benefitsPreceKm = benefitsPreceKm;
+    }
+
+    public int getBenefitsPerKm() {
+        return benefitsPerKm;
+    }
+
+    public void setBenefitsPerKm(int benefitsPerKm) {
+        this.benefitsPerKm = benefitsPerKm;
     }
 }

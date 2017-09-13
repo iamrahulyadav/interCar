@@ -605,6 +605,20 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
                         loading.dismiss();
 
 
+                    }else
+                    {
+                        AlertDialog alertDialog = new AlertDialog.Builder(NewFormDriver.this).create();
+                        alertDialog.setTitle("ERROR"+response.code());
+                        alertDialog.setMessage(response.message());
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        loading.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                        loading.dismiss();
                     }
 
             }

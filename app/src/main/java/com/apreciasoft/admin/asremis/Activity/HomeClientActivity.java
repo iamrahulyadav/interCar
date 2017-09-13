@@ -481,7 +481,7 @@ public class HomeClientActivity extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void setInfoTravel() {
 
-        Log.d("fatal", String.valueOf(currentTravel));
+        //Log.d("fatal", String.valueOf(currentTravel));
 
 
         if (currentTravel != null) {
@@ -1326,10 +1326,17 @@ public class HomeClientActivity extends AppCompatActivity
             }
 
 
+            boolean isTravelComany = false;
+            if(gloval.getGv_id_profile() == 5)
+            {
+                isTravelComany = true;
+            }
+
+
             travel.setTravelBody(
                     new TravelBodyEntity(
                             gloval.getGv_id_cliet(),
-                            false,
+                            isTravelComany,
                             new OriginEntity(
                                     this.lat,
                                     this.lon,
@@ -1344,9 +1351,9 @@ public class HomeClientActivity extends AppCompatActivity
             );
 
 
-          /*  GsonBuilder builder = new GsonBuilder();
+            GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
-            System.out.println(gson.toJson(travel));*/
+            System.out.println(gson.toJson(travel));
 
             Call<resp> call = this.daoTravel.addTravel(travel);
 

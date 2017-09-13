@@ -37,6 +37,12 @@ public class driver {
     @SerializedName("idUser")
     public int idUser;
 
+    @Expose
+    @SerializedName("idStatusDriverTravelKf")
+    public int idStatusDriverTravelKf;
+
+
+
 
 
 
@@ -103,5 +109,13 @@ public class driver {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
+    }
+
+    public int getIdStatusDriverTravelKf() {
+        return idStatusDriverTravelKf;
+    }
+
+    public void setIdStatusDriverTravelKf(int idStatusDriverTravelKf) {
+        this.idStatusDriverTravelKf = idStatusDriverTravelKf;
     }
 }

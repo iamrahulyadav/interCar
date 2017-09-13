@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public ServicesTravel daoTravel = null;
     public ServicesLoguin daoLoguin = null;
     public ServicesDriver daoDriver = null;
-    public boolean srviceActive = true;
+
 
     public Timer timer;
     public ProgressDialog loadingCronometro;
@@ -150,11 +150,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public View parentLayout =  null;
 
+    int PARAM_20  = 0;
+
+
     /*DIALOG*/
     public TravelDialog dialogTravel = null;
 
     /* CONSTATES PARA PERMISOS */
     private static final int ACCESS_FINE_LOCATION_PERMISSIONS = 123;
+
+
+    public  Button btnFinishCar;
+    public  Button btnFinishVo;
+    public  Button btnFinishCash;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -175,10 +183,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
+
+
         // variable global //
         gloval = ((GlovalVar)getApplicationContext());
 
-
+       PARAM_20 =  Integer.parseInt(gloval.getGv_param().get(19).getValue());// PRECIO DE LISTA
 
         // BOTON PARA PRE FINALIZAR UN VIAJE //
         btnPreFinish = (Button) findViewById(R.id.btn_pre_finish);
@@ -207,7 +217,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         // BOTON PARA FINALIZAR UN VIAJE TARJETA //
-        final Button btnFinishCar = (Button) findViewById(R.id.bnt_pay_car);
+        btnFinishCar = (Button) findViewById(R.id.bnt_pay_car);
         btnFinishCar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -217,7 +227,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // BOTON PARA FINALIZAR UN VIAJE VOUCHER //
-        final Button btnFinishVo = (Button) findViewById(R.id.btn_firm_voucher);
+        btnFinishVo = (Button) findViewById(R.id.btn_firm_voucher);
         btnFinishVo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -227,8 +237,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
+
         // BOTON PARA FINALIZAR UN VIAJE CASH //
-        final Button btnFinishCash = (Button) findViewById(R.id.btn_pay_cash);
+        btnFinishCash = (Button) findViewById(R.id.btn_pay_cash);
         btnFinishCash.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -397,6 +408,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         getPick(gloval.getGv_user_id());
+
+
+
+
     }
 
 
@@ -409,14 +424,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         try
         {
-            if(srviceActive)
+            if(gloval.getGv_srviceActive() == 1)
                 {
                      call = this.daoDriver.inactive(gloval.getGv_id_driver());
-                    srviceActive = false;
+                    gloval.setGv_srviceActive(0);
                 }else
                 {
                      call = this.daoDriver.active(gloval.getGv_id_driver());
-                    srviceActive = true;
+                    gloval.setGv_srviceActive(1);
                 }
 
 
@@ -438,7 +453,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                         //
                         String str = "";
-                        if(srviceActive){
+                        if(gloval.getGv_srviceActive() == 1){
                             str = "Servicio Activado!";
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -736,10 +751,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 token T = new token();
                 T.setToken(new tokenFull(str_token, idUser,gloval.getGv_id_driver()));
 
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-
-                Log.d("Response",gson.toJson(T));
+                    GsonBuilder builder = new GsonBuilder();
+                    Gson gson = builder.create();
+                    System.out.println(gson.toJson(T));
 
                 Call<Boolean> call = this.daoLoguin.token(T);
 
@@ -877,7 +891,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    /*METODO PARA NOTIFICACIONES CON MOBIL EN SEGINDO PLANO*/
+    /*METODO PARA NOTIFICACIONES CON MOBIL EN SEGUNDO PLANO*/
     public  void searchTravelByIdDriver()
     {
         if (this.daoTravel == null) {  this.daoTravel = HttpConexion.getUri().create(ServicesTravel.class);  }
@@ -1002,7 +1016,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         final TextView distance_txt = (TextView) findViewById(R.id.distance_txt);
         final TextView txtTimeslep = (TextView) findViewById(R.id.txtTimeslep);
 
-        Log.d("--",gloval.getGv_param().get(0).getValue());
+
         double PARAM_1  = Double.parseDouble(gloval.getGv_param().get(0).getValue());// PRECIO DE LISTA
         double PARAM_5  = Double.parseDouble(gloval.getGv_param().get(4).getValue());// PRECIO LISTA TIEMPO DE ESPERA
         double PARAM_6  = Double.parseDouble(gloval.getGv_param().get(5).getValue());// PRECIO LISTA TIEMPO DE VUELTA
@@ -1010,6 +1024,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         double hor = 0;
         double min = 0;
 
+        double EXTRA_BENEFICIO = 0;
+        double distance_beneficio = 0;
 
         btPreFinishVisible(false);
 
@@ -1039,14 +1055,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Log.d("-TRAVEL-", String.valueOf(currentTravel.getIsTravelComany()));
         if(currentTravel.getIsTravelComany() == 1)// EMPRESA
         {
-            amounCalculateGps = currentTravel.getPriceDitanceCompany()/1000*m_total;// PARA CLIENTES EMPREA BUSCAMOS EL PRECIO DE ESA EMPRESA
-
-            if(isRoundTrip)
+            /*VERIFICAMOS SI ESTA ACTIVO EL CMAPO BENEFICIO POR KILOMETRO PARA ESA EMPRESA*/
+            Log.d("-BENEFICIO-", String.valueOf(currentTravel.getBenefitsPerKm()));
+            if(currentTravel.getBenefitsPerKm() == 1)
             {
-                amounCalculateGps = currentTravel.getPriceDitanceCompany()/1000*m_ida;
-                amounCalculateGps =  amounCalculateGps + currentTravel.getPriceReturn()/1000*m_vuelta;
+                /* VERIFICAMOS I ESTA DENTRO DE EL RANDO DE EL BENEFICIO ESTABLECIDO */
+                if(kilometros_total >= currentTravel.getBenefitsToKm() && kilometros_total <= currentTravel.getBenefitsFromKm())
+                {
+                    distance_beneficio = currentTravel.getBenefitsToKm()-currentTravel.getBenefitsFromKm();
+                    EXTRA_BENEFICIO = distance_beneficio * currentTravel.getBenefitsPreceKm();
 
+
+                    double METROS = 1000*(kilometros_total - distance_beneficio)/1;// CONERTIMOS LO KILOMETRO A METROS
+                    amounCalculateGps =  currentTravel.getPriceDitanceCompany()/1000*METROS+EXTRA_BENEFICIO;
+
+                }else
+                {
+                    amounCalculateGps = currentTravel.getPriceDitanceCompany()/1000*m_total;
+                }
+
+
+            }else{
+                amounCalculateGps = currentTravel.getPriceDitanceCompany()/1000*m_total;// PARA CLIENTES EMPREA BUSCAMOS EL PRECIO DE ESA EMPRESA
+
+                if(isRoundTrip)
+                {
+                    amounCalculateGps = currentTravel.getPriceDitanceCompany()/1000*m_ida;
+                    amounCalculateGps =  amounCalculateGps + currentTravel.getPriceReturn()/1000*m_vuelta;
+
+                }
             }
+
+
+
+
+
             Log.d("-TRAVEL-","EMPRESA");
 
         }
@@ -1064,7 +1107,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-
+        amounCalculateGps =  amounCalculateGps + currentTravel.getAmountOriginPac();
 
 
         hor=min/3600;
@@ -1114,7 +1157,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         totalFinal =  amounCalculateGps + extraTime + myDouble + parkin;
 
-       txtMount.setText(Double.toString(round(totalFinal,2))+"$");
+
+        int param25 = Integer.parseInt(gloval.getGv_param().get(25).getValue());
+        if(param25 == 1){
+            txtMount.setText(Double.toString(round(totalFinal,2))+"$");
+        }
+        else {
+            txtMount.setText("---");
+        }
+
 
 
     }
@@ -1184,6 +1235,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
@@ -1260,7 +1313,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         if (id == R.id.nav_camera) {
-            btnFlotingVisible(true);
             fm.beginTransaction().replace(R.id.content_frame,new HomeFragment()).commit();
 
 
@@ -1278,6 +1330,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fm.beginTransaction().replace(R.id.content_frame,new NotificationsFrangment()).commit();
 
         } else if (id == R.id.nav_reservations) {
+            btnFlotingVisible(false);
             fn_gotoreservation();
 
         } else if (id == R.id.nav_send) {
@@ -1790,7 +1843,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    /* METODO PARA FINALIZAR UN VIAJE*/
+    /* METODO PARA FINALIZAR O PREFINALIZAR  UN VIAJE*/
     public  void  finishTravel() {
 
         if (this.daoTravel == null) { this.daoTravel = HttpConexion.getUri().create(ServicesTravel.class); }
@@ -1860,7 +1913,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     Log.d("Object Info", gson.toJson(travel));
 
 
-                    Call<InfoTravelEntity> call = this.daoTravel.finishPost(travel);
+                    Call<InfoTravelEntity> call = null;
+
+                    /* VERIFICAMOS I ESTA HABILITADO EL CIERRE DE VIAJES DEDE LA APP O NO*/
+                    if(PARAM_20 == 1)
+                    {
+                        call = this.daoTravel.finishPost(travel);
+                    }else
+                    {
+                        call = this.daoTravel.preFinishMobil(travel);
+                    }
+
 
                     call.enqueue(new Callback<InfoTravelEntity>() {
                         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -1873,11 +1936,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             Log.d("Response raw", String.valueOf(response.raw().body()));
                             Log.d("Response code", String.valueOf(response.code()));
 
-                            Toast.makeText(HomeActivity.this, "VIAJE FINALIZADO", Toast.LENGTH_SHORT).show();
+                            if(PARAM_20 == 1) {
+                                Toast.makeText(HomeActivity.this, "VIAJE  FINALIZADO", Toast.LENGTH_SHORT).show();
+                            }else
+                            {
+                                Toast.makeText(HomeActivity.this, "VIAJE ENVIADO PARA SU APROBACION", Toast.LENGTH_SHORT).show();
+                            }
 
 
                             btPreFinishVisible(false);
-                            //btFinishVisible(false);
                             btnFlotingVisible(true);
 
 
@@ -1896,7 +1963,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             textTiempo = (TextView) findViewById(R.id.textTiempo);
                             textTiempo.setVisibility(View.INVISIBLE);
 
-                           // _activeTimer();
                         }
 
                         public void onFailure(Call<InfoTravelEntity> call, Throwable t) {

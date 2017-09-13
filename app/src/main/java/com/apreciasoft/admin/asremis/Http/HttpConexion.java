@@ -13,7 +13,7 @@ public class HttpConexion {
 
 
     public static String base;
-   // public static String ip = "192.168.1.4";
+    //public static String ip = "192.168.0.6";
      public static String ip = "54.245.175.10";
 
 

@@ -165,15 +165,12 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
     }
 
 
-
-
-
     public static void clearInfo() {
-//        HomeClientFragment.txt_client_info.setText("N/A");
-        HomeClientFragment.txt_calling_info.setText("N/A");
-        HomeClientFragment.txt_domain.setText("N/A");
-        HomeClientFragment.txt_destination_info.setText("N/A");
-        HomeClientFragment.txt_origin_info.setText("N/A");
+//        HomeClientFragment.txt_client_info.setText("No se cargo informacion");
+        HomeClientFragment.txt_calling_info.setText("No se cargo informacion");
+        HomeClientFragment.txt_domain.setText("No se cargo informacion");
+        HomeClientFragment.txt_destination_info.setText("No se cargo informacion");
+        HomeClientFragment.txt_origin_info.setText("No se cargo informacion");
         HomeClientFragment.txt_km_info.setText("0Km");
         HomeClientFragment.txt_amount_info.setText("0$");
         HomeClientFragment.txtStatus.setText("SERVICIO ACTIVO");
@@ -494,52 +491,25 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
 
     @Override
     public void onConnected(Bundle bundle) {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        try {
 
 
-            this._activeTimerMap();
+            mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(1000);
+            mLocationRequest.setFastestInterval(1000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-           /* if(HomeClientActivity.currentTravel != null)
-            {
+            if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
+                this._activeTimerMap();
 
-
-                // Initializing
-                MarkerPoints = new ArrayList<>();
-
-                LatLng origuin = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatOrigin()),Double.parseDouble(HomeActivity.currentTravel.getLonOrigin()));
-                setDirection(origuin);
-
-
-
-                if(HomeActivity.currentTravel.getLatDestination() != null) {
-                    LatLng desination = new LatLng(Double.parseDouble(HomeActivity.currentTravel.getLatDestination()),Double.parseDouble(HomeActivity.currentTravel.getLonDestination()));
-                    setDirection(desination);
-                }
-
-
-
-            }else
-            {
-
-                if(MarkerPoints != null) {
-                    MarkerPoints.clear();
-                }
-
-                if(mGoogleMap != null) {
-                    mGoogleMap.clear();
-                }
-            }*/
-
+            }
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
         }
 
 
@@ -581,15 +551,14 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
                 for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
-                String strAdd = strReturnedAddress.toString();
+                String strAdd = returnedAddress.getAddressLine(0);
+                HomeClientFragment.nameLocation = strAdd.toString();
 
 
 
                 mLastLocation = location;
-
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                this.nameLocation = strAdd;
 
                 if (isFistLocation) {
                     //move map camera

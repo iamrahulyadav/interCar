@@ -33,12 +33,15 @@ import java.util.List;
     private InfoTravelEntity gv_travel_current;
     private List<paramEntity> gv_param;
     private Boolean gv_logeed;
+    private int gv_srviceActive;
     private TravelLocationEntity locationDriverFromClient;
     private List<notification> gv_listNotifications;
     private List<InfoTravelEntity> gv_lisReservations;
     private driver gv_driverinfo;
     private client gv_clientinfo;
     private List<VehicleType> gv_listvehicleType;
+
+    private  int gv_idResourceSocket;
 
     @Override
     public void onCreate() {
@@ -70,6 +73,15 @@ import java.util.List;
         this.gv_param = null;
         this.gv_logeed = false;
         this.gv_listvehicleType = null;
+    }
+
+
+    public int getGv_idResourceSocket() {
+        return gv_idResourceSocket;
+    }
+
+    public void setGv_idResourceSocket(int gv_idResourceSocket) {
+        this.gv_idResourceSocket = gv_idResourceSocket;
     }
 
     public List<InfoTravelEntity> getGv_lisReservations() {
@@ -215,5 +227,14 @@ import java.util.List;
 
     public void setGv_clientinfo(client gv_clientinfo) {
         this.gv_clientinfo = gv_clientinfo;
+    }
+
+
+    public int getGv_srviceActive() {
+        return gv_srviceActive;
+    }
+
+    public void setGv_srviceActive(int gv_srviceActive) {
+        this.gv_srviceActive = gv_srviceActive;
     }
 }

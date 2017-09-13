@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment implements
         public boolean isFistLocation = true;
         public boolean isReadyDrawingRouting = false;
         public static ArrayList<LatLng> MarkerPoints;
-        public GlovalVar gloval;
+        public static GlovalVar gloval;
         public static TextView txtStatus = null;
         public static TextView txt_client_info = null;
         public static TextView txt_destination_info = null;
@@ -99,6 +99,7 @@ public class HomeFragment extends Fragment implements
         public static TextView txt_observationFromDriver = null;
         public static TextView txt_amount_info = null;
         public MapFragment  mMap;
+        public static int PARAM_26  = 0;
 
 
     public static Location getmLastLocation() {
@@ -114,12 +115,11 @@ public class HomeFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
 
-        Log.d("YA","1");
+        this.gloval = ((GlovalVar) getActivity().getApplicationContext());
         if (view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
                 parent.removeView(view);
-                Log.d("YA","2");
         }
 
 
@@ -159,7 +159,7 @@ public class HomeFragment extends Fragment implements
         else
         {
             fr.getMapAsync(this);
-            Log.d("YA","5");
+          //  Log.d("YA","5");
         }
 
 
@@ -413,10 +413,8 @@ public class HomeFragment extends Fragment implements
                        strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                    }
                    String strAdd = returnedAddress.getAddressLine(0);
-                 //  Log.d("onLocationChanged",strAdd);
                    HomeFragment.nameLocation = strAdd.toString();
 
-                  // Log.d("setLocationVehicheDriver","CH"+HomeFragment.nameLocation);
 
                    mLastLocation = location;
                    if (mCurrLocationMarker != null) {
@@ -563,8 +561,6 @@ public class HomeFragment extends Fragment implements
     }
 
 
-
-
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     public boolean checkLocationPermission(){
@@ -674,7 +670,7 @@ public class HomeFragment extends Fragment implements
 
 
         HomeFragment.txt_client_info.setText(currentTravel.getClient());
-        HomeFragment.txt_calling_info.setText("N/A");
+        HomeFragment.txt_calling_info.setText("No se cargo informacion");
         HomeFragment.txt_observationFromDriver.setText(currentTravel.getObservationFromDriver());
 
         HomeFragment.txt_destination_info.setText(currentTravel.getNameDestination());
@@ -693,23 +689,39 @@ public class HomeFragment extends Fragment implements
 
         HomeFragment.txtStatus.setTextColor(Color.parseColor(currentTravel.getClassColorTwo()));
 
+        PARAM_26 =  Integer.parseInt(gloval.getGv_param().get(25).getValue());// PRECIO DE LISTA
         if(currentTravel.getIdSatatusTravel() == 6)
         {
-            HomeFragment.txt_amount_info.setText(currentTravel.getTotalAmount()+"$");
+            if(PARAM_26 == 1)
+            {
+                HomeFragment.txt_amount_info.setText(currentTravel.getTotalAmount()+"$");
+            }
+            else
+            {
+                HomeFragment.txt_amount_info.setText("0$");
+            }
+
         }else
         {
-            HomeFragment.txt_amount_info.setText(currentTravel.getAmountCalculate()+"$");
+            if(PARAM_26 == 1)
+            {
+                HomeFragment.txt_amount_info.setText(currentTravel.getAmountCalculate()+"$");
+            }
+            else
+            {
+                HomeFragment.txt_amount_info.setText("0$");
+            }
         }
 
 
     }
 
     public static void clearInfo() {
-        HomeFragment.txt_client_info.setText("N/A");
-        HomeFragment.txt_calling_info.setText("N/A");
-        HomeFragment.txt_observationFromDriver.setText("N/A");
-        HomeFragment.txt_destination_info.setText("N/A");
-        HomeFragment.txt_origin_info.setText("N/A");
+        HomeFragment.txt_client_info.setText("No se cargo informacion");
+        HomeFragment.txt_calling_info.setText("No se cargo informacion");
+        HomeFragment.txt_observationFromDriver.setText("No se cargo informacion");
+        HomeFragment.txt_destination_info.setText("No se cargo informacion");
+        HomeFragment.txt_origin_info.setText("No se cargo informacion");
         HomeFragment.txt_km_info.setText("0Km");
         HomeFragment.txt_amount_info.setText("0$");
         HomeFragment.txtStatus.setText("SERVICIO ACTIVO");

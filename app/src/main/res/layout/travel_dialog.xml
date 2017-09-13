@@ -114,10 +114,10 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:padding="5dp"
-                android:textStyle="bold"
                 android:text="RECHAZAR"
                 android:textColor="@color/mpsdk_review_payment_text"
-                android:textSize="18dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
 
         </RelativeLayout>
@@ -158,14 +158,14 @@
                 android:id="@+id/txt_detination"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:padding="5dp"
-                android:textStyle="bold"
                 android:text="RECHAZAR"
                 android:textColor="@color/mpsdk_review_payment_text"
-                android:textSize="18dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
 
         </RelativeLayout>
@@ -305,7 +305,7 @@
                 android:background="@color/mpsdk_bapropagos"
                 android:padding="5dp"
                 android:scrollbars="vertical"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
         </RelativeLayout>
     </LinearLayout>

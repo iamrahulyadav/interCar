@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "NOTICIAS";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     protected PowerManager.WakeLock wakelock;
-    public static String version = "1.8.39";
+    public static String version = "1.8.46";
     public ProgressDialog loading;
     ServicesLoguin apiService = null;
     public  GlovalVar gloval = null;
@@ -414,11 +414,11 @@ public class MainActivity extends AppCompatActivity {
                             gloval.setGv_clientinfo(userLogued.response.getClient());
                             gloval.setGv_listvehicleType(userLogued.response.getListVehicleType());
 
+                            gloval.setGv_idResourceSocket(userLogued.response.getUser().getIdResourceSocket());
 
                             HttpConexion.setBase(userLogued.response.getInstance());
                             // SETEAMOS LA INTANCIA PARA AUTENTICARNOS
 
-                            loading.dismiss();
 
                             if (userLogued.response.getUser().getIdProfileUser() == 2
                                     || userLogued.response.getUser().getIdProfileUser() == 5) {
@@ -426,6 +426,8 @@ public class MainActivity extends AppCompatActivity {
                                 Intent homeClient = new Intent(MainActivity.this, HomeClientActivity.class);
                                 startActivity(homeClient);
                             } else {
+
+                                gloval.setGv_srviceActive(userLogued.response.getDriver().getIdStatusDriverTravelKf());
 
                                 if (userLogued.response.getCurrentTravel() != null) {
                                     gloval.setGv_travel_current(userLogued.response.getCurrentTravel());
@@ -435,6 +437,8 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(home);
                             }
 
+
+                            loading.dismiss();
 
                         }
                         else{
