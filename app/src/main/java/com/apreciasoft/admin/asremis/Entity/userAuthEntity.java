@@ -40,9 +40,6 @@ public class userAuthEntity {
     @SerializedName("instance")
     public String instance;
 
-
-
-
     @Expose
     @SerializedName("driverInactive")
     public boolean driverInactive;

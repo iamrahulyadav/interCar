@@ -60,6 +60,7 @@
         <activity   android:name=".Fracments.RegisterForm" />
         <activity   android:name=".Fracments.NewFormDriver" />
         <activity   android:name=".Fracments.NewFormClient" />
+        <activity   android:name=".Fracments.InfoDetailTravelAc" />
 
         <activity   android:name=".Util.Signature" />
 

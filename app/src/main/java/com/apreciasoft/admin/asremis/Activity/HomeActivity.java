@@ -785,6 +785,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void iniTimeSlep()
     {
+        isWait(1);
 
         loadingCronometro = new ProgressDialog(HomeActivity.this);
         loadingCronometro.setTitle("Calculando Minutos de Espera");
@@ -813,6 +814,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         textTiempo = (TextView) findViewById(R.id.textTiempo);
         textTiempo.setVisibility(View.VISIBLE);
         textTiempo.setText("Tiempo de Espera: "+tiempoTxt+" Segundos");
+
+        isWait(0);
 
     }
 
@@ -857,7 +860,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void setInfoTravel()
     {
 
-        Log.d("fatal","setInfoTravel");
 
 
         if(currentTravel != null)
@@ -868,14 +870,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         {
             HomeFragment.clearInfo();
         }
-
-
-
-        // ACUALIZAMOS EL MAPA //
-       // FragmentManager fm = getFragmentManager();
-      //  fm.beginTransaction().replace(R.id.content_frame,new HomeFragment()).commit();
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
@@ -902,7 +896,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             String lon = "";
             String add = "";
 
-            Log.d("location","location");
 
 
             if (HomeFragment.getmLastLocation() != null) {
@@ -1103,7 +1096,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 amounCalculateGps =  amounCalculateGps + PARAM_6/1000*m_vuelta;
 
             }
-            Log.d("-TRAVEL-","PARTICULARES");
         }
 
 
@@ -1670,7 +1662,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     /* SERVICIO PARA RETORNAR UN VIAJE EN EL MONITOR DDE VIAJES */
     public  void  isRoundTrip()
     {
-        Log.d("fatal","isRoundTrip");
+
         if (this.daoTravel == null) { this.daoTravel = HttpConexion.getUri().create(ServicesTravel.class); }
 
 
@@ -1687,6 +1679,55 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                     isRoundTrip = true;
                     Toast.makeText(getApplicationContext(), "Vuelta Activada!", Toast.LENGTH_LONG).show();
+                    currentTravel.setRoundTrip(true);
+                    setInfoTravel();
+
+                }
+
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
+                    alertDialog.setTitle("ERROR");
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    alertDialog.setMessage(t.getMessage());
+
+
+
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+
+
+            });
+
+        } finally {
+            this.daoTravel = null;
+        }
+    }
+
+    /* SERVICIO PARA INDICAR ESPERA DE UN VIAJE EN EL MONITOR DDE VIAJES */
+    public  void  isWait(int value)
+    {
+
+        if (this.daoTravel == null) { this.daoTravel = HttpConexion.getUri().create(ServicesTravel.class); }
+
+
+        try {
+            Call<Boolean> call = this.daoTravel.isWait(currentTravel.idTravel,value);
+
+            Log.d("fatal", call.request().toString());
+            Log.d("fatal", call.request().headers().toString());
+
+            call.enqueue(new Callback<Boolean>() {
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                    isRoundTrip = true;
                     currentTravel.setRoundTrip(true);
                     setInfoTravel();
 

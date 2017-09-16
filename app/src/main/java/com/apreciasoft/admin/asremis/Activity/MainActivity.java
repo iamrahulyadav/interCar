@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "NOTICIAS";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     protected PowerManager.WakeLock wakelock;
-    public static String version = "1.8.46";
+    public static String version = "1.8.49";
     public ProgressDialog loading;
     ServicesLoguin apiService = null;
     public  GlovalVar gloval = null;
@@ -375,14 +375,15 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+            System.out.println(gson.toJson(auth));
+
             Call<userFull> call = this.apiService.getUser(auth);
             Log.d("Call request", call.request().toString());
             Log.d("Call request header", call.request().headers().toString());
 
 
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            System.out.println(gson.toJson(auth));
 
             call.enqueue(new Callback<userFull>() {
                 @Override

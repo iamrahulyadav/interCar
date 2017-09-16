@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,6 +93,7 @@ public class HomeFragment extends Fragment implements
         public static GlovalVar gloval;
         public static TextView txtStatus = null;
         public static TextView txt_client_info = null;
+        public static TextView txt_date_info = null;
         public static TextView txt_destination_info = null;
         public static TextView txt_origin_info = null;
         public static TextView txt_km_info = null;
@@ -163,6 +165,7 @@ public class HomeFragment extends Fragment implements
         }
 
 
+        HomeFragment.txt_date_info = (TextView) getActivity().findViewById(R.id.txt_date_info);
         HomeFragment.txtStatus = (TextView) getActivity().findViewById(R.id.txtStatus);
         HomeFragment.txt_client_info = (TextView) getActivity().findViewById(R.id.txt_client_info);
         HomeFragment.txt_destination_info = (TextView) getActivity().findViewById(R.id.txt_destination_info);
@@ -173,6 +176,15 @@ public class HomeFragment extends Fragment implements
         HomeFragment.txt_observationFromDriver = (TextView) getActivity().findViewById(R.id.txt_observationFromDriver);
 
         txtStatus.setText("SERVICIO ACTIVO");
+
+
+        /*final ScrollView scrollview = ((ScrollView)  getActivity().findViewById(R.id.scrollview));
+        scrollview.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });*/
 
     }
 
@@ -668,7 +680,8 @@ public class HomeFragment extends Fragment implements
     {
 
 
-
+        HomeFragment.txt_date_info.setText(currentTravel.getMdate().toString());
+        HomeFragment.txt_client_info.setText(currentTravel.getClient());
         HomeFragment.txt_client_info.setText(currentTravel.getClient());
         HomeFragment.txt_calling_info.setText("No se cargo informacion");
         HomeFragment.txt_observationFromDriver.setText(currentTravel.getObservationFromDriver());
@@ -725,6 +738,7 @@ public class HomeFragment extends Fragment implements
         HomeFragment.txt_km_info.setText("0Km");
         HomeFragment.txt_amount_info.setText("0$");
         HomeFragment.txtStatus.setText("SERVICIO ACTIVO");
+        HomeFragment.txt_date_info.setText("");
 
     }
 

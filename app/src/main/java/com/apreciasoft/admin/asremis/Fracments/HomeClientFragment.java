@@ -91,6 +91,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
     public static TextView txt_calling_info = null;
     public static TextView txt_domain = null;
     public static TextView txt_amount_info = null;
+    public static TextView txt_date_info = null;
 
     public static void setmLastLocation(Location mLastLocation) {
         HomeClientFragment.mLastLocation = mLastLocation;
@@ -145,6 +146,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
             fr.getMapAsync(this);
         }
 
+        HomeClientFragment.txt_date_info = (TextView) getActivity().findViewById(R.id.txt_date_info);
         HomeClientFragment.txtStatus = (TextView) getActivity().findViewById(R.id.txtStatus);
       //  HomeClientFragment.txt_client_info = (TextView) getActivity().findViewById(R.id.txt_client_info);
         HomeClientFragment.txt_destination_info = (TextView) getActivity().findViewById(R.id.txt_destination_info);
@@ -174,6 +176,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
         HomeClientFragment.txt_km_info.setText("0Km");
         HomeClientFragment.txt_amount_info.setText("0$");
         HomeClientFragment.txtStatus.setText("SERVICIO ACTIVO");
+        HomeClientFragment.txt_date_info.setText("---");
         getPick(-1);
 
     }
@@ -195,6 +198,7 @@ public class HomeClientFragment extends Fragment implements  OnMapReadyCallback,
                 HomeClientFragment.txt_calling_info.setText(currentTravel.getPhoneNumber());
                 HomeClientFragment.txt_domain.setText(currentTravel.getDomain());
 
+                HomeClientFragment.txt_date_info.setText(currentTravel.getMdate().toString());
 
                 HomeClientFragment.txt_destination_info.setText(currentTravel.getNameDestination());
                 HomeClientFragment.txt_origin_info.setText(currentTravel.getNameOrigin());

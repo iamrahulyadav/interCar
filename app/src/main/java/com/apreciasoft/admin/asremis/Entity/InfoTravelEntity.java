@@ -5,10 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by Admin on 06/01/2017.
  */
 
+@Nullable
 public  class InfoTravelEntity implements Serializable {
 
 
@@ -17,6 +20,11 @@ public  class InfoTravelEntity implements Serializable {
     @SerializedName("idTravel")
     public int idTravel;
 
+
+
+    @Expose
+    @SerializedName("MultiDestinationDesc")
+    public String MultiDestinationDesc;
 
     @Expose
     @SerializedName("idSatatusTravel")
@@ -243,13 +251,14 @@ public  class InfoTravelEntity implements Serializable {
 
 
     @Expose
-    @SerializedName("date")
+    @SerializedName("dateTravel")
     public String mdate;
 
 
     @Expose
     @SerializedName("domain")
     public String domain;
+
 
 
     public double getAmountOriginPac() {
@@ -700,5 +709,13 @@ public  class InfoTravelEntity implements Serializable {
 
     public void setBenefitsPerKm(int benefitsPerKm) {
         this.benefitsPerKm = benefitsPerKm;
+    }
+
+    public String getMultiDestinationDesc() {
+        return MultiDestinationDesc;
+    }
+
+    public void setMultiDestinationDesc(String multiDestinationDesc) {
+        MultiDestinationDesc = multiDestinationDesc;
     }
 }

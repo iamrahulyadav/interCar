@@ -54,8 +54,10 @@ public class TravelDialog extends DialogFragment {
       //  final TextView txt_title5 = (TextView) rootView.findViewById(R.id.txt_title5);//is multi origen
      //   final TextView txt_title6 = (TextView) rootView.findViewById(R.id.txt_title6);//is multi destination
 
-       // final TextView txt_mutiOrignes = (TextView) rootView.findViewById(R.id.txt_mutiOrignes);//is multi origen
+        final TextView txt_date_info = (TextView) rootView.findViewById(R.id.txt_date_info);
+        final TextView txt_mutiOrignes = (TextView) rootView.findViewById(R.id.txt_mutiOrignes);//is multi origen
         final TextView txt_multiDestinos = (TextView) rootView.findViewById(R.id.txt_multiDestinos);//is multi destination
+        final TextView txt_observation = (TextView) rootView.findViewById(R.id.txt_observation);//is multi destination
 
 
 
@@ -68,15 +70,15 @@ public class TravelDialog extends DialogFragment {
         txt_monto.setText(currentTravel.getAmountCalculate());
         txt_distancia.setText(currentTravel.getDistanceLabel());
 
-
+        txt_date_info.setText(currentTravel.getMdate());
         //txt_title5.setText(currentTravel.getIsTravelMultiOrigin());
        // txt_title6.setText(currentTravel.getIsMultiDestination());
 
-        /*txt_mutiOrignes.setText(
+        txt_mutiOrignes.setText(
                        " 1) "+currentTravel.getOriginMultipleDesc1()+" - "+
                        " 2) "+currentTravel.getOriginMultipleDesc2()+" - "+
                        " 3) "+currentTravel.getOriginMultipleDesc3()+" - "+
-                       " 4) "+ currentTravel.getOriginMultipleDesc3());*/
+                       " 4) "+ currentTravel.getOriginMultipleDesc3());
 
        // txt_mutiOrignes.setMovementMethod(new ScrollingMovementMethod());
 
@@ -86,7 +88,9 @@ public class TravelDialog extends DialogFragment {
             txt_destinations.setText(this.getDestinations());
         }*/
 
-       txt_multiDestinos.setText(currentTravel.getObservationFromDriver());
+       txt_multiDestinos.setText(currentTravel.getMultiDestination());
+
+        txt_observation.setText(currentTravel.getObservationFromDriver());
       //  txt_multiDestinos.setMovementMethod(new ScrollingMovementMethod());
 
         final Button btnRefut = (Button) rootView.findViewById(R.id.btn_refut);

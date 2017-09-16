@@ -5,15 +5,18 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
+import com.apreciasoft.admin.asremis.Entity.notification;
 import com.apreciasoft.admin.asremis.Fracments.ReservationsFrangment;
 import com.apreciasoft.admin.asremis.R;
 import com.apreciasoft.admin.asremis.Util.RecyclerViewClickListener;
@@ -28,6 +31,7 @@ import java.util.List;
 public class ReservationsAdapter
         extends RecyclerView.Adapter<ReservationsAdapter.MyViewHolder>  {
 
+    private final OnItemClickListener listener;
     private List<InfoTravelEntity> mDataset;
     private Context context;
     private static RecyclerViewClickListener itemListener;
@@ -63,22 +67,40 @@ public class ReservationsAdapter
 
         }
 
+        public void bind(final InfoTravelEntity item, final OnItemClickListener listener) {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
+
 
 
         @Override
         public void onClick(View v) {
 
+            Log.d("click","click");
+
         }
     }
 
 
+    public interface OnItemClickListener {
+        void onItemClick(InfoTravelEntity item);
+
+
+    }
+
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ReservationsAdapter(List<InfoTravelEntity> myDataset, Fragment fragment, Context context) {
+    public ReservationsAdapter(List<InfoTravelEntity> myDataset, Fragment fragment, Context context, OnItemClickListener listener) {
 
         this.context = context;
         mDataset = myDataset;
         this.fragment = fragment;
+        this.listener = listener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -100,20 +122,26 @@ public class ReservationsAdapter
         holder.mtv_blah2.setText(mDataset.get(position).getNameDestination());
         holder.mtv_blah3.setText(mDataset.get(position).getClient());
 
-        if(mDataset.get(position).getIsAceptReservationByDriver() == 1)
+       /* if(mDataset.get(position).getIsAceptReservationByDriver() == 1)
         {
            holder.mImageButton.setEnabled(false);
-        }
+        }*/
 
-        holder.mImageButton.setOnClickListener(new View.OnClickListener() {
+       /* holder.mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopupMenu(holder.mImageButton,position);
             }
-        });
+        });*/
+
+        holder.bind(mDataset.get(position), listener);
+
+
 
     }
 
+
+/*
     private void showPopupMenu(View view, final int position) {
         // inflate menu
         PopupMenu popup = new PopupMenu(view.getContext(),view );
@@ -145,7 +173,7 @@ public class ReservationsAdapter
         popup.show();
 
 
-    }
+    }*/
 
 
 

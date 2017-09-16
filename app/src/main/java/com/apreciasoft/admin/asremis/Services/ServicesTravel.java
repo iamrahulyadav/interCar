@@ -39,6 +39,12 @@ public interface ServicesTravel {
     Call<Boolean> isRoundTrip(@Path("id")  int id);
 
     @Headers("Content-Type: application/json")
+    @GET("travel/isWait/{id}/{value}")
+    Call<Boolean> isWait(@Path("id")  int id,@Path("value")  int value);
+
+
+
+    @Headers("Content-Type: application/json")
     @POST("travel/finishMobil")
     Call<InfoTravelEntity> finishPost(@Body  TraveInfoSendEntity travel);
 

@@ -32,6 +32,7 @@ public class NorificationAdapter
     private Context context;
     private static RecyclerViewClickListener itemListener;
     private Fragment fragment;
+    private final OnItemClickListener listener;
 
 
     // Provide a reference to the views for each data item
@@ -76,6 +77,14 @@ public class NorificationAdapter
 
         }
 
+        public void bind(final notification item, final OnItemClickListener listener) {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
 
 
         @Override
@@ -84,14 +93,18 @@ public class NorificationAdapter
         }
     }
 
+    public interface  OnItemClickListener{
+        void onItemClick(notification item);
+    }
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public NorificationAdapter(List<notification> myDataset, Fragment fragment, Context context) {
+    public NorificationAdapter(List<notification> myDataset, Fragment fragment, Context context,OnItemClickListener listener) {
 
         this.context = context;
         mDataset = myDataset;
         this.fragment = fragment;
+        this.listener = listener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -117,12 +130,15 @@ public class NorificationAdapter
         }
 
 
-        holder.mImageButton.setOnClickListener(new View.OnClickListener() {
+/*        holder.mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopupMenu(holder.mImageButton,position);
             }
-        });
+        });*/
+
+
+        holder.bind(mDataset.get(position), listener);
 
     }
 

@@ -2,6 +2,7 @@ package com.apreciasoft.admin.asremis.Fracments;
 
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.apreciasoft.admin.asremis.Adapter.NorificationAdapter;
+import com.apreciasoft.admin.asremis.Adapter.ReservationsAdapter;
+import com.apreciasoft.admin.asremis.Entity.InfoTravelEntity;
 import com.apreciasoft.admin.asremis.Entity.notification;
 import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.R;
@@ -35,7 +38,7 @@ import retrofit2.Response;
 
 public class NotificationsFrangment extends Fragment  implements RecyclerViewClickListener {
 
-
+    public static final int INFO_ACTIVITY = 1;
     ServicesNotification apiService = null;
     View myView;
     List<notification> list = null;
@@ -65,7 +68,15 @@ public class NotificationsFrangment extends Fragment  implements RecyclerViewCli
 
         rv = (RecyclerView) myView.findViewById(R.id.rv_recycler_view);
         rv.setHasFixedSize(true);
-        adapter = new NorificationAdapter(list,NotificationsFrangment.this,myView.getContext());
+        adapter = new NorificationAdapter(list,NotificationsFrangment.this,myView.getContext(),
+                new NorificationAdapter.OnItemClickListener() {
+                    @Override public void onItemClick(notification item) {
+                        //  Toast.makeText(myView.getContext(), "Item Clicked", Toast.LENGTH_LONG).show();
+
+                        event_confirm(item.getIdNotification());
+
+                    }
+                });
         rv.setAdapter(adapter);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -146,13 +157,12 @@ public class NotificationsFrangment extends Fragment  implements RecyclerViewCli
 
 
 
-    public void event_confirm(int position) {
+    public void event_confirm(int IdNotification) {
 
 
         final GlovalVar gloval = ((GlovalVar)getActivity().getApplicationContext());
         Call<List<notification>> call =
-                this.apiService.readNotifications(gloval.getGv_listNotifications().get(position).getIdNotification()
-                        ,gloval.getGv_user_id());
+                this.apiService.readNotifications(IdNotification,gloval.getGv_user_id());
 
         // Log.d("***",call.request().body().toString());
 
@@ -176,7 +186,12 @@ public class NotificationsFrangment extends Fragment  implements RecyclerViewCli
 
                     //
                 } else if (response.code() == 404) {
+                    //the response-body is already parseable to your ResponseBody object
+                    list = (List<notification>) response.body();
+                    gloval.setGv_listNotifications(list);
+                    refreshContent();
 
+                    //
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                     alertDialog.setTitle("ERROR" + "(" + response.code() + ")");
