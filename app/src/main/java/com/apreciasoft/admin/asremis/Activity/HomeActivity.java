@@ -1013,6 +1013,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         double PARAM_1  = Double.parseDouble(gloval.getGv_param().get(0).getValue());// PRECIO DE LISTA
         double PARAM_5  = Double.parseDouble(gloval.getGv_param().get(4).getValue());// PRECIO LISTA TIEMPO DE ESPERA
         double PARAM_6  = Double.parseDouble(gloval.getGv_param().get(5).getValue());// PRECIO LISTA TIEMPO DE VUELTA
+        double PARAM_16  = Double.parseDouble(gloval.getGv_param().get(15).getValue());// VALOR MINIMO DE VIAJE
 
         double hor = 0;
         double min = 0;
@@ -1100,6 +1101,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         amounCalculateGps =  amounCalculateGps + currentTravel.getAmountOriginPac();
+
+        //VALIDAMOS SI EL VIAJE NO SUPERA EL MINUMO//
+        if(amounCalculateGps <  PARAM_16){ amounCalculateGps = PARAM_16;}
 
 
         hor=min/3600;

@@ -1314,9 +1314,6 @@ public class HomeClientActivity extends AppCompatActivity
 
 
 
-            Log.d("-P01-", String.valueOf(fromTimeEtxt.getText().toString().matches("")));
-            Log.d("-P02-", String.valueOf(fromTimeEtxt.getText().toString().matches("")));
-
             if(!fromTimeEtxt.getText().toString().matches("")  &&  !fromDateEtxt.getText().toString().matches("") )
             {
                 this.dateTravel =  fromDateEtxt.getText().toString()+" "+fromTimeEtxt.getText().toString();
