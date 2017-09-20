@@ -1939,7 +1939,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             amounCalculateGps,
                                             //Double.parseDouble(val),
                                             m_total,
-                                            df.format(kilometros_total) + " metros",
+                                            df.format(kilometros_total),
                                             add,
                                             lon,
                                             lat,
