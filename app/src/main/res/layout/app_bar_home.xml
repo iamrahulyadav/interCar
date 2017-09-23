@@ -27,9 +27,6 @@
     <include layout="@layout/content_home"/>
 
 
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="112dp"
@@ -96,10 +93,6 @@
         android:layout_alignParentStart="true" />
 
 
-
-
-
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -112,9 +105,6 @@
     <include
         android:id="@+id/payment"
         layout="@layout/payment_layout" />
-
-
-
 
 
     <LinearLayout

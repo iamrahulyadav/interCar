@@ -624,6 +624,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+
+
+
     public void fn_exit() throws IOException {
         // LAMAMOS A EL MAIN ACTIVITY//
 
@@ -753,7 +756,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                     GsonBuilder builder = new GsonBuilder();
                     Gson gson = builder.create();
-                    System.out.println(gson.toJson(T));
+            Log.d("Response JSON", gson.toJson(T));
 
                 Call<Boolean> call = this.daoLoguin.token(T);
 
@@ -840,6 +843,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 
     private BroadcastReceiver broadcastReceiverLoadTodays = new BroadcastReceiver() {
@@ -920,7 +924,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 lat,
                                 gloval.getGv_id_driver(),
                                 gloval.getGv_id_vehichle(),
-                                idClientKf
+                                idClientKf,
+                                HomeFragment.calculateMiles()[0]
 
                         )
                         );
@@ -1009,17 +1014,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         final TextView distance_txt = (TextView) findViewById(R.id.distance_txt);
         final TextView txtTimeslep = (TextView) findViewById(R.id.txtTimeslep);
 
+        /* VERIFICAMOS METODOS DE PAGO DISPONIBLES */
+        if(currentTravel.getIsTravelComany() == 1)// EMPRESA
+        {
+            if (currentTravel.isPaymentCash != 1) {
+                btnFinishCash.setEnabled(false);
+            } else {
+                btnFinishCash.setEnabled(true);
+            }
+        }
+        /* */
+
 
         double PARAM_1  = Double.parseDouble(gloval.getGv_param().get(0).getValue());// PRECIO DE LISTA
         double PARAM_5  = Double.parseDouble(gloval.getGv_param().get(4).getValue());// PRECIO LISTA TIEMPO DE ESPERA
         double PARAM_6  = Double.parseDouble(gloval.getGv_param().get(5).getValue());// PRECIO LISTA TIEMPO DE VUELTA
         double PARAM_16  = Double.parseDouble(gloval.getGv_param().get(15).getValue());// VALOR MINIMO DE VIAJE
 
-        double hor = 0;
+        double hor;
         double min = 0;
 
-        double EXTRA_BENEFICIO = 0;
-        double distance_beneficio = 0;
+        double EXTRA_BENEFICIO;
+        double distance_beneficio;
 
         btPreFinishVisible(false);
 
@@ -1027,7 +1043,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         /* DITANCIA TOTAL RECORRIDA */
         km_total =  0.001;
         m_total  = HomeFragment.calculateMiles()[0];//BUSCAMOS LA DISTANCIA TOTLA
-        kilometros_total = m_total*km_total;//LO CONVERTIMOS A KILOMETRO
+        kilometros_total = (m_total + currentTravel.getDistanceSave()) * km_total;//LO CONVERTIMOS A KILOMETRO y sumamos la distancia salvada
         //**************************//
 
         /* DITANCIA TOTAL VULETA */
@@ -1049,7 +1065,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Log.d("-TRAVEL-", String.valueOf(currentTravel.getIsTravelComany()));
         if(currentTravel.getIsTravelComany() == 1)// EMPRESA
         {
-            /*VERIFICAMOS SI ESTA ACTIVO EL CMAPO BENEFICIO POR KILOMETRO PARA ESA EMPRESA*/
+            /*VERIFICAMOS SI ESTA ACTIVO EL CAMPO BENEFICIO POR KILOMETRO PARA ESA EMPRESA*/
             Log.d("-BENEFICIO-", String.valueOf(currentTravel.getBenefitsPerKm()));
             if(currentTravel.getBenefitsPerKm() == 1)
             {
@@ -1060,7 +1076,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     EXTRA_BENEFICIO = distance_beneficio * currentTravel.getBenefitsPreceKm();
 
 
-                    double METROS = 1000*(kilometros_total - distance_beneficio)/1;// CONERTIMOS LO KILOMETRO A METROS
+                    double METROS = 1000*(kilometros_total - distance_beneficio)/1;// CONVERTIMOS LO KILOMETRO A METROS
                     amounCalculateGps =  currentTravel.getPriceDitanceCompany()/1000*METROS+EXTRA_BENEFICIO;
 
                 }else
@@ -1411,7 +1427,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 lat,
                                 gloval.getGv_id_driver(),
                                 gloval.getGv_id_vehichle(),
-                                idClientKf
+                                idClientKf,
+                                HomeFragment.calculateMiles()[0]
+
 
                         )
                         );
@@ -1518,7 +1536,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 lat,
                 0,
                  0,
-                 currentTravel.getIdClientKf()
+                 currentTravel.getIdClientKf(),
+                    HomeFragment.calculateMiles()[0]
             );
 
             DatabaseReference locationRef = databaseReference.child("Travel");

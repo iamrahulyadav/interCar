@@ -30,6 +30,10 @@ public class TravelLocationEntity {
     public int idClientKf;
 
 
+    @Expose
+    @SerializedName("distanceSave")
+    public Double distanceSave;
+
 
 
 
@@ -86,7 +90,7 @@ public class TravelLocationEntity {
 
 
     public TravelLocationEntity(int idUser,int idTravelKf, String location, String longLocation,
-                                String latLocation,int idDriverKf,int idVeichleAsigned,int idClientKf
+                                String latLocation,int idDriverKf,int idVeichleAsigned,int idClientKf,double distanceSave
 
     ) {
         this.idUser = idUser;
@@ -97,6 +101,7 @@ public class TravelLocationEntity {
         this.idDriverKf = idDriverKf;
         this.idVeichleAsigned = idVeichleAsigned;
         this.idClientKf = idClientKf;
+        this.distanceSave = distanceSave;
 
 
     }

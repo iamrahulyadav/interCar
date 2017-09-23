@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -131,9 +132,11 @@ public class HomeClientActivity extends AppCompatActivity
     public static  ArrayList resultList = null;
     public static  ArrayList resultListPlaceID = null;
     public List<Integer> listCatgoryId = new ArrayList<Integer>();
-    public String location = "";
+    public static String location = "";
     public String lat = "";
     public String lon = "";
+
+    public  int itemSearch;
 
     public static String destination = "";
     public static String latDestination = "";
@@ -182,7 +185,7 @@ public class HomeClientActivity extends AppCompatActivity
         final PowerManager pm=(PowerManager)getSystemService(Context.POWER_SERVICE);
         this.wakelock=pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "etiqueta");
         wakelock.acquire();
-//prueba por fa
+
 
         //this.apiService = HttpConexion.getUri().create(ServicesTravel.class);
 
@@ -324,7 +327,70 @@ public class HomeClientActivity extends AppCompatActivity
         /*GOOGLE PACE*/
         AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
-        autoCompView.setOnItemClickListener(this);
+
+        autoCompView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick (AdapterView < ? > adapter, View view, final int position, long arg){
+                // TODO Auto-generated method stub
+
+                Log.d("lopo",String.valueOf(adapter.getAdapter().getClass().getName()));
+                Log.d("lopo",String.valueOf(resultListPlaceID.get(position).toString()));
+                Thread thread = new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        placeDetail(resultListPlaceID.get(position).toString());
+                    }
+                });
+
+                thread.start();
+
+
+                String str = (String) adapter.getItemAtPosition(position);
+
+                HomeClientActivity.location = String.valueOf(str);
+
+                }
+
+            });
+
+
+        //autoCompView.setOnItemClickListener(this);
+
+        AutoCompleteTextView autoCompView2 = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
+        autoCompView2.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+
+        autoCompView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick (AdapterView < ? > adapter, View view, final int position, long arg){
+                // TODO Auto-generated method stub
+
+
+
+                // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
+                // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
+
+                Thread thread = new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        placeDetail(resultListPlaceID.get(position).toString());
+                    }
+                });
+
+                thread.start();
+
+                String str = (String) adapter.getItemAtPosition(position);
+
+                HomeClientActivity.location = String.valueOf(str);
+
+                HomeClientActivity.destination = str;
+
+            }
+
+        });
+
+        //autoCompView2.setOnItemClickListener(this);
+
+
 
 
         contetRequestTravelVisible(false);
@@ -356,6 +422,11 @@ public class HomeClientActivity extends AppCompatActivity
 
 
         getPick(gloval.getGv_user_id());
+
+
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 
 
@@ -610,10 +681,11 @@ public class HomeClientActivity extends AppCompatActivity
 
 
 
-    public void onItemClick(AdapterView adapterView, View view, final int position, long id) {
-
+    public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
+/*
         String str = (String) adapterView.getItemAtPosition(position);
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+
 
 
         Log.d("lopo",String.valueOf(adapterView.getAdapter().getClass().getName()));
@@ -625,18 +697,31 @@ public class HomeClientActivity extends AppCompatActivity
             }
         });
 
-        thread.start();
+        thread.start();*/
 
 
-        if(adapterView.getAdapter().getClass().getName()
-                == "com.apreciasoft.admin.asremis.Util.GooglePlacesAutocompleteAdapter")// GOOGLE PLACE
-        {
-            this.location = String.valueOf(adapterView.getAdapter().getClass().getName());
+       // if(adapterView.getAdapter().getClass().getName()
+       //         == "com.apreciasoft.admin.asremis.Util.GooglePlacesAutocompleteAdapter")// GOOGLE PLACE
+        //{
+
+       /* Log.d("form", String.valueOf(view.getId()));
+
+        switch (itemSearch) {
+
+            case 1:
+                this.location = String.valueOf(adapterView.getAdapter().getClass().getName());
+                break;
+            case 2:
+                this.destination = String.valueOf(adapterView.getAdapter().getClass().getName());
+                break;
+        }*/
+
+
 
             //  Log.d("lopo",GooglePlacesAutocompleteAdapter.getItemByIndex(position).toString());
             // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
             // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
-        }
+       // }
 
 
     }

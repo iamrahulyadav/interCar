@@ -260,6 +260,38 @@ public  class InfoTravelEntity implements Serializable {
     public String domain;
 
 
+    @Expose
+    @SerializedName("isPaymentCash")
+    public int isPaymentCash;
+
+    @Expose
+    @SerializedName("distanceSave")
+    public double distanceSave;
+
+
+    public int getIsPaymentCash() {
+        return isPaymentCash;
+    }
+
+    public void setIsPaymentCash(int isPaymentCash) {
+        this.isPaymentCash = isPaymentCash;
+    }
+
+    public double getDistanceSave() {
+        return distanceSave;
+    }
+
+    public void setDistanceSave(double distanceSave) {
+        this.distanceSave = distanceSave;
+    }
+
+    public int getPaymentCash() {
+        return isPaymentCash;
+    }
+
+    public void setPaymentCash(int paymentCash) {
+        isPaymentCash = paymentCash;
+    }
 
     public double getAmountOriginPac() {
         return amountOriginPac;
