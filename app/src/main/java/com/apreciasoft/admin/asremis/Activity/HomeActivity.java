@@ -1071,7 +1071,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if(currentTravel.getBenefitsPerKm() == 1)
             {
                 /* VERIFICAMOS I ESTA DENTRO DE EL RANDO DE EL BENEFICIO ESTABLECIDO */
-                if(kilometros_total >= currentTravel.getBenefitsToKm() && kilometros_total <= currentTravel.getBenefitsFromKm())
+                if(kilometros_total >= currentTravel.getBenefitsToKm() && kilometros_total >= currentTravel.getBenefitsFromKm())
                 {
                     distance_beneficio = currentTravel.getBenefitsToKm()-currentTravel.getBenefitsFromKm();
                     EXTRA_BENEFICIO = distance_beneficio * currentTravel.getBenefitsPreceKm();
