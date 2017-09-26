@@ -129,8 +129,6 @@ public class NewFormDriver extends AppCompatActivity implements VerticalStepperF
     public void serviceCallFilter() {
 
 
-
-
         if(this.apiDriver == null){this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class);}
         Call<List<modelEntity>> call = this.apiDriver.filterForm();
 

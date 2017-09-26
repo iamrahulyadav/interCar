@@ -67,7 +67,16 @@ public class TravelDialog extends DialogFragment {
        // title3.setText(currentTravel.getPasajero());
         titleOrigin.setText(currentTravel.getNameOrigin());
         titleDestination.setText(currentTravel.getNameDestination());
-        txt_monto.setText(currentTravel.getAmountCalculate());
+
+        int param25 = Integer.parseInt(gloval.getGv_param().get(25).getValue());
+        if(param25 == 1){
+            txt_monto.setText(currentTravel.getAmountCalculate());
+        }
+        else {
+            txt_monto.setText("---");
+        }
+
+
         txt_distancia.setText(currentTravel.getDistanceLabel());
 
         txt_date_info.setText(currentTravel.getMdate());

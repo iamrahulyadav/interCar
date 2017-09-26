@@ -115,6 +115,7 @@ public class HomeClientActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         AdapterView.OnItemClickListener,View.OnClickListener ,AdapterView.OnItemSelectedListener {
 
+    private static String ReservationName;
     ServicesTravel apiService = null;
     List<reason> list = null;
 
@@ -135,8 +136,6 @@ public class HomeClientActivity extends AppCompatActivity
     public static String location = "";
     public String lat = "";
     public String lon = "";
-
-    public  int itemSearch;
 
     public static String destination = "";
     public static String latDestination = "";
@@ -170,7 +169,7 @@ public class HomeClientActivity extends AppCompatActivity
     public FloatingActionMenu materialDesignFAM;
     public FloatingActionButton floatingActionButton1, floatingActionButton2;
 
-    Integer mot = 0;
+
 
     public ProgressDialog loading;
     private Integer idTypeVehicle;
@@ -333,8 +332,8 @@ public class HomeClientActivity extends AppCompatActivity
             public void onItemClick (AdapterView < ? > adapter, View view, final int position, long arg){
                 // TODO Auto-generated method stub
 
-                Log.d("lopo",String.valueOf(adapter.getAdapter().getClass().getName()));
-                Log.d("lopo",String.valueOf(resultListPlaceID.get(position).toString()));
+
+
                 Thread thread = new Thread(new Runnable(){
                     @Override
                     public void run() {
@@ -347,7 +346,8 @@ public class HomeClientActivity extends AppCompatActivity
 
                 String str = (String) adapter.getItemAtPosition(position);
 
-                HomeClientActivity.location = String.valueOf(str);
+                HomeClientActivity.ReservationName = String.valueOf(str);
+                Log.d("ORIGEN - 0",str);
 
                 }
 
@@ -369,6 +369,7 @@ public class HomeClientActivity extends AppCompatActivity
                 // this.location = String.valueOf(GooglePlacesAutocompleteAdapter.getItemByIndex(position));
                 // this.location = String.valueOf(adapterView.getAdapter().getClass().getName();
 
+
                 Thread thread = new Thread(new Runnable(){
                     @Override
                     public void run() {
@@ -380,9 +381,8 @@ public class HomeClientActivity extends AppCompatActivity
 
                 String str = (String) adapter.getItemAtPosition(position);
 
-                HomeClientActivity.location = String.valueOf(str);
-
                 HomeClientActivity.destination = str;
+                Log.d("ORIGEN - 1",str);
 
             }
 
@@ -409,14 +409,6 @@ public class HomeClientActivity extends AppCompatActivity
         _setCategory2();
         /*------------------*/
 
-       /* EditText textView = (EditText) findViewById(R.id.txtCatVehicleReervation);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showModalCategory();
-            }
-        });*/
-
 
         _setEditPlaceHolder();
 
@@ -429,40 +421,23 @@ public class HomeClientActivity extends AppCompatActivity
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 
+        int PARAM_35 =  Integer.parseInt(gloval.getGv_param().get(34).getValue());// PUEDE SOLICITAR  RESERVA
+        int PARAM_36 =  Integer.parseInt(gloval.getGv_param().get(35).getValue());// PUEDE SOLICITAR  VIAJES
 
-    }
+        if(PARAM_35 != 1){
 
-
-/*
-    public void onRadioButtonClicked(View view) {
-
-        // Is the button now checked?
-
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // hacemos un case con lo que ocurre cada vez que pulsemos un botón
-
-        switch(view.getId()) {
-            case R.id.radioButton:
-                if (checked)
-                    //
-                mot = 0;
-                    break;
-            case R.id.radioButton2:
-                if (checked)
-                    //
-                mot = 1;
-                    break;
-            case R.id.radioButton3:
-                if (checked)
-                    //
-                mot = 2;
-                    break;
-
-
+            floatingActionButton1.setEnabled(false);
         }
+
+        if(PARAM_36 != 1){
+            floatingActionButton2.setEnabled(false);
+        }
+
+
+
     }
-*/
+
+
     public void  _setEditPlaceHolder()
     {
 
@@ -1270,9 +1245,10 @@ public class HomeClientActivity extends AppCompatActivity
             HistoryTravelDriver verifi = new HistoryTravelDriver();
             verifi.ver = 1;
             fm.beginTransaction().replace(R.id.content_frame_client,new HistoryTravelDriver()).commit();
-
+            btnFlotingVisible(false);
 
         } else if (id == R.id.nav_slideshow) {
+            btnFlotingVisible(false);
 
         }else if (id == R.id.nav_pay_form_client) {
 
@@ -1280,24 +1256,42 @@ public class HomeClientActivity extends AppCompatActivity
             FloatingActionMenu btnTravelNew = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
             btnTravelNew.setVisibility(View.INVISIBLE);
             getFragmentManager().beginTransaction().replace(R.id.content_frame_client,new PaymentFormClient()).commit();
-
+            btnFlotingVisible(false);
 
 
         }else if (id == R.id.nav_manage) {
 
             fm.beginTransaction().replace(R.id.content_frame_client,new NotificationsFrangment()).commit();
+            btnFlotingVisible(false);
 
         } else if (id == R.id.nav_reservations) {
+            btnFlotingVisible(false);
 
         } else if (id == R.id.nav_send) {
 
             activeGifMotivosFalla(true,"");
+            btnFlotingVisible(false);
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    // CONONTRO BOTON FLOTANTE //
+    public  void  btnFlotingVisible(boolean isVisible)
+    {
+        FloatingActionMenu btnService = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+
+        if(!isVisible)
+        {
+            btnService.setVisibility(View.INVISIBLE);
+        }else
+        {
+            btnService.setVisibility(View.VISIBLE);
+        }
+
     }
 
     // Recibios notificacion //
@@ -1388,6 +1382,8 @@ public class HomeClientActivity extends AppCompatActivity
             TravelEntity travel = new TravelEntity();
 
 
+
+
             if(this.location != "" &&
                     this.lat != "" &&
                     this.lon != "")
@@ -1412,6 +1408,13 @@ public class HomeClientActivity extends AppCompatActivity
             if(gloval.getGv_id_profile() == 5)
             {
                 isTravelComany = true;
+            }
+
+
+            if(HomeClientActivity.ReservationName != "")
+            {
+                Log.d("ORIGEN -3",HomeClientActivity.location.toString());
+                this.location = HomeClientActivity.ReservationName.toString();
             }
 
 

@@ -7,22 +7,37 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.apreciasoft.admin.asremis.Entity.ClientEntityAdd;
 import com.apreciasoft.admin.asremis.Entity.RequetClient;
+import com.apreciasoft.admin.asremis.Entity.acountCompany;
+import com.apreciasoft.admin.asremis.Entity.costCenterCompany;
+import com.apreciasoft.admin.asremis.Entity.fleetType;
+import com.apreciasoft.admin.asremis.Entity.modelEntity;
 import com.apreciasoft.admin.asremis.Entity.resp;
+import com.apreciasoft.admin.asremis.Entity.responseFilterVehicle;
 import com.apreciasoft.admin.asremis.Http.HttpConexion;
 import com.apreciasoft.admin.asremis.R;
 import com.apreciasoft.admin.asremis.Services.ServicesDriver;
+import com.apreciasoft.admin.asremis.Util.GlovalVar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
@@ -34,7 +49,7 @@ import retrofit2.Response;
  * Created by usario on 2/8/2017.
  */
 
-public class NewFormClient extends AppCompatActivity implements VerticalStepperForm {
+public class NewFormClient extends AppCompatActivity implements VerticalStepperForm,AdapterView.OnItemSelectedListener {
 
 
 
@@ -43,6 +58,21 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
         public  EditText latName;
         public  EditText mail;
         public  EditText pass;
+        public  EditText phone;
+
+        public  int idCostCenter;
+        public  int idCompanyAcount;
+        public Spinner spinner1;
+        public Spinner spinner2;
+
+        public List<acountCompany> listAcountCompany = null;
+        public  List<costCenterCompany>   listCostCenter  = null;
+
+        private static String[] COSTCENTER = new String[0];
+        private static String[] ACOUNT = new String[0];
+
+
+
 
         ServicesDriver apiDriver = null;
 
@@ -58,7 +88,7 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
         setTitle("Nuevo Cliente!");
 
 
-        String[] mySteps = {"Nombre ","Apellido","Email", "Contraseña"};
+        String[] mySteps = {"Nombre ","Apellido","Telefono","Email","CUETA/C.COSTO", "Contraseña"};
         int colorPrimary = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
         int colorPrimaryDark = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
 
@@ -73,6 +103,238 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
                 .displayBottomNavigation(true) // It is true by default, so in this case this line is not necessary
                 .init();
 
+        spinner1 = (Spinner) findViewById(R.id.spinner_cuenta);
+        spinner2 = (Spinner) findViewById(R.id.spinner_ccosto);
+
+
+
+    }
+
+
+    public void _setSpinersCostCenter() {
+
+
+        //*************************************//
+        //***********    C.Costo    ************//
+
+        List<String> list2 = new ArrayList<String>();
+
+        if(listCostCenter!= null) {
+
+            COSTCENTER = new String[listCostCenter.size()];
+
+
+            for (int i = 0; i < listCostCenter.size(); i++) {
+                list2.add("C.Costo: " + listCostCenter.get(i).getCostCenter());
+            }
+            list2.toArray(COSTCENTER);
+
+            // Spinner click listener
+            spinner2.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
+            // Drp down layout style - list view with radio button
+            dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // attaching data adapter to spinner
+            spinner2.setAdapter(dataAdapter1);
+            //************************************//
+        }
+
+    }
+
+
+    public void serviceValidatorDomaint() {
+
+
+
+        if (this.apiDriver == null) { this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class); }
+
+
+
+        String mailTxt = mail.getText().toString();
+
+        if(mailTxt.contains("@")) {
+            String[] parts = mailTxt.split("@");
+
+            try
+            {
+
+                Call<List<acountCompany>> call = this.apiDriver.validatorDomaint(parts[1]);
+
+                call.enqueue(new Callback<List<acountCompany>>() {
+                    @Override
+                    public void onResponse(Call<List<acountCompany>> call, Response<List<acountCompany>> response) {
+
+                        Log.d("Call request", call.request().toString());
+                        Log.d("Call request header", call.request().headers().toString());
+                        Log.d("Response raw header", response.headers().toString());
+                        Log.d("Response raw", String.valueOf(response.raw().body()));
+                        Log.d("Response code", String.valueOf(response.code()));
+
+
+                        if (response.code() == 200) {
+
+                            //the response-body is already parseable to your ResponseBody object
+                            List<acountCompany> r = (List<acountCompany>) response.body();
+
+
+                            listAcountCompany = r;
+                            _setSpinersAcaunt();
+                        } else if (response.code() == 404) {
+
+                            Toast.makeText(getBaseContext(),
+                                    "No Exiten , Cuentas de este dominio", Toast.LENGTH_SHORT)
+                                    .show();
+
+                        } else {
+                            AlertDialog alertDialog = new AlertDialog.Builder(NewFormClient.this).create();
+                            alertDialog.setTitle("ERROR" + "(" + response.code() + ")");
+                            alertDialog.setMessage(response.errorBody().source().toString());
+                            Log.w("***", response.errorBody().source().toString());
+
+
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<acountCompany>> call, Throwable t) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(NewFormClient.this).create();
+                        alertDialog.setTitle("ERROR");
+                        alertDialog.setMessage(t.getMessage());
+
+                        Log.d("**", t.getMessage());
+
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                    }
+                });
+
+            }catch (Exception E)
+            {
+
+            }
+
+
+        }
+
+    }
+
+
+    public void serviCecostCenterByidAcount() {
+
+
+
+
+        if (this.apiDriver == null) { this.apiDriver = HttpConexion.getUri().create(ServicesDriver.class); }
+        Call<List<costCenterCompany>> call = this.apiDriver.costCenterByidAcount(idCompanyAcount);
+
+        call.enqueue(new Callback<List<costCenterCompany>>() {
+            @Override
+            public void onResponse(Call<List<costCenterCompany>> call, Response<List<costCenterCompany>> response) {
+
+                Log.d("Call request", call.request().toString());
+                Log.d("Call request header", call.request().headers().toString());
+                Log.d("Response raw header", response.headers().toString());
+                Log.d("Response raw", String.valueOf(response.raw().body()));
+                Log.d("Response code", String.valueOf(response.code()));
+
+
+                if (response.code() == 200) {
+
+                    //the response-body is already parseable to your ResponseBody object
+                    List<costCenterCompany> r  = (List<costCenterCompany>) response.body();
+                    listCostCenter = r;
+                    _setSpinersCostCenter();
+                } else if (response.code() == 404) {
+
+                    Toast.makeText(getBaseContext(),
+                            "No Exiten , Centros de Costos de esta cuenta", Toast.LENGTH_SHORT)
+                            .show();
+
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(NewFormClient.this).create();
+                    alertDialog.setTitle("ERROR" + "(" + response.code() + ")");
+                    alertDialog.setMessage(response.errorBody().source().toString());
+                    Log.w("***", response.errorBody().source().toString());
+
+
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<costCenterCompany>> call, Throwable t) {
+                AlertDialog alertDialog = new AlertDialog.Builder(NewFormClient.this).create();
+                alertDialog.setTitle("ERROR");
+                alertDialog.setMessage(t.getMessage());
+
+                Log.d("**", t.getMessage());
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+
+    }
+
+
+
+    public void _setSpinersAcaunt() {
+
+
+        //*************************************//
+        //***********    CUENTA    ************//
+
+        List<String> list2 = new ArrayList<String>();
+
+        if(listAcountCompany!= null) {
+
+            ACOUNT = new String[listAcountCompany.size()];
+
+
+            for (int i = 0; i < listAcountCompany.size(); i++) {
+                list2.add("Cuenta: " + listAcountCompany.get(i).getNrAcount());
+            }
+            list2.toArray(ACOUNT);
+
+            // Spinner click listener
+            spinner1.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
+            // Drp down layout style - list view with radio button
+            dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // attaching data adapter to spinner
+            spinner1.setAdapter(dataAdapter1);
+            //************************************//
+        }
 
     }
 
@@ -89,9 +351,15 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
                 view = createlatNameStep();
                 break;
             case 2:
-                view = createmailStep();
+                view = createlatPhoneStep();
                 break;
             case 3:
+                view = createmailStep();
+                break;
+            case 4:
+                view = createViewAcountComapny();
+                break;
+            case 5:
                 view = createpassStep();
                 break;
         }
@@ -114,6 +382,12 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
                 checkInput();
                 break;
             case 4:
+                checkInput();
+                break;
+            case 5:
+                checkInput();
+                break;
+            case 6:
                 // As soon as the phone number step is open, we mark it as completed in order to show the "Continue"
                 // button (We do it because this field is optional, so the user can skip it without giving any info)
                 verticalStepperForm.setStepAsCompleted(1);
@@ -122,6 +396,7 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
                 break;
         }
     }
+
 
 
     private void checkInput() {
@@ -139,6 +414,12 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
 
 
 
+    private View createViewAcountComapny() {
+        LayoutInflater inflater = LayoutInflater.from(getBaseContext());
+        LinearLayout vehicleLayoutContent = (LinearLayout) inflater.inflate(R.layout.step_cliente_acount, null, false);
+        return vehicleLayoutContent;
+    }
+
 
     private View createfisrtNameStep() {
         // Here we generate programmatically the view that will be added by the system to the step content layout
@@ -154,10 +435,37 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
         return latName;
     }
 
+    private View createlatPhoneStep() {
+        // Here we generate programmatically the view that will be added by the system to the step content layout
+        phone = new EditText(this);
+        phone.setSingleLine(true);
+        return phone;
+    }
+
     private View createmailStep() {
         // Here we generate programmatically the view that will be added by the system to the step content layout
         mail = new EditText(this);
         mail.setSingleLine(true);
+
+        mail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //here is your code
+                serviceValidatorDomaint();
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
         return mail;
     }
 
@@ -166,6 +474,31 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
         pass = new EditText(this);
         pass.setSingleLine(true);
         return pass;
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.d("form", "onitemselected");
+
+        Log.d("form", String.valueOf(parent.getId()));
+        switch (parent.getId()) {
+
+
+            case R.id.spinner_cuenta:
+                this.idCompanyAcount =  listAcountCompany.get(position).getIdCompanyAcount();
+                serviCecostCenterByidAcount();
+                break;
+            case R.id.spinner_ccosto:
+                this.idCostCenter =  listCostCenter.get(position).getIdCostCenter();
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 
@@ -194,7 +527,7 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
                             latName.getText().toString(),
                             mail.getText().toString(),
                             pass.getText().toString(),
-                            1
+                            1,idCompanyAcount,phone.getText().toString(),idCostCenter
                     )
             );
 
@@ -268,9 +601,6 @@ public class NewFormClient extends AppCompatActivity implements VerticalStepperF
         }
 
     }
-
-
-
 
 
     @Override

@@ -66,10 +66,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         if(mDataset.get(position).getIsProcesCurrentAcount() == 1)
         {
-            holder.mtv_isProcesCurrentAcount.setText("Liquidado!");
+            holder.mtv_isProcesCurrentAcount.setText("("+mDataset.get(position).getNameStatusTravel()+") - Liquidado!");
         }else
         {
-            holder.mtv_isProcesCurrentAcount.setText("");
+            holder.mtv_isProcesCurrentAcount.setText("("+mDataset.get(position).getNameStatusTravel()+")");
         }
     }
 

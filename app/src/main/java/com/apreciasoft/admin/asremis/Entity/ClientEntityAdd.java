@@ -29,6 +29,45 @@ public class ClientEntityAdd {
     @SerializedName("idTypeClient")
     public int idTypeClient;
 
+
+    @Expose
+    @SerializedName("idCompanyAcount")
+    public int idCompanyAcount;
+
+
+    @Expose
+    @SerializedName("phone")
+    public String phone;
+
+    @Expose
+    @SerializedName("idCostCenter")
+    public int idCostCenter;
+
+
+    public int getIdCompanyAcount() {
+        return idCompanyAcount;
+    }
+
+    public void setIdCompanyAcount(int idCompanyAcount) {
+        this.idCompanyAcount = idCompanyAcount;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getIdCostCenter() {
+        return idCostCenter;
+    }
+
+    public void setIdCostCenter(int idCostCenter) {
+        this.idCostCenter = idCostCenter;
+    }
+
     public String getFirtNameClient() {
         return firtNameClient;
     }
@@ -69,11 +108,14 @@ public class ClientEntityAdd {
         this.idTypeClient = idTypeClient;
     }
 
-    public ClientEntityAdd(String firtNameClient, String lastNameClient, String mailClient, String passClient, int idTypeClient) {
+    public ClientEntityAdd(String firtNameClient, String lastNameClient, String mailClient, String passClient, int idTypeClient, int idCompanyAcount, String phone, int idCostCenter) {
         this.firtNameClient = firtNameClient;
         this.lastNameClient = lastNameClient;
         this.mailClient = mailClient;
         this.passClient = passClient;
         this.idTypeClient = idTypeClient;
+        this.idCompanyAcount = idCompanyAcount;
+        this.phone = phone;
+        this.idCostCenter = idCostCenter;
     }
 }

@@ -70,6 +70,7 @@ import com.apreciasoft.admin.asremis.Util.Signature;
 import com.apreciasoft.admin.asremis.Util.Tiempo;
 import com.apreciasoft.admin.asremis.Util.Utils;
 import com.apreciasoft.admin.asremis.Util.WsTravel;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -2166,7 +2167,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     // CONONTRO BOTON FLOTANTE //
     public  void  btnFlotingVisible(boolean isVisible)
     {
-        FloatingActionButton btnService = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionMenu btnService = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
 
         if(!isVisible)
         {
