@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.apreciasoft.mobile.intercarremis.Http.HttpConexion;
-
 import java.util.Timer;
 import java.util.TimerTask;
 

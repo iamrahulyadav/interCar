@@ -1,10 +1,9 @@
 package com.apreciasoft.mobile.intercarremis.Util;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
-
 import com.apreciasoft.mobile.intercarremis.Entity.InfoTravelEntity;
 import com.apreciasoft.mobile.intercarremis.Entity.InfoTravelEntityLite;
 import com.apreciasoft.mobile.intercarremis.Entity.TravelLocationEntity;
@@ -13,14 +12,13 @@ import com.apreciasoft.mobile.intercarremis.Entity.client;
 import com.apreciasoft.mobile.intercarremis.Entity.notification;
 import com.apreciasoft.mobile.intercarremis.Entity.paramEntity;
 import com.apreciasoft.mobile.intercarremis.Http.HttpConexion;
-
 import java.util.List;
 
 /**
  * Created by Admin on 02-01-2017.
  */
 
- public class GlovalVar extends Application {
+ public class GlovalVar extends MultiDexApplication {
 
     private String gv_base_intance = HttpConexion.instance;
     private String gv_user_name;

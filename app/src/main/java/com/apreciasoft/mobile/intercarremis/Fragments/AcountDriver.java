@@ -1,4 +1,4 @@
-package com.apreciasoft.mobile.intercarremis.Fracments;
+package com.apreciasoft.mobile.intercarremis.Fragments;
 
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.apreciasoft.mobile.intercarremis.Adapter.AdapterRows;
 import com.apreciasoft.mobile.intercarremis.Entity.DriverCurrentAcountEntity;
 import com.apreciasoft.mobile.intercarremis.Entity.LiquidationEntity;
@@ -21,10 +20,8 @@ import com.apreciasoft.mobile.intercarremis.Http.HttpConexion;
 import com.apreciasoft.mobile.intercarremis.R;
 import com.apreciasoft.mobile.intercarremis.Services.ServicesDriver;
 import com.apreciasoft.mobile.intercarremis.Util.GlovalVar;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

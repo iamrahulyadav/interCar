@@ -1,4 +1,4 @@
-package com.apreciasoft.mobile.intercarremis.Fracments;
+package com.apreciasoft.mobile.intercarremis.Fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -21,7 +21,6 @@ import com.apreciasoft.mobile.intercarremis.R;
 import com.apreciasoft.mobile.intercarremis.Services.ServicesTravel;
 import com.apreciasoft.mobile.intercarremis.Util.GlovalVar;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -8,8 +8,7 @@ import java.io.Serializable;
  * Created by Jorge on 28/10/17.
  */
 
-
-public  class BeneficioEntity implements Serializable {
+public class BeneficioEntity implements Serializable {
 
 
     @Expose

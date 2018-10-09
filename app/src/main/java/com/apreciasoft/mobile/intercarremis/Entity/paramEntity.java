@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class paramEntity {
 
+
     @Expose
     @SerializedName("idParam")
     public int idParam;

@@ -13,9 +13,7 @@ import com.apreciasoft.mobile.intercarremis.Entity.fleetType;
 import com.apreciasoft.mobile.intercarremis.Entity.modelEntity;
 import com.apreciasoft.mobile.intercarremis.Entity.resp;
 import com.apreciasoft.mobile.intercarremis.Entity.responseFilterVehicle;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

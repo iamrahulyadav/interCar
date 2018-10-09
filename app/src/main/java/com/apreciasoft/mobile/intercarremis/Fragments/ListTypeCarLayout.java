@@ -1,4 +1,4 @@
-package com.apreciasoft.mobile.intercarremis.Fracments;
+package com.apreciasoft.mobile.intercarremis.Fragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
 import com.apreciasoft.mobile.intercarremis.Entity.VehicleType;
 import com.apreciasoft.mobile.intercarremis.R;
 import com.apreciasoft.mobile.intercarremis.Util.GlovalVar;
-
 import java.util.ArrayList;
 import java.util.List;
 

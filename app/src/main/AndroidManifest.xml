@@ -49,13 +49,13 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fracments.PaymentCreditCar" />
-        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fracments.activity_card" />
-        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fracments.RegisterCliente" />
-        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fracments.RegisterForm" />
-        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fracments.NewFormDriver" />
-        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fracments.NewFormClient" />
-        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fracments.InfoDetailTravelAc" />
+        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fragments.PaymentCreditCar" />
+        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fragments.activity_card" />
+        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fragments.RegisterCliente" />
+        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fragments.RegisterForm" />
+        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fragments.NewFormDriver" />
+        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fragments.NewFormClient" />
+        <activity   android:name="com.apreciasoft.mobile.intercarremis.Fragments.InfoDetailTravelAc" />
 
         <activity   android:name="com.apreciasoft.mobile.intercarremis.Util.Signature" />
 

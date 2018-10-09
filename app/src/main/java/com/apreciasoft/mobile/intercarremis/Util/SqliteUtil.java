@@ -3,7 +3,6 @@ package com.apreciasoft.mobile.intercarremis.Util;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.apreciasoft.mobile.intercarremis.Entity.TravelSqliteEntity;
 
 public class SqliteUtil extends SQLiteOpenHelper {

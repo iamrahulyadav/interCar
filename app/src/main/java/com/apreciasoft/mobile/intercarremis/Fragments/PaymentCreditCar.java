@@ -1,4 +1,4 @@
-package com.apreciasoft.mobile.intercarremis.Fracments;
+package com.apreciasoft.mobile.intercarremis.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -16,7 +16,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
 import com.apreciasoft.mobile.intercarremis.Activity.HomeActivity;
 import com.apreciasoft.mobile.intercarremis.R;
 import com.google.gson.Gson;
@@ -27,7 +26,6 @@ import com.mercadopago.model.Item;
 import com.mercadopago.model.PaymentData;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.util.JsonUtil;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -74,7 +72,7 @@ public class PaymentCreditCar extends AppCompatActivity {
 
         mWebview .loadUrl(HomeActivity.mp_jsonPaymentCard);
         setContentView(mWebview );
-
+        
 
 
 
@@ -194,7 +192,7 @@ public class PaymentCreditCar extends AppCompatActivity {
                         .setNegativeButton("Intentar con otro metodo de Pago", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-                HomeActivity._PAYCREDITCAR_OK = false;
+                                HomeActivity._PAYCREDITCAR_OK = false;
                                 finish();
                             }
                         });

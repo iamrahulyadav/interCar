@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.apreciasoft.mobile.intercarremis.Activity.HomeActivity;
 import com.apreciasoft.mobile.intercarremis.Entity.InfoTravelEntity;
 import com.apreciasoft.mobile.intercarremis.R;
-
 import java.util.List;
 
 /**
@@ -91,7 +89,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     holder.mtv_isProcesCurrentAcount.setText("(Chofer asignado)");
 
                 }else{
-                holder.mtv_isProcesCurrentAcount.setText("(" + mDataset.get(position).getNameStatusTravel() + ")");
+                    holder.mtv_isProcesCurrentAcount.setText("(" + mDataset.get(position).getNameStatusTravel() + ")");
 
                 }
 

@@ -9,15 +9,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Company {
 
+    @Expose
+    @SerializedName("idClientKf")
+    public int idClientKf;
 
-
-        @Expose
-        @SerializedName("idClientKf")
-        public int idClientKf;
-
-        @Expose
-        @SerializedName("nameClientCompany")
-        public String nameClientCompany;
+    @Expose
+    @SerializedName("nameClientCompany")
+    public String nameClientCompany;
 
     public int getIdClientKf() {
         return idClientKf;

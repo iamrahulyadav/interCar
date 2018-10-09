@@ -1,4 +1,5 @@
 package com.apreciasoft.mobile.intercarremis.Activity;
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.FragmentManager;
@@ -69,13 +70,13 @@ import com.apreciasoft.mobile.intercarremis.Entity.resp;
 import com.apreciasoft.mobile.intercarremis.Entity.token;
 import com.apreciasoft.mobile.intercarremis.Entity.tokenFull;
 import com.apreciasoft.mobile.intercarremis.Entity.valuesTravelPreview;
-import com.apreciasoft.mobile.intercarremis.Fracments.HistoryTravelDriver;
-import com.apreciasoft.mobile.intercarremis.Fracments.HomeClientFragment;
-import com.apreciasoft.mobile.intercarremis.Fracments.ListTypeCarLayout;
-import com.apreciasoft.mobile.intercarremis.Fracments.NotificationsFrangment;
-import com.apreciasoft.mobile.intercarremis.Fracments.PaymentFormClient;
-import com.apreciasoft.mobile.intercarremis.Fracments.ProfileClientFr;
-import com.apreciasoft.mobile.intercarremis.Fracments.ReservationsFrangment;
+import com.apreciasoft.mobile.intercarremis.Fragments.HistoryTravelDriver;
+import com.apreciasoft.mobile.intercarremis.Fragments.HomeClientFragment;
+import com.apreciasoft.mobile.intercarremis.Fragments.ListTypeCarLayout;
+import com.apreciasoft.mobile.intercarremis.Fragments.NotificationsFrangment;
+import com.apreciasoft.mobile.intercarremis.Fragments.PaymentFormClient;
+import com.apreciasoft.mobile.intercarremis.Fragments.ProfileClientFr;
+import com.apreciasoft.mobile.intercarremis.Fragments.ReservationsFrangment;
 import com.apreciasoft.mobile.intercarremis.Http.HttpConexion;
 import com.apreciasoft.mobile.intercarremis.R;
 import com.apreciasoft.mobile.intercarremis.Services.ServicesLoguin;
@@ -2549,6 +2550,8 @@ public class HomeClientActivity extends AppCompatActivity
 
     }
 
+
+
     //Notificacioens
     public void fn_gotonotification()
     {
@@ -2565,4 +2568,6 @@ public class HomeClientActivity extends AppCompatActivity
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.content_frame_client,new ReservationsFrangment()).commit();
     }
+
+
 }

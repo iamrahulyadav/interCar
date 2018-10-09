@@ -10,7 +10,4 @@ public  abstract class TravelSqliteEntity implements BaseColumns
     public static final String COLUMN_DISTANCE = "distance";
     public static final String KEY_CREATED_AT = "CREATEDAT";
     public static final String IS_DRETURN = "isReturn";
-
-
-
 }

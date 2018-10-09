@@ -7,7 +7,6 @@ import com.apreciasoft.mobile.intercarremis.Entity.login;
 import com.apreciasoft.mobile.intercarremis.Entity.reporte;
 import com.apreciasoft.mobile.intercarremis.Entity.token;
 import com.apreciasoft.mobile.intercarremis.Entity.userFull;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

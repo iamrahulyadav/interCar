@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.apreciasoft.mobile.intercarremis.Entity.notification;
-import com.apreciasoft.mobile.intercarremis.Fracments.NotificationsFrangment;
+import com.apreciasoft.mobile.intercarremis.Fragments.NotificationsFrangment;
 import com.apreciasoft.mobile.intercarremis.R;
 import java.util.List;
 
@@ -97,7 +97,7 @@ public class NorificationAdapter
     // Create new views (invoked by the layout manager)
     @Override
     public NorificationAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
+                                                               int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.car_notifications, parent, false);
@@ -135,7 +135,7 @@ public class NorificationAdapter
         PopupMenu popup = new PopupMenu(view.getContext(),view );
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.notification_option, popup.getMenu());
-       // popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
+        // popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 

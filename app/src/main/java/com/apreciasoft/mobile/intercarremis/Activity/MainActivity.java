@@ -28,7 +28,7 @@ import com.apreciasoft.mobile.intercarremis.Entity.login;
 import com.apreciasoft.mobile.intercarremis.Entity.paramEntity;
 import com.apreciasoft.mobile.intercarremis.Entity.user;
 import com.apreciasoft.mobile.intercarremis.Entity.userFull;
-import com.apreciasoft.mobile.intercarremis.Fracments.RegisterForm;
+import com.apreciasoft.mobile.intercarremis.Fragments.RegisterForm;
 import com.apreciasoft.mobile.intercarremis.Http.HttpConexion;
 import com.apreciasoft.mobile.intercarremis.R;
 import com.apreciasoft.mobile.intercarremis.Services.ServicesLoguin;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "NOTICIAS";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     protected PowerManager.WakeLock wakelock;
-    public static String version = "2.0.16";
+    public static String version = "2.0.14";
     public ProgressDialog loading;
     ServicesLoguin apiService = null;
     public GlovalVar gloval = null;
@@ -623,4 +623,3 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REGISTER_ACTIVITY);
     }
 }
-

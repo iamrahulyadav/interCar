@@ -1,13 +1,11 @@
-package com.apreciasoft.mobile.asremis.Util;
-
-
-import java.util.Date;
+package com.apreciasoft.mobile.intercarremis.Util;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import java.util.Date;
 
 public class BroadcastService  extends Service {
     private static final String TAG = "BroadcastService";

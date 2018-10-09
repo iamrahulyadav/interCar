@@ -1,4 +1,4 @@
-package com.apreciasoft.mobile.asremis.Util;
+package com.apreciasoft.mobile.intercarremis.Util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
-
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

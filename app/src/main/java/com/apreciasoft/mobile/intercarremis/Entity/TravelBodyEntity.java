@@ -317,7 +317,7 @@ public class TravelBodyEntity {
 
     public int getMisFleetTravelAssistance() {
         return misFleetTravelAssistance;
-}
+    }
 
     public void setMisFleetTravelAssistance(int misFleetTravelAssistance) {
         this.misFleetTravelAssistance = misFleetTravelAssistance;

@@ -11,13 +11,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.apreciasoft.mobile.intercarremis.Entity.LiquidationEntity;
 import com.apreciasoft.mobile.intercarremis.R;
-
 import java.util.List;
 
 /**
  * Created by usario on 4/7/2017.
  */
-
 
 
 public class AdapterRows extends RecyclerView.Adapter<AdapterRows.ViewHolder> {
@@ -99,7 +97,7 @@ public class AdapterRows extends RecyclerView.Adapter<AdapterRows.ViewHolder> {
         PopupMenu popup = new PopupMenu(view.getContext(),view );
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.liquidationcarview, popup.getMenu());
-       // popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
+        // popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
         popup.show();
     }
 
@@ -107,11 +105,6 @@ public class AdapterRows extends RecyclerView.Adapter<AdapterRows.ViewHolder> {
     public int getItemCount() {
         return mDataset.size();
     }
-
-
-
-
-
 
 }
 

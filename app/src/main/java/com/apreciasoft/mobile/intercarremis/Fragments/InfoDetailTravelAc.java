@@ -1,4 +1,5 @@
-package com.apreciasoft.mobile.intercarremis.Fracments;
+package com.apreciasoft.mobile.intercarremis.Fragments;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,16 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.apreciasoft.mobile.intercarremis.Activity.HomeActivity;
 import com.apreciasoft.mobile.intercarremis.Entity.InfoTravelEntity;
 import com.apreciasoft.mobile.intercarremis.Http.HttpConexion;
 import com.apreciasoft.mobile.intercarremis.R;
 import com.apreciasoft.mobile.intercarremis.Services.ServicesTravel;
 import com.apreciasoft.mobile.intercarremis.Util.GlovalVar;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +33,6 @@ import retrofit2.Response;
 public class InfoDetailTravelAc extends AppCompatActivity {
 
 
-
     ServicesTravel apiService = null;
     public Button button1 = null;
     public Button bt_confirmar_reserva = null;
@@ -43,8 +40,6 @@ public class InfoDetailTravelAc extends AppCompatActivity {
     public ServicesTravel daoTravel = null;
     public GlovalVar gloval;
     public ProgressDialog loading;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +79,7 @@ public class InfoDetailTravelAc extends AppCompatActivity {
         txt_nr_travel.setText(travel.getCodTravel().toString());
 
         if(gloval.getGv_id_profile() == 3) {
-        txt_client_info.setText(travel.getClient().toString());
+            txt_client_info.setText(travel.getClient().toString());
         }else{
             txt_client_info.setText(travel.getDriver().toString());
         }
@@ -119,7 +114,7 @@ public class InfoDetailTravelAc extends AppCompatActivity {
                 if (HomeActivity.currentTravel == null) {
                     if(gloval.getGv_id_profile() == 3) {
 
-                    btn_init_reserva.setVisibility(View.VISIBLE);
+                        btn_init_reserva.setVisibility(View.VISIBLE);
                     }
                 } else {
 
@@ -132,8 +127,8 @@ public class InfoDetailTravelAc extends AppCompatActivity {
             } else {
                 btn_init_reserva.setVisibility(View.INVISIBLE);
                 if(gloval.getGv_id_profile() == 3) {
-                bt_confirmar_reserva.setVisibility(View.VISIBLE);
-            }
+                    bt_confirmar_reserva.setVisibility(View.VISIBLE);
+                }
             }
         }else
         {
@@ -148,11 +143,11 @@ public class InfoDetailTravelAc extends AppCompatActivity {
         txt_date_info.setText(travel.getMdate().toString());
 
         if(travel.getNameOrigin() != null) {
-        txt_origin_info.setText(travel.getNameOrigin().toString());
+            txt_origin_info.setText(travel.getNameOrigin().toString());
         }
 
         if(travel.getNameDestination() != null) {
-        txt_destination_info.setText(travel.getNameDestination().toString());
+            txt_destination_info.setText(travel.getNameDestination().toString());
         }
 
         txt_observationFromDriver.setText(travel.getObservationFromDriver().toString());
@@ -213,7 +208,7 @@ public class InfoDetailTravelAc extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "VIAJE ACEPTADO...", Toast.LENGTH_LONG).show();
 
-                   gloval.setGv_travel_current(response.body());
+                    gloval.setGv_travel_current(response.body());
 
 
                     loading.dismiss();
@@ -279,9 +274,9 @@ public class InfoDetailTravelAc extends AppCompatActivity {
 
                 if (response.code() == 200) {
 
-                Log.d("Response raw header", response.headers().toString());
-                Log.d("Response raw", String.valueOf(response.raw().body()));
-                Log.d("Response code", String.valueOf(response.code()));
+                    Log.d("Response raw header", response.headers().toString());
+                    Log.d("Response raw", String.valueOf(response.raw().body()));
+                    Log.d("Response code", String.valueOf(response.code()));
 
                     //the response-body is already parseable to your ResponseBody object
 

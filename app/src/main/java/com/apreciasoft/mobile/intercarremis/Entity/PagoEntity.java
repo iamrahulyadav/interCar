@@ -1,4 +1,4 @@
-package com.apreciasoft.mobile.asremis.Entity;
+package com.apreciasoft.mobile.intercarremis.Entity;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
