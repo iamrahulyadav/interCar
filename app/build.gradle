@@ -90,7 +90,7 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "asremis-arraijan-${variant.name}-${variant.versionName}.apk"
+            outputFileName = "asremis-intercar-${variant.name}-${variant.versionName}.apk"
         }
     }
 }
